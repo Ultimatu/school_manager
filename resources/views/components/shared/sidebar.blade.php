@@ -4,56 +4,26 @@
     </div><!-- sidebar-header -->
     <div id="sidebarMenu" class="sidebar-body">
         <div class="nav-group show">
-            <a href="" class="nav-label">Dashboard</a>
+            <a href="" class="nav-label">Tableau de bord</a>
             <ul class="nav nav-sidebar">
                 <li class="nav-item">
                     <a href="dashboard/finance.html" class="nav-link"><i class="ri-pie-chart-2-line"></i>
-                        <span>Finance Monitoring</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="dashboard/events.html" class="nav-link"><i class="ri-calendar-todo-line"></i>
-                        <span>Events Management</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="dashboard/sales.html" class="nav-link"><i class="ri-shopping-bag-3-line"></i>
-                        <span>Sales Monitoring</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="dashboard/analytics.html" class="nav-link"><i class="ri-bar-chart-2-line"></i>
-                        <span>Website Analytics</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="dashboard/crypto.html" class="nav-link"><i class="ri-coin-line"></i>
-                        <span>Cryptocurrency</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="dashboard/helpdesk.html" class="nav-link"><i class="ri-service-line"></i>
-                        <span>Helpdesk Service</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="dashboard/storage.html" class="nav-link"><i class="ri-hard-drive-2-line"></i>
-                        <span>Storage Management</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="dashboard/product.html" class="nav-link"><i class="ri-suitcase-2-line"></i>
-                        <span>Product Management</span></a>
+                        <span>Administration</span></a>
                 </li>
             </ul>
         </div><!-- nav-group -->
         <div class="nav-group show">
-            <a href="" class="nav-label">Applications</a>
+            <a href="" class="nav-label">Gestion de l'administration</a>
             <ul class="nav nav-sidebar">
                 <li class="nav-item">
-                    <a href="apps/file-manager.html" class="nav-link"><i class="ri-folder-2-line"></i> <span>File
-                            Manager</span></a>
+                    <a href="apps/file-manager.html" class="nav-link"><i class="ri-folder-2-line"></i> <span>Enseignants</span></a>
                 </li>
                 <li class="nav-item">
                     <a href="apps/email.html" class="nav-link"><i class="ri-mail-send-line"></i>
-                        <span>Email</span></a>
-                </li>
+                        <span>Informaticiens</span></a>
                 <li class="nav-item">
                     <a href="apps/calendar.html" class="nav-link"><i class="ri-calendar-line"></i>
-                        <span>Calendar</span></a>
+                        <span>Directeurs</span></a>
                 </li>
                 <li class="nav-item">
                     <a href="apps/chat.html" class="nav-link"><i class="ri-question-answer-line"></i>

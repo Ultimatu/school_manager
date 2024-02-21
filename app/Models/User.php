@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_auth',
+        'phone'
     ];
 
     /**
@@ -42,4 +44,133 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Get all of the owning role models.
+     */
+    public function role()
+    {
+        return $this->morphTo();
+    }
+
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
+    /**
+     * Get the user's administration.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function administrations()
+    {
+        return $this->hasMany(Administration::class);
+    }
+
+
+    /**
+     * Get the user's professeur.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function professeur()
+    {
+        return $this->hasMany(Professeur::class);
+    }
+
+    /**
+     * Get the user's etudiant.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function etudiant()
+    {
+        return $this->hasMany(Etudiant::class);
+    }
+
+
+    /**
+     * Get the user's parents.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function parents()
+    {
+        return $this->hasMany(Parents::class);
+    }
+
+    /**
+     * Check if the user is an admin.
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->role_auth === 'admin' || $this->role_auth === 'directeur';
+    }
+
+    /**
+     * Check if the user is a director.
+     * @return bool
+     */
+    public function isDirector()
+    {
+        return $this->role_auth === 'directeur';
+    }
+
+    /**
+     * Check if the user is a comptable.
+     * @return bool
+     */
+    public function isComptable()
+    {
+        return $this->role_auth === 'comptable';
+    }
+
+    /**
+     * Check if the user is a secreteur.
+     * @return bool
+     */
+    public function isSecretaire()
+    {
+        return $this->role_auth === 'secreteur';
+
+    }
+
+    /**
+     * Check if the user is a consellor.
+     * @return bool
+     */
+    public function isConsellor()
+    {
+        return $this->role_auth === 'consellor';
+    }
+
+    /**
+     * Check if the user is a professeur.
+     * @return bool
+     */
+    public function isProfesseur()
+    {
+        return $this->role_auth === 'professeur';
+    }
+
+    /**
+     * Check if the user is a parent.
+     * @return bool
+     */
+    public function isParent()
+    {
+        return $this->role_auth === 'parent';
+    }
+
+
+    /**
+     * Check if the user is a etudiant.
+     * @return bool
+     */
+    public function isEtudiant()
+    {
+        return $this->role_auth === 'etudiant';
+    }
+
+
+
 }

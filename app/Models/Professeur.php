@@ -24,6 +24,7 @@ class Professeur extends Model
         'matricule',
         'specialities',
         'user_id',
+        'annee_scolaire',
 
     ];
 

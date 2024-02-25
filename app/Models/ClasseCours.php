@@ -21,7 +21,7 @@ class ClasseCours extends Model
         'is_done',
         'credit',
         'total_hours',
-
+        'annee_scolaire'
     ];
 
     public function classe()
@@ -34,9 +34,9 @@ class ClasseCours extends Model
         return $this->belongsTo(Cours::class);
     }
 
-    public function professor()
+    public function professeur()
     {
-        return $this->belongsTo(Professeur::class);
+        return $this->belongsTo(Professeur::class, 'professor_id');
     }
 
     public function bulletins()

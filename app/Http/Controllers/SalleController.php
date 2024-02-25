@@ -64,6 +64,18 @@ class SalleController extends Controller
     }
 
     /**
+     * Change the status of the specified resource in storage.
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changeStatus($id){
+        $cours = Salle::find($id);
+        $cours->is_available = !$cours->is_available;
+        $cours->save();
+        return response()->json(['message'=>'salle status changed successfully']);
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Salle $salle)

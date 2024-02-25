@@ -1,7 +1,5 @@
-<footer class="bg-dark">
-    <div class="container-fluid p-4 px-sm-5">
-        <div class="d-flex flex-column flex-lg-row gap-3 text-white">
-            <span class="opacity-50">Copyright &copy; 2023. Dashbyte. All Rights Reserved.</span>
-        </div>
-    </div><!-- container-fluid -->
-</footer>
+<div class="main-footer mt-5">
+    <span>&copy; 2024 UTA SCHOOL & All Rights Reserved</span>
+    <span>Created by: <a href="#" target="_blank">Ultimatum</a></span>
+  </div><!-- main-footer -->
+</div><!-- main -->

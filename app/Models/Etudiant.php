@@ -28,6 +28,7 @@ class Etudiant extends Model
         'user_id',
         'status',
         'urgent_phone',
+        'annee_scolaire'
     ];
 
     protected $hidden = [
@@ -59,6 +60,15 @@ class Etudiant extends Model
     public function bulletins()
     {
         return $this->hasMany(Bulletin::class);
+    }
+
+
+    public function carInscriptions(){
+        return $this->hasMany(CarInscription::class);
+    }
+
+    public function CiteInscriptions(){
+        return $this->hasMany(CiteInscription::class);
     }
 
 

@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('etudiant_id')->constrained('etudiants')->onDelete('cascade')->onUpdate('cascade');
-           
+
             $table->foreignId('professeur_id')->constrained('professeurs')->onDelete('cascade')->onUpdate('cascade');
             $table->float('note');
             $table->string('observation')->nullable();
             $table->string('type');
             $table->date('date');
+            $table->string('annee_scolaire')->nullable();
             $table->timestamps();
         });
     }

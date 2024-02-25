@@ -14,6 +14,7 @@ class Cours extends Model
         'description',
         'is_available',
         'avatar',
+        'annee_scolaire',
     ];
 
     public function classeCours()

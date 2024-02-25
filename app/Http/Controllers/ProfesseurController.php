@@ -36,7 +36,7 @@ class ProfesseurController extends Controller
     {
         $user = User::where('email', $request->email)->first();
         if ($user) {
-            return redirect()->back()->with('error', 'Cet email est déjà utilisé');
+            return redirect()->back()->with('error', 'Cet email est déjà utilisé')->withInput();
         }
 
         $request->validated();
@@ -58,6 +58,13 @@ class ProfesseurController extends Controller
         $professeur->specialities = $request->specialities;
         $professeur->user_id = $user->id;
         $professeur->is_available = $request->is_available;
+        $professeur->password = bcrypt($request->matricule);
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $avatar_name = time() . '.' . $avatar->getClientOriginalExtension();
+            $avatar->move(public_path('images/professeurs'), $avatar_name);
+            $professeur->avatar = "images/professeurs/$avatar_name";
+        }
         $professeur->save();
 
         if (env('MAIL_SERVICE_STATE') == 'on') {
@@ -91,7 +98,32 @@ class ProfesseurController extends Controller
      */
     public function update(UpdateProfesseurRequest $request, Professeur $professeur)
     {
-        //
+        $request->validated();
+        $user = User::find($professeur->user_id);
+        $user->name = $request->first_name . ' ' . $request->last_name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->password = bcrypt($request->matricule);
+        $user->save();
+
+        $professeur->first_name = $request->first_name;
+        $professeur->last_name = $request->last_name;
+        $professeur->email = $request->email;
+        $professeur->phone = $request->phone;
+        $professeur->address = $request->address;
+        $professeur->matricule = $request->matricule;
+        $professeur->specialities = $request->specialities;
+        $professeur->is_available = $request->is_available;
+        $professeur->password = bcrypt($request->matricule);
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $avatar_name = time() . '.' . $avatar->getClientOriginalExtension();
+            $avatar->move(public_path('images/professeurs'), $avatar_name);
+            $professeur->avatar = "images/professeurs/$avatar_name";
+        }
+        $professeur->save();
+
+        return redirect()->route('professeur.index')->with('success', 'Professeur modifié avec succès');
     }
 
     /**
@@ -101,6 +133,9 @@ class ProfesseurController extends Controller
     {
         $user = User::find($professeur->user_id);
         $user->delete();
+        if (file_exists(public_path($professeur->avatar)) && $professeur->avatar != 'users/default.png' && $professeur->avatar != 'users/avatar.png') {
+            unlink(public_path($professeur->avatar));
+        }
         $professeur->delete();
         return redirect()->route('professeur.index')->with('success', 'Professeur supprimé avec succès');
     }

@@ -14,6 +14,7 @@ class Filiere extends Model
         'description',
         'image',
         'status',
+        'annee_scolaire',
     ];
 
 

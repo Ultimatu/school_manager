@@ -42,26 +42,26 @@ class AccountActivatedMail extends Mailable
     {
         if ($this->type === 'etudiant') {
             return new Content(
-                view: 'mails.etudiant-activated',
+                view: 'components.mails.etudiant-activated',
                 with: ['data' => $this->data],
             );
         }
         elseif ($this->type === 'parent') {
             return new Content(
-                view: 'mails.parent-activated',
+                view: 'components.mails.parent-activated',
                 with: ['data' => $this->data],
             );
         }
 
         elseif ($this->type === 'professeur') {
             return new Content(
-                view: 'mails.prof-activated',
+                view: 'components.mails.prof-activated',
                 with: ['data' => $this->data],
             );
         }
         else{
             return new Content(
-                view: 'mails.admin-activated',
+                view: 'components.mails.admin-activated',
                 with: ['data' => $this->data],
             );
         };

@@ -24,7 +24,7 @@ class UpdateClasseCoursRequest extends FormRequest
         return [
             'classe_id' => 'required|integer|exists:classes,id',
             'cours_id' => 'required|integer|exists:cours,id',
-            'professor_id' => 'required|integer|exists:professors,id',
+            'professor_id' => 'required|integer|exists:professeurs,id',
             'semester' => 'required|string',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',

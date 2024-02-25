@@ -17,6 +17,7 @@ class EmploiDuTemps extends Model
         'day',
         'start_date_time',
         'end_date_time',
+        'annee_scolaire'
     ];
 
 
@@ -44,5 +45,5 @@ class EmploiDuTemps extends Model
     }
 
 
-    
+
 }

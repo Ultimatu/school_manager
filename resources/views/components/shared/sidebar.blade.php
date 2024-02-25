@@ -1,112 +1,106 @@
 <div class="sidebar">
     <div class="sidebar-header">
-        <a href="" class="sidebar-logo">UTA</a>
+        <a href="{{ route('dashboard') }}" class="sidebar-logo">UTA</a>
     </div><!-- sidebar-header -->
     <div id="sidebarMenu" class="sidebar-body">
         <div class="nav-group show">
-            <a href="" class="nav-label">Tableau de bord</a>
+            <a href="#" class="nav-label">Tableau de bord</a>
             <ul class="nav nav-sidebar">
                 <li class="nav-item">
-                    <a href="dashboard/finance.html" class="nav-link"><i class="ri-pie-chart-2-line"></i>
+                    <a href="{{ route('dashboard') }}" class="nav-link"><i class="ri-dashboard-3-line"></i>
+                        <span>Tableau de bord</span></a>
+                </li>
+            </ul>
+        </div><!-- nav-group -->
+        <div class="nav-group show">
+            <a href="#" class="nav-label">Gestion de l'administration</a>
+            <ul class="nav nav-sidebar">
+
+                <li class="nav-item">
+                    <a href="{{ route('administration.index') }}" class="nav-link"><i class="ri-admin-line"></i>
                         <span>Administration</span></a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('professeur.index') }}" class="nav-link"><i class="ri-file-user-line"></i>
+                        <span>Enseignants</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('etudiant.index') }}" class="nav-link"><i class="ri-user-follow-fill"></i>
+                        <span>Etudiants</span></a>
+                </li>
+                {{-- Filiere --}}
+                <li class="nav-item">
+                    <a href="{{ route('filiere.index') }}" class="nav-link"><i class="ri-folder-info-line"></i>
+                        <span>Filières</span></a>
+                </li>
+                {{-- Classe --}}
+                <li class="nav-item">
+                    <a href="{{ route('classe.index') }}" class="nav-link"><i class="ri-home-gear-fill"></i>
+                        <span>Classes</span></a>
+                </li>
+                {{-- Cours --}}
+                <li class="nav-item">
+                    <a href="{{ route('cours.index') }}" class="nav-link"><i class="ri-book-2-line"></i>
+                        <span>Cours</span></a>
+                </li>
+                {{-- Salles --}}
+                <li class="nav-item">
+                    <a href="{{ route('salle.index') }}" class="nav-link"><i class="ri-building-2-line"></i>
+                        <span>Salles</span></a>
+                </li>
+                {{-- Emplois du temps --}}
+                <li class="nav-item">
+                    <a href="{{ route('evenements.index') }}" class="nav-link"><i class="ri-calendar-todo-line"></i>
+                        <span>Evements</span></a>
+                </li>
+
             </ul>
         </div><!-- nav-group -->
         <div class="nav-group show">
-            <a href="" class="nav-label">Gestion de l'administration</a>
+            <a href="#" class="nav-label">Gestion du cars</a>
             <ul class="nav nav-sidebar">
                 <li class="nav-item">
-                    <a href="apps/file-manager.html" class="nav-link"><i class="ri-folder-2-line"></i> <span>Enseignants</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="apps/email.html" class="nav-link"><i class="ri-mail-send-line"></i>
-                        <span>Informaticiens</span></a>
-                <li class="nav-item">
-                    <a href="apps/calendar.html" class="nav-link"><i class="ri-calendar-line"></i>
-                        <span>Directeurs</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="apps/chat.html" class="nav-link"><i class="ri-question-answer-line"></i>
-                        <span>Chat</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="apps/contact.html" class="nav-link"><i class="ri-contacts-book-line"></i>
-                        <span>Contacts</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="apps/tasks.html" class="nav-link"><i class="ri-checkbox-multiple-line"></i> <span>Task
-                            Manager</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="" class="nav-link has-sub"><i class="ri-gallery-line"></i> <span>Media
-                            Gallery</span></a>
+                    <a href="" class="nav-link has-sub"><i class="ri-car-line"></i>
+                         <span>Car & Transport</span></a>
                     <nav class="nav nav-sub">
-                        <a href="apps/gallery-music.html" class="nav-sub-link">Music Stream</a>
-                        <a href="apps/gallery-video.html" class="nav-sub-link">Video Stream</a>
-                    </nav>
-                </li>
-            </ul>
-        </div><!-- nav-group -->
-        <div class="nav-group show">
-            <a href="" class="nav-label">Pages</a>
-            <ul class="nav nav-sidebar">
-                <li class="nav-item">
-                    <a href="" class="nav-link has-sub"><i class="ri-account-circle-line"></i> <span>User
-                            Pages</span></a>
-                    <nav class="nav nav-sub">
-                        <a href="pages/profile.html" class="nav-sub-link">User Profile</a>
-                        <a href="pages/people.html" class="nav-sub-link">People &amp; Groups</a>
-                        <a href="pages/activity.html" class="nav-sub-link">Activity Log</a>
-                        <a href="pages/events.html" class="nav-sub-link">Events</a>
-                        <a href="pages/settings.html" class="nav-sub-link">Settings</a>
-                    </nav>
-                </li>
-                <li class="nav-item">
-                    <a href="" class="nav-link has-sub"><i class="ri-lock-2-line"></i>
-                        <span>Authentication</span></a>
-                    <nav class="nav nav-sub">
-                        <a href="pages/sign-in.html" class="nav-sub-link">Sign In Basic</a>
-                        <a href="pages/sign-in-2.html" class="nav-sub-link">Sign In Cover</a>
-                        <a href="pages/sign-up.html" class="nav-sub-link">Sign Up Basic</a>
-                        <a href="pages/sign-up-2.html" class="nav-sub-link">Sign Up Cover</a>
-                        <a href="pages/verify-account.html" class="nav-sub-link">Verify Account</a>
-                        <a href="pages/forgot-password.html" class="nav-sub-link">Forgot Password</a>
-                        <a href="pages/lock-screen.html" class="nav-sub-link">Lock Screen</a>
-                    </nav>
-                </li>
-                <li class="nav-item">
-                    <a href="" class="nav-link has-sub"><i class="ri-error-warning-line"></i> <span>Error
-                            Pages</span></a>
-                    <nav class="nav nav-sub">
-                        <a href="pages/error-404.html" class="nav-sub-link">Page Not Found</a>
-                        <a href="pages/error-500.html" class="nav-sub-link">Internal Server Error</a>
-                        <a href="pages/error-503.html" class="nav-sub-link">Service Unavailable</a>
-                        <a href="pages/error-505.html" class="nav-sub-link">Forbidden</a>
-                    </nav>
-                </li>
-                <li class="nav-item">
-                    <a href="" class="nav-link has-sub"><i class="ri-file-text-line"></i> <span>Other
-                            Pages</span></a>
-                    <nav class="nav nav-sub">
-                        <a href="pages/pricing.html" class="nav-sub-link">Pricing</a>
-                        <a href="pages/faq.html" class="nav-sub-link">FAQ</a>
+                        <a href="#" class="nav-sub-link">
+                            <i class="ri-car-line"></i>
+                            Voitures</a>
+                        <a href="#" class="nav-sub-link">
+                            <i class="ri-user-3-line"></i>
+                            Chauffeurs</a>
+                        <a href="#" class="nav-sub-link">
+                            <i class="ri-map-pin-line"></i>
+                            Trajets</a>
+                        <a href="#" class="nav-sub-link">
+                            <i class="ri-checkbox-multiple-line"></i>
+                            Inscriptions</a>
                     </nav>
                 </li>
             </ul>
         </div><!-- nav-group -->
         <div class="nav-group show mb-3">
-            <a href="" class="nav-label">UI Elements</a>
+            <a href="#" class="nav-label">Gestions de la cité</a>
             <ul class="nav nav-sidebar">
                 <li class="nav-item">
-                    <a href="" class="nav-link has-sub"><i class="ri-pencil-ruler-2-line"></i>
-                        <span>Getting Started</span></a>
+                    <a href="" class="nav-link has-sub"><i class="ri-building-2-line"></i>
+                        <span>Cité & Logements</span></a>
                     <nav class="nav nav-sub">
-                        <a href="docs/layout-grid.html" class="nav-sub-link">Grid System</a>
-                        <a href="docs/layout-columns.html" class="nav-sub-link">Columns</a>
-                        <a href="docs/layout-gutters.html" class="nav-sub-link">Gutters</a>
+                        <a href="#" class="nav-sub-link">
+                            <i class="ri-building-2-line"></i>
+                            Batiments</a>
+                        <a href="#" class="nav-sub-link">
+                            <i class="ri-user-3-line"></i>
+                            Etudiants</a>
+                        <a href="#" class="nav-sub-link">
+                            <i class="ri-map-pin-line"></i>
+                            Chambres</a>
+                        <a href="#" class="nav-sub-link">
+                            <i class="ri-checkbox-multiple-line"></i>
+                            Inscriptions</a>
                     </nav>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="" class="nav-link has-sub"><i class="ri-suitcase-line"></i>
                         <span>Components</span></a>
                     <nav class="nav nav-sub">
@@ -152,8 +146,8 @@
                         <a href="docs/form-validation.html" class="nav-sub-link">Validation</a>
                         <a href="docs/form-editors.html" class="nav-sub-link">Editors</a>
                     </nav>
-                </li>
-                <li class="nav-item">
+                </li> --}}
+                {{-- <li class="nav-item">
                     <a href="" class="nav-link has-sub"><i class="ri-bar-chart-2-line"></i> <span>Charts
                             &amp; Graphs</span></a>
                     <nav class="nav nav-sub">
@@ -192,34 +186,35 @@
                         <a href="docs/util-shadows.html" class="nav-sub-link">Shadows</a>
                         <a href="docs/util-extras.html" class="nav-sub-link">Extras</a>
                     </nav>
-                </li>
+                </li> --}}
             </ul>
         </div><!-- nav-group -->
     </div><!-- sidebar-body -->
     <div class="sidebar-footer">
         <div class="sidebar-footer-top">
-            <div class="sidebar-footer-thumb">
-                <img src="assets/img/img1.jpg" alt="">
-            </div><!-- sidebar-footer-thumb -->
-            <div class="sidebar-footer-body">
-                <h6><a href="pages/profile.html">Shaira Diaz</a></h6>
-                <p>Premium Member</p>
-            </div><!-- sidebar-footer-body -->
-            <a id="sidebarFooterMenu" href="" class="dropdown-link"><i
-                    class="ri-arrow-down-s-line"></i></a>
+          <div class="sidebar-footer-thumb">
+            <img src="{{ asset('users/avatar.png') }}" alt="">
+          </div><!-- sidebar-footer-thumb -->
+          <div class="sidebar-footer-body">
+            <h6><a href="#">{{ Auth::user()->name }}</a></h6>
+            <p>{{Auth::user()->role}}</p>
+          </div><!-- sidebar-footer-body -->
+          <a id="sidebarFooterMenu" href="" class="dropdown-link"><i class="ri-arrow-down-s-line"></i></a>
         </div><!-- sidebar-footer-top -->
         <div class="sidebar-footer-menu">
-            <nav class="nav">
-                <a href=""><i class="ri-edit-2-line"></i> Edit Profile</a>
-                <a href=""><i class="ri-profile-line"></i> View Profile</a>
-            </nav>
-            <hr>
-            <nav class="nav">
-                <a href=""><i class="ri-question-line"></i> Help Center</a>
-                <a href=""><i class="ri-lock-line"></i> Privacy Settings</a>
-                <a href=""><i class="ri-user-settings-line"></i> Account Settings</a>
-                <a href=""><i class="ri-logout-box-r-line"></i> Log Out</a>
-            </nav>
+          <nav class="nav">
+            <a href="#"><i class="ri-edit-2-line"></i> Edit Profile</a>
+            <a href="#"><i class="ri-profile-line"></i> View Profile</a>
+          </nav>
+          <hr>
+          <nav class="nav">
+            <a href=""><i class="ri-question-line"></i> Help Center</a>
+            <a href=""><i class="ri-lock-line"></i> Privacy Settings</a>
+            <a href=""><i class="ri-user-settings-line"></i> Account Settings</a>
+            <a href="{{ route('logout') }}"><i class="ri-logout-box-r-line"></i> Se déconnecter</a>
+          </nav>
         </div><!-- sidebar-footer-menu -->
-    </div><!-- sidebar-footer -->
+      </div><!-- sidebar-footer -->
 </div><!-- sidebar -->
+
+

@@ -35,7 +35,7 @@ class FiliereController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->extension();
-            $image->move(public_path('filieres'), $imageName);
+            $image->move(public_path('images/filieres'), $imageName);
             $request->image = $imageName;
 
         }
@@ -68,12 +68,25 @@ class FiliereController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->extension();
-            $image->move(public_path('filieres'), $imageName);
+            $image->move(public_path('images/filieres'), $imageName);
             $request->image = $imageName;
 
         }
         $filiere->update($request->all());
         return redirect()->route('filiere.index')->with('success', 'Filière modifiée avec succès');
+    }
+
+    /**
+     * Change the status of the specified resource in storage.
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changeStatus($id): \Illuminate\Http\JsonResponse
+    {
+        $filiere = Filiere::find($id);
+        $filiere->status = !$filiere->status;
+        $filiere->save();
+        return response()->json(['success' => 'Status changé avec succès']);
     }
 
     /**

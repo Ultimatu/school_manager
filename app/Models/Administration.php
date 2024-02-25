@@ -25,6 +25,7 @@ class Administration extends Model
         'responsability',
         'gender',
         'user_id',
+        'annee_scolaire'
     ];
 
     protected $hidden = [

@@ -32,6 +32,12 @@ class CoursController extends Controller
     public function store(StoreCoursRequest $request)
     {
         $request->validated();
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $image_name = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/cours'), $image_name);
+            $request->merge(['image' => "images/cours/$image_name"]);
+        }
         Cours::create($request->all());
         if ($request->has('add_another')) {
             return redirect()->route('cours.create')->with('success', 'Nouveau cours ajouté avec succès');
@@ -61,8 +67,26 @@ class CoursController extends Controller
     public function update(UpdateCoursRequest $request, Cours $cours)
     {
         $request->validated();
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $image_name = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/cours'), $image_name);
+            $request->merge(['image' => "images/cours/$image_name"]);
+        }
         $cours->update($request->all());
         return redirect()->route('cours.index')->with('success', 'Cours modifié avec succès');
+    }
+
+    /**
+     * Change the status of the specified resource in storage.
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changeStatus($id){
+        $cours = Cours::find($id);
+        $cours->is_available = !$cours->is_available;
+        $cours->save();
+        return response()->json(['message'=>'cours status changed successfully']);
     }
 
     /**

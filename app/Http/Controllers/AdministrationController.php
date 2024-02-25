@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\Role;
 use App\Http\Requests\StoreAdministrationRequest;
 use App\Http\Requests\UpdateAdministrationRequest;
 use App\Models\Administration;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AdministrationController extends Controller
 {
@@ -13,7 +16,9 @@ class AdministrationController extends Controller
      */
     public function index()
     {
-        //
+        return view('components.pages.administration.list', [
+            'administrations' => Administration::all()
+        ]);
     }
 
     /**
@@ -30,7 +35,28 @@ class AdministrationController extends Controller
      */
     public function store(StoreAdministrationRequest $request)
     {
-        //
+        $request->validated();
+        $user = User::where('email', $request->email)->orWhere('phone', $request->phone)->first();
+        if ($user){
+            return redirect()->back()->withInput()->with('error', 'Cet email/phone est déjà associé à un utilisateur');
+        }
+        $user = User::create([
+            'name'=>$request->first_name.' '.$request->last_name,
+            'email'=>$request->email,
+            'phone'=>$request->phone,
+            'role_auth'=>$request->role,
+            'password'=>Hash::make($request->phone)
+        ]);
+
+        $request->merge([
+            'user_id'=>$user->id,
+            'status'=>1,
+            'password'=>Hash::make($request->phone),
+        ]);
+        $admin = Administration::create($request->all());
+
+        return redirect()->route('administration.index')->with('success', 'Administrateur ajouté avec succès');
+
     }
 
     /**
@@ -54,7 +80,44 @@ class AdministrationController extends Controller
      */
     public function update(UpdateAdministrationRequest $request, Administration $administration)
     {
-        //
+        $request->validated();
+        $user = User::where('email', $request->email)->orWhere('phone', $request->phone)->first();
+        if ($user && $user->id != $administration->user_id){
+            return redirect()->back()->withInput()->with('error', 'Cet email/phone est déjà associé à un utilisateur');
+        }
+        $user = User::find($administration->user_id);
+        $user->update([
+            'name'=>$request->first_name.' '.$request->last_name,
+            'email'=>$request->email,
+            'phone'=>$request->phone,
+            'role_auth'=>$request->role,
+            'permissions'=>Role::getAbilities($request->role)
+        ]);
+        if ($request->hasFile('avatar')){
+            $file = $request->file('avatar');
+            $name = time().$file->getClientOriginalName();
+            $file->move('administraions', $name);
+            $request->merge([
+                'avatar'=>$name,
+            ]);
+        }
+        $request->merge([
+            'password'=>Hash::make($request->phone),
+        ]);
+        $administration->update($request->all());
+
+        return redirect()->route('administration.index')->with('success', 'Administrateur modifié avec succès');
+    }
+
+
+    public function changeStatus($id)
+    {
+       //for api
+       $administration = Administration::find($id);
+       $administration->status = !$administration->status;
+       $administration->save();
+
+        return response()->json(['success'=>'Status change successfully.']);
     }
 
     /**

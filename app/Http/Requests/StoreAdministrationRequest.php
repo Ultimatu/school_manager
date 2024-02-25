@@ -22,7 +22,15 @@ class StoreAdministrationRequest extends FormRequest
     public function rules(): array
     {
         return [
-           //
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:administrations',
+            'phone' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'role' => 'required|string|max:255',
+            'responsability' => 'required|string',
+            'avatar'=>'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gender' => 'required|string|max:2',
         ];
 
     }
@@ -35,7 +43,13 @@ class StoreAdministrationRequest extends FormRequest
     public function messages(): array
     {
         return [
-
+            'first_name.required' => 'Le prénom est obligatoire',
+            'last_name.required' => 'Le nom est obligatoire',
+            'email.required' => 'L\'email est obligatoire',
+            'phone.required' => 'Le téléphone est obligatoire',
+            'address.required' => 'L\'adresse est obligatoire',
+            'role.required' => 'Le rôle est obligatoire',
+            'responsability.required' => 'La responsabilité est obligatoire',
         ];
     }
 }

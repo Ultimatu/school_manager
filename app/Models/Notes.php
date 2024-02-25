@@ -18,6 +18,7 @@ class Notes extends Model
         'observation',
         'type',
         'date',
+        'annee_scolaire'
     ];
 
 

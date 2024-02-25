@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateClasseCoursRequest;
 use App\Models\Classe;
 use App\Models\ClasseCours;
 use App\Models\Cours;
+use App\Models\Professeur;
 
 class ClasseCoursController extends Controller
 {
@@ -17,8 +18,12 @@ class ClasseCoursController extends Controller
     public function create(Classe $classe)
     {
         $classeCours = new ClasseCours();
+        $classeCours->classe_id = $classe->id;
         $cours = Cours::where('is_available', 1)->get();
-        return view('components.pages.classe.classe_cours', compact('classeCours', 'classe', 'cours'));
+        $professors = Professeur::all();
+        $classes = Classe::where('status', 1)->get();
+
+        return view('components.pages.classe.classe_cours', compact('classeCours', 'cours', 'professors'));
     }
 
     /**
@@ -37,7 +42,9 @@ class ClasseCoursController extends Controller
     public function edit(ClasseCours $classeCours)
     {
         $cours = Cours::where('is_available', 1)->get();
-        return view('components.pages.classe.classe_cours', compact('classeCours', 'cours'));
+        $classes = Classe::where('status', 1)->get();
+        $professeurs = Professeur::all();
+        return view('components.pages.classe.classe_cours', compact('classeCours', 'cours', 'professeurs'));
     }
 
     /**

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->text('specialities')->nullable();
             $table->string('is_available')->default(1);
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('annee_scolaire')->nullable();
             $table->timestamps();
         });
     }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->float('amount');
             $table->string('observation')->nullable();
             $table->string('is_paid');
+            $table->string('annee_scolaire')->nullable();
             $table->timestamps();
         });
     }

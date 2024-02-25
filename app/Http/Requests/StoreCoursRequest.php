@@ -25,7 +25,7 @@ class StoreCoursRequest extends FormRequest
             'name' => 'required|string',
             'description' => 'required|string',
             'is_available' => 'required|boolean',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 

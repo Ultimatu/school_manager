@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('phone')->unique()->nullable();
             $table->string('role_auth')->default('etudiant');
             $table->string('password');
+            $table->string('annee_scolaire')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

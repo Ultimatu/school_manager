@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('birth_place')->nullable();
             $table->string('cni')->nullable();
             $table->string('urgent_phone')->nullable();
+            $table->string('annee_scolaire')->nullable();
             $table->timestamps();
         });
     }

@@ -12,7 +12,6 @@ class Parents extends Model
     protected $fillable = [
         'first_name',
         'last_name',
-        'email',
         'password',
         'phone',
         'address',
@@ -22,6 +21,7 @@ class Parents extends Model
         'type',
         'is_legal_tutor',
         'status',
+        'annee_scolaire',
     ];
 
 

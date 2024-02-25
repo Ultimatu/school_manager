@@ -13,6 +13,7 @@ $('#datepicker1').datepicker({
 var calendarEl = document.getElementById('calendar');
 var calendar = new FullCalendar.Calendar(calendarEl, {
   initialView: 'dayGridMonth',
+  locale:'fr',
   headerToolbar: {
     left: 'custom1 prev,next today',
     center: 'title',

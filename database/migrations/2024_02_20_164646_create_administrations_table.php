@@ -20,12 +20,13 @@ return new class extends Migration
             $table->string('password');
             $table->string('phone')->unique();
             $table->string('address');
-            $table->string('avatar')->nullable();
+            $table->string('avatar')->default('users/default.png');
             $table->string('role')->default('admin');
             $table->boolean('status')->default(1);
-            $table->text('responsibility')->nullable();
+            $table->text('responsability')->nullable();
             $table->string('gender')->default('M');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('annee_scolaire')->nullable();
             $table->timestamps();
         });
     }

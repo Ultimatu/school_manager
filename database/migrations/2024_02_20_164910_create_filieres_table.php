@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('image')->nullable();
             $table->boolean('status')->default(1);
+            $table->string('annee_scolaire')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

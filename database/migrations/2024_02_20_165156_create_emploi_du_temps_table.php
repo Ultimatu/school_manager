@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('day');
             $table->dateTime('start_date_time');
             $table->dateTime('end_date_time');
+            $table->string('annee_scolaire')->nullable();
             $table->timestamps();
         });
     }

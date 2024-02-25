@@ -14,5 +14,6 @@ class PaymentScolarite extends Model
         'amount',
         'is_paid',
         'observation',
+        'annee_scolaire',
     ];
 }

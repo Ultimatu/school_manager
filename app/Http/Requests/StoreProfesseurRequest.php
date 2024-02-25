@@ -27,11 +27,10 @@ class StoreProfesseurRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'phone' => 'required|string|max:255',
             'address' => 'required|string|max:255',
-            'matricule' => 'required|string|max:255',
+            'matricule' => 'required|string|max:255|unique:professeurs,matricule',
             'specialities' => 'required|string|max:255',
             'is_available' => 'required|boolean',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'user_id' => 'required|integer|exists:users,id'
         ];
     }
 
@@ -62,6 +61,7 @@ class StoreProfesseurRequest extends FormRequest
             'matricule.required' => 'Le matricule du professeur est obligatoire',
             'matricule.string' => 'Le matricule du professeur doit être une chaîne de caractères',
             'matricule.max' => 'Le matricule du professeur ne peut pas dépasser 255 caractères',
+            'matricule.unique' => 'Ce matricule est déjà utilisé',
             'specialities.required' => 'Les spécialités du professeur sont obligatoires',
             'specialities.string' => 'Les spécialités du professeur doivent être une chaîne de caractères',
             'specialities.max' => 'Les spécialités du professeur ne peuvent pas dépasser 255 caractères',

@@ -15,15 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('email')->unique()->nullable();
             $table->string('phone')->unique();
             $table->string('address');
             $table->string('profession')->nullable();
-            $table->foreignId('etudiant_id')->constrained('etudiants')->onDelete('cascade')->onUpdate('cascade');
+            $table->integer('etudiants_ids');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->boolean('is_legal_tutor')->default(0);
             $table->string('type')->default('father');
             $table->string('status')->default('is_pending');
+            $table->string('annee_scolaire')->nullable();
             $table->timestamps();
         });
     }

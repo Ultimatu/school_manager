@@ -47,7 +47,6 @@ class ParentsController extends Controller
         $parent = new Parents();
         $parent->first_name = $request->first_name;
         $parent->last_name = $request->last_name;
-        $parent->email = $request->email;
         $parent->phone = $request->phone;
         $parent->address = $request->address;
         $parent->profession = $request->profession;

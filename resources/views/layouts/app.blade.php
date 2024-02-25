@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="{{ asset('lib/sweealert2/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('lib/select2/css/select2.min.css') }}">
     @stack('styles')
 
     <!-- Template CSS -->
@@ -35,20 +37,22 @@
     {{-- end header --}}
 
     {{-- content --}}
-    @yield('content')
+    <div class="main  main-app p-3 p-lg-4">
+        @yield('content')
+
+        {{-- footer --}}
+        <x-shared.footer />
+        {{-- end footer --}}
+    </div>
     {{-- end content --}}
 
-    {{-- footer --}}
-    <x-shared.footer />
-    {{-- end footer --}}
-
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('lib/sweealert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('lib/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('lib/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     @stack('scripts')
-
     <script src="{{ asset('assets/js/script.js') }}"></script>
-
     <script>
         'use script'
 

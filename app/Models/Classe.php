@@ -35,6 +35,23 @@ class Classe extends Model
         return $this->hasMany(Etudiant::class);
     }
 
+    public function professeurs()
+    {
+        return ClasseCours::where('classe_id', $this->id)->get()->map(function ($classeCours) {
+            return $classeCours->professeur;
+        });
+    }
 
+
+    public function emploiDuTemps()
+    {
+        return $this->hasMany(EmploiDuTemps::class);
+    }
+
+
+    public function examens()
+    {
+        return Examen::where('classe_id', $this->id)->get();
+    }
 
 }

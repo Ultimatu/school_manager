@@ -54,6 +54,12 @@
                         <span>Evements</span></a>
                 </li>
 
+                {{-- examens --}}
+                <li class="nav-item">
+                    <a href="{{ route('examens.index') }}" class="nav-link"><i class="ri-file-list-3-line"></i>
+                        <span>Examens</span></a>
+                </li>
+
             </ul>
         </div><!-- nav-group -->
         <div class="nav-group show">
@@ -100,93 +106,6 @@
                             Inscriptions</a>
                     </nav>
                 </li>
-                {{-- <li class="nav-item">
-                    <a href="" class="nav-link has-sub"><i class="ri-suitcase-line"></i>
-                        <span>Components</span></a>
-                    <nav class="nav nav-sub">
-                        <a href="docs/com-accordion.html" class="nav-sub-link">Accordion</a>
-                        <a href="docs/com-alerts.html" class="nav-sub-link">Alerts</a>
-                        <a href="docs/com-avatars.html" class="nav-sub-link">Avatars</a>
-                        <a href="docs/com-badge.html" class="nav-sub-link">Badge</a>
-                        <a href="docs/com-breadcrumbs.html" class="nav-sub-link">Breadcrumbs</a>
-                        <a href="docs/com-buttons.html" class="nav-sub-link">Buttons</a>
-                        <a href="docs/com-cards.html" class="nav-sub-link">Cards</a>
-                        <a href="docs/com-carousel.html" class="nav-sub-link">Carousel</a>
-                        <a href="docs/com-collapse.html" class="nav-sub-link">Collapse</a>
-                        <a href="docs/com-dropdown.html" class="nav-sub-link">Dropdown</a>
-                        <a href="docs/com-images.html" class="nav-sub-link">Images</a>
-                        <a href="docs/com-listgroup.html" class="nav-sub-link">List Group</a>
-                        <a href="docs/com-markers.html" class="nav-sub-link">Markers</a>
-                        <a href="docs/com-modal.html" class="nav-sub-link">Modal</a>
-                        <a href="docs/com-navtabs.html" class="nav-sub-link">Navs &amp; Tabs</a>
-                        <a href="docs/com-offcanvas.html" class="nav-sub-link">Offcanvas</a>
-                        <a href="docs/com-pagination.html" class="nav-sub-link">Pagination</a>
-                        <a href="docs/com-placeholders.html" class="nav-sub-link">Placeholders</a>
-                        <a href="docs/com-popovers.html" class="nav-sub-link">Popovers</a>
-                        <a href="docs/com-progress.html" class="nav-sub-link">Progress</a>
-                        <a href="docs/com-scrollspy.html" class="nav-sub-link">Scrollspy</a>
-                        <a href="docs/com-spinners.html" class="nav-sub-link">Spinners</a>
-                        <a href="docs/com-toasts.html" class="nav-sub-link">Toasts</a>
-                        <a href="docs/com-tooltips.html" class="nav-sub-link">Tooltips</a>
-                        <a href="docs/com-tables.html" class="nav-sub-link">Tables</a>
-                    </nav>
-                </li>
-                <li class="nav-item">
-                    <a href="" class="nav-link has-sub"><i class="ri-list-check-2"></i>
-                        <span>Forms</span></a>
-                    <nav class="nav nav-sub">
-                        <a href="docs/form-elements.html" class="nav-sub-link">Text Elements</a>
-                        <a href="docs/form-selects.html" class="nav-sub-link">Selects</a>
-                        <a href="docs/form-checksradios.html" class="nav-sub-link">Checks &amp; Radios</a>
-                        <a href="docs/form-tagsmasks.html" class="nav-sub-link">Tags &amp; Masks</a>
-                        <a href="docs/form-range.html" class="nav-sub-link">Range</a>
-                        <a href="docs/form-pickers.html" class="nav-sub-link">Pickers</a>
-                        <a href="docs/form-wizards.html" class="nav-sub-link">Wizards</a>
-                        <a href="docs/form-layouts.html" class="nav-sub-link">Layouts</a>
-                        <a href="docs/form-validation.html" class="nav-sub-link">Validation</a>
-                        <a href="docs/form-editors.html" class="nav-sub-link">Editors</a>
-                    </nav>
-                </li> --}}
-                {{-- <li class="nav-item">
-                    <a href="" class="nav-link has-sub"><i class="ri-bar-chart-2-line"></i> <span>Charts
-                            &amp; Graphs</span></a>
-                    <nav class="nav nav-sub">
-                        <a href="docs/chart-flot.html" class="nav-sub-link">Flot</a>
-                        <a href="docs/chart-apex.html" class="nav-sub-link">ApexCharts</a>
-                        <a href="docs/chart-chartjs.html" class="nav-sub-link">Chartjs</a>
-                        <a href="docs/chart-peity.html" class="nav-sub-link">Peity</a>
-                        <a href="docs/chart-morris.html" class="nav-sub-link">Morris</a>
-                    </nav>
-                </li>
-                <li class="nav-item">
-                    <a href="" class="nav-link has-sub"><i class="ri-stack-line"></i> <span>Maps &amp;
-                            Icons</span></a>
-                    <nav class="nav nav-sub">
-                        <a href="docs/map-leaflet.html" class="nav-sub-link">Leaflet Maps</a>
-                        <a href="docs/map-vector.html" class="nav-sub-link">Vector Maps</a>
-                        <a href="docs/icon-remix.html" class="nav-sub-link">Remixicon</a>
-                        <a href="docs/icon-feather.html" class="nav-sub-link">Feathericons</a>
-                    </nav>
-                </li>
-                <li class="nav-item">
-                    <a href="" class="nav-link has-sub"><i class="ri-briefcase-4-line"></i>
-                        <span>Utilities</span></a>
-                    <nav class="nav nav-sub">
-                        <a href="docs/util-animation.html" class="nav-sub-link">Animation</a>
-                        <a href="docs/util-background.html" class="nav-sub-link">Background</a>
-                        <a href="docs/util-border.html" class="nav-sub-link">Border</a>
-                        <a href="docs/util-colors.html" class="nav-sub-link">Colors</a>
-                        <a href="docs/util-divider.html" class="nav-sub-link">Divider</a>
-                        <a href="docs/util-flex.html" class="nav-sub-link">Flex</a>
-                        <a href="docs/util-sizing.html" class="nav-sub-link">Sizing</a>
-                        <a href="docs/util-spacing.html" class="nav-sub-link">Spacing</a>
-                        <a href="docs/util-opacity.html" class="nav-sub-link">Opacity</a>
-                        <a href="docs/util-position.html" class="nav-sub-link">Position</a>
-                        <a href="docs/util-typography.html" class="nav-sub-link">Typography</a>
-                        <a href="docs/util-shadows.html" class="nav-sub-link">Shadows</a>
-                        <a href="docs/util-extras.html" class="nav-sub-link">Extras</a>
-                    </nav>
-                </li> --}}
             </ul>
         </div><!-- nav-group -->
     </div><!-- sidebar-body -->
@@ -203,8 +122,8 @@
         </div><!-- sidebar-footer-top -->
         <div class="sidebar-footer-menu">
           <nav class="nav">
-            <a href="#"><i class="ri-edit-2-line"></i> Edit Profile</a>
-            <a href="#"><i class="ri-profile-line"></i> View Profile</a>
+            <a href="{{route('my-profile')}}"><i class="ri-edit-2-line"></i> Edit Profile</a>
+            <a href="{{route('my-profile')}}"><i class="ri-profile-line"></i> View Profile</a>
           </nav>
           <hr>
           <nav class="nav">

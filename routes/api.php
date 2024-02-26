@@ -4,6 +4,7 @@ use App\Http\Controllers\AdministrationController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\CoursController;
 use App\Http\Controllers\EvenementController;
+use App\Http\Controllers\ExamenController;
 use App\Http\Controllers\FiliereController;
 use App\Http\Controllers\SalleController;
 use Illuminate\Http\Request;
@@ -39,3 +40,8 @@ Route::delete('destroy-emploi/{id}', [ClasseController::class, 'destroyEmploi'])
 //evenements
 Route::post('store-evenement', [EvenementController::class, 'store'])->name('api.evenement.store');
 Route::delete('destroy-evenement/{evenement}', [EvenementController::class, 'destroy'])->name('api.evenement.destroy');
+
+//examen
+Route::get('get-examens/{id}', [ExamenController::class, 'getAll'])->name('api.examen.get-all');
+Route::post('store-examen', [ExamenController::class, 'store'])->name('api.examen.store');
+Route::delete('destroy-examen/{examen}', [ExamenController::class, 'destroy'])->name('api.examen.destroy');

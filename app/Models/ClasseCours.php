@@ -44,4 +44,12 @@ class ClasseCours extends Model
         return $this->hasMany(Bulletin::class);
     }
 
+    public function notes(){
+        return $this->hasMany(Notes::class);
+    }
+
+    public function examen(){
+        return $this->hasOne(ExamenNote::class);
+    }
+
 }

@@ -38,9 +38,9 @@ class EmploiDuTempsController extends Controller
      */
     public function store(StoreEmploiDuTempsRequest $request)
     {
-        $request->validated();
+        $validatedData = $request->validated();
         //verifier si la salle est disponible
-        $emploiDuTemps = EmploiDuTemps::where('salle_id', $request->salle_id)
+        $emploiDuTemps = EmploiDuTemps::where('salle_id', $validatedData['salle_id'])
             ->where('day', $request->day)
             ->where('start_date_time', '<', $request->end_date_time)
             ->where('end_date_time', '>', $request->start_date_time)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ClasseCours;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreEmploiDuTempsRequest extends FormRequest
@@ -11,10 +12,7 @@ class StoreEmploiDuTempsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (auth()->user()->isConsellor() || auth()->user()->isDirector()) {
-            return true;
-        }
-        return false;
+        return true;
     }
 
     /**
@@ -30,8 +28,8 @@ class StoreEmploiDuTempsRequest extends FormRequest
             'salle_id' => 'required|integer|exists:salles,id',
             'classe_cours_id' => 'required|integer|exists:classe_cours,id',
             'day' => 'required|string',
-            'start_date_time' => 'required|date',
-            'end_date_time' => 'required|date',
+            'start_date_time' => 'required|date_format:Y-m-d H:i|date',
+            'end_date_time' => 'required|date_format:Y-m-d H:i|date|after:start_date_time',
         ];
     }
 
@@ -71,6 +69,23 @@ class StoreEmploiDuTempsRequest extends FormRequest
             'start_date_time' => 'heure de début',
             'end_date_time' => 'heure de fin',
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $classeCours = ClasseCours::find($this->classe_cours_id);
+        $this->merge([
+            'classe_id' => $classeCours->classe_id,
+            'professeur_id' => $classeCours->professor_id,
+            'day' => $this->day,
+            'start_date_time' => $this->start_date_time,
+            'end_date_time' => $this->end_date_time,
+        ]);
     }
 
 }

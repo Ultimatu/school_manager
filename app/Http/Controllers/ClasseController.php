@@ -93,11 +93,11 @@ class ClasseController extends Controller
     }
 
     //*================================================================================================
-     //* EMPLOI DU TEMPS
+    //* EMPLOI DU TEMPS
 
 
     public function emploie(Classe $classe)
-     {
+    {
         $emplois = EmploiDuTemps::where('classe_id', $classe->id)->get();
         $classeCours = ClasseCours::where('classe_id', $classe->id)->where('is_available', 1)->get();
         $professeurs = Professeur::where('is_available', 1)->get();
@@ -105,10 +105,14 @@ class ClasseController extends Controller
         return view('components.pages.classe.emploi.index', compact('emplois', 'classe', 'classeCours', 'professeurs', 'salles'));
     }
 
-    public function getAll($id){
+    public function getAll($id)
+    {
 
         $emplois = EmploiDuTemps::where('classe_id', $id)->get();
-        return response()->json($emplois);
+        $emplois->load('classe', 'professeur', 'salle', 'classeCours', 'classeCours.cours');
+        //build the response title, description and data
+
+        return response()->json(['data' => $emplois]);
     }
 
 
@@ -117,42 +121,55 @@ class ClasseController extends Controller
      * @param StoreEmploiDuTempsRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function storeEmploi(StoreEmploiDuTempsRequest $request){
+    public function storeEmploi(StoreEmploiDuTempsRequest $request)
+    {
         $request->validated();
-        //verifier si la salle est disponible
-        $emploiDuTemps = EmploiDuTemps::where('salle_id', $request->salle_id)
-            ->where('day', $request->day)
-            ->where('start_date_time', '<', $request->end_date_time)
-            ->where('end_date_time', '>', $request->start_date_time)
-            ->get();
-        if ($emploiDuTemps->count() > 0){
-            return response()->json(['error' => 'La salle est déjà occupée']);
+
+        if ($this->isSalleOccupied($request)) {
+            return response()->json(['error' => 'La salle est déjà occupée'], 422);
         }
 
-        //verifier si le professeur est disponible
-        $emploiDuTemps = EmploiDuTemps::where('professeur_id', $request->professeur_id)
-            ->where('day', $request->day)
-            ->where('start_date_time', '<', $request->end_date_time)
-            ->where('end_date_time', '>', $request->start_date_time)
-            ->get();
-        if ($emploiDuTemps->count() > 0){
-            return response()->json(['error' => 'Le professeur est déjà occupé']);
+        if ($this->isProfesseurOccupied($request)) {
+            return response()->json(['error' => 'Le professeur est déjà occupé'], 422);
         }
 
-        //verifier si la classe est disponible
-        $emploiDuTemps = EmploiDuTemps::where('classe_id', $request->classe_id)
-            ->where('day', $request->day)
-            ->where('start_date_time', '<', $request->end_date_time)
-            ->where('end_date_time', '>', $request->start_date_time)
-            ->get();
-        if ($emploiDuTemps->count() > 0){
-            return  response()->json(['error' => 'La classe est déjà occupée']);
+        if ($this->isClasseOccupied($request)) {
+            return response()->json(['error' => 'La classe est déjà occupée'], 422);
         }
 
-        EmploiDuTemps::create($request->all());
+        $emploiDuTemps = EmploiDuTemps::create($request->all());
         $emplois = EmploiDuTemps::where('classe_id', $request->classe_id)->get();
-        return response()->json(['success' => 'Emploi du temps ajouté avec succès', 'emplois' => $emplois]);
+
+        return response()->json(['success' => 'Emploi du temps ajouté avec succès', 'emplois' => $emplois], 200);
     }
+
+    private function isSalleOccupied($request)
+    {
+        return EmploiDuTemps::where('salle_id', $request->salle_id)
+            ->where('day', $request->day)
+            ->where('start_date_time', '<', $request->end_date_time)
+            ->where('end_date_time', '>', $request->start_date_time)
+            ->exists();
+    }
+
+    private function isProfesseurOccupied($request)
+    {
+        return EmploiDuTemps::where('professeur_id', $request->professeur_id)
+            ->where('day', $request->day)
+            ->where('start_date_time', '<', $request->end_date_time)
+            ->where('end_date_time', '>', $request->start_date_time)
+            ->exists();
+    }
+
+    private function isClasseOccupied($request)
+    {
+        return EmploiDuTemps::where('classe_id', $request->classe_id)
+            ->where('day', $request->day)
+            ->where('start_date_time', '<', $request->end_date_time)
+            ->where('end_date_time', '>', $request->start_date_time)
+            ->exists();
+    }
+
 
 
     /**

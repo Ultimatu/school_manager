@@ -8,10 +8,13 @@ use App\Http\Controllers\CoursController;
 use App\Http\Controllers\EmploiDuTempsController;
 use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\EvenementController;
+use App\Http\Controllers\ExamenController;
+use App\Http\Controllers\ExamenNoteController;
 use App\Http\Controllers\FiliereController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\SalleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,6 +41,8 @@ Route::middleware(['guest'])->group(function () {
 
 
 Route::middleware(['auth'])->group(function () {
+
+    Route::get('my-profile', [UserController::class, 'index'])->name('my-profile');
     /**
      * DASHBOARD
      */
@@ -140,6 +145,25 @@ Route::middleware(['auth'])->group(function () {
     Route::get('professeurs/{professeur}/edit', [ProfesseurController::class, 'edit'])->name('professeur.edit');
     Route::put('professeurs/{professeur}', [ProfesseurController::class, 'update'])->name('professeur.update');
     Route::delete('professeurs/{professeur}', [ProfesseurController::class, 'destroy'])->name('professeur.destroy');
+
+    //EXAMENS
+    Route::get('examens', [ExamenController::class, 'index'])->name('examens.index');
+    Route::get('examens/create', [ExamenController::class, 'create'])->name('examens.create');
+    Route::post('examens/store', [ExamenController::class, 'store'])->name('examens.store');
+    Route::get('examens/{examen}', [ExamenController::class, 'show'])->name('examens.show');
+    Route::get('examens/{examen}/edit', [ExamenController::class, 'edit'])->name('examens.edit');
+    Route::put('examens/{examen}', [ExamenController::class, 'update'])->name('examens.update');
+    Route::delete('examens/{examen}', [ExamenController::class, 'destroy'])->name('examens.destroy');
+
+    //EXAMENS NOTES
+    Route::get('examens/{examen}/notes', [ExamenNoteController::class, 'index'])->name('examens.notes.index');
+    Route::get('examens/{examen}/notes/create', [ExamenNoteController::class, 'create'])->name('examens.notes.create');
+    Route::post('examens/{examen}/notes/store', [ExamenNoteController::class, 'store'])->name('examens.notes.store');
+    Route::get('examens/{examen}/notes/{examenNote}', [ExamenNoteController::class, 'show'])->name('examens.notes.show');
+    Route::get('examens/{examen}/notes/{examenNote}/edit', [ExamenNoteController::class, 'editNote'])->name('examens.notes.edit');
+    Route::put('examens/{examen}/notes/{examenNote}', [ExamenNoteController::class, 'update'])->name('examens.notes.update');
+    Route::delete('examens/{examen}/notes/{examenNote}', [ExamenNoteController::class, 'destroy'])->name('examens.notes.destroy');
+
 
 
 

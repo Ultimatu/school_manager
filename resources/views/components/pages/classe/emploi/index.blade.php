@@ -8,15 +8,24 @@
             <div class="d-grid mb-3">
                 <a id="btnCreateEvent" href="" class="btn btn-primary">Ajouter un programe</a>
             </div>
+            {{-- bread --}}
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Tableau de bord</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('classe.index') }}">Classes</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ $classe->name }}</li>
+                </ol>
+            </nav>
+            {{-- end bread --}}
             <div id="datepicker1" class="task-calendar mb-5"></div>
-            <h5 class="section-title section-title-sm mb-4">Calendrier Scolaire</h5>
+            <h5 class="section-title section-title-sm mb-4">Emploi du temps de la classe {{ $classe->name }} {{ $classe->level }}</h5>
             <nav class="nav nav-calendar mb-4">
-                <a href="" class="nav-link calendar"><span></span> Conférence</a>
-                <a href="" class="nav-link birthday"><span></span> Cours</a>
-                <a href="" class="nav-link holiday"><span></span> TP</a>
-                <a href="" class="nav-link discover"><span></span> TD </a>
-                <a href="" class="nav-link meetup"><span></span> Examens</a>
-                <a href="" class="nav-link other"><span></span> Autres événements</a>
+                <a href="" class="nav-link calendar"><span></span> Cours avec crédit 1</a>
+                <a href="" class="nav-link birthday"><span></span> Cours avec crédit 2</a>
+                <a href="" class="nav-link meetup"><span></span> Cours avec crédit 4</a>
+                <a href="" class="nav-link discover"><span></span> Cours avec crédit 3</a>
+                <a href="" class="nav-link other"><span></span> Cours avec crédit 5 ou plus</a>
+                <a href="" class="nav-link holiday"><span></span> Examens</a>
             </nav>
         </div><!-- sidebar-body -->
     </div><!-- calendar-sidebar -->
@@ -30,8 +39,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div><!-- modal-header -->
                 <div class="modal-body">
+                    <div id="globalError">
+
+                    </div>
                     <div class="mb-3">
-                        <label class="form-label">Salle:</label>
+                        <label class="form-label" for="salle_id">Salle:</label>
                         <select class="form-select" name="salle_id" id="salle_id">
                             <option value="">Choisissez la salle</option>
                             @foreach ($salles as $salle)
@@ -39,43 +51,60 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Cours:</label>
-                        <select class="form-select"name="classe_cours_id" id="classe_cours_id">
-                            <option value="">Choisissez le cours</option>
-                            @foreach ($classeCours as $course)
-                                <option value="{{ $course->id }}">{{ $course->name }}</option>
-                            @endforeach
-                        </select>
+                    <div class="row g-3 mb-3">
+                        <div class="mb-3 col-6">
+                            <label class="form-label" for="classe_cours_id">Cours:</label>
+                            <select class="form-select" name="classe_cours_id" id="classe_cours_id">
+                                <option value="">Choisissez le cours</option>
+                                @foreach ($classeCours as $course)
+                                    <option value="{{ $course->id }}">{{ $course->cours->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            {{-- select for type --}}
+                            <label class="form-label mb-2" for="type">Type:</label>
+                            <select class="form-select" name="type" id="type">
+                                <option value="cours">Cours</option>
+                                <option value="examen">Examen</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Professeur:</label>
-                        <select class="form-select" name="professeur_id" name="professeur_id">
-                            <option value="">Choisissez le prof</option>
-                            @foreach ($professeurs as $professeur)
-                                <option value="{{ $professeur->id }}">{{ $professeur->last_name }}
-                                    {{ $professeur->first_name }}</option>
-                            @endforeach
-                        </select>
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="form-label">La Date:</label>
+                            <input type="date" class="form-control" id="datepicker2" name="refDate"
+                                placeholder="Choisissez la date" min="{{ now() }}">
+                            <strong class="text-danger" id="dateError"></strong>
+                        </div>
                     </div>
                     <div class="row g-3 mb-3">
-                        <div class="mb-3">
-                            <label class="form-label">Date de début:</label>
-                            <input type="datetime-local" class="form-control">
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Heure de début:</label>
+                            <select name="start_time" id="start_time" class="form-select">
+                                <option value="">Choisissez l'heure de début</option>
+                                @for ($i = 8; $i <= 18; $i++)
+                                    <option value="{{ $i }}:00">{{ $i }}:00</option>
+                                @endfor
+                            </select>
+                            <strong class="text-danger" id="errorStDate"></strong>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Date de fin:</label>
-                            <input type="datetime-local" class="form-control">
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Heure de fin:</label>
+                            <select name="end_time" id="end_time" class="form-select">
+                                <option value="">Choisissez l'heure de fin</option>
+                                @for ($i = 8; $i <= 18; $i++)
+                                    <option value="{{ $i }}:00">{{ $i }}:00</option>
+                                @endfor
+                            </select>
+
+                            <strong class="text-danger" id="errorEnDate"></strong>
                         </div>
                     </div><!-- row -->
-                    <div>
-                        <label class="form-label">Description</label>
-                        <textarea class="form-control" rows="3" placeholder="Write some description (optional)"></textarea>
-                    </div>
                 </div><!-- modal-body -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Ajouter</button>
+                    <button type="button" class="btn btn-primary" id="btnSaveEvent">Save</button>
                 </div><!-- modal-footer -->
             </div><!-- modal-content -->
         </div><!-- modal-dialog -->
@@ -91,24 +120,31 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div><!-- modal-header -->
                 <div class="modal-body">
+                    {{-- title --}}
+                    <hr class="opacity-0">
+                    <label class="mb-2"><i class="ri-information-line"></i>Titre:</label>
+                    <p id="eventTitle"></p>
+
+                    {{-- date --}}
                     <div class="date-item">
                         <i class="ri-calendar-line"></i>
-                        <div>Date: <span>September 30, 2023</span></div>
+                        <div>Début: <span id="eventStartDate"></span></div>
                     </div><!-- date-item -->
                     <div class="date-item">
                         <i class="ri-time-line"></i>
-                        <div>Time: <span>11:30AM - 12:30PM</span></div>
+                        <div>Fin: <span id="eventEndDate"></span></div>
                     </div><!-- date-item -->
-                    <div class="date-item">
-                        <i class="ri-map-pin-line"></i>
-                        <div>Location: <span>No location</span></div>
-                    </div><!-- date-item -->
+
                     <hr class="opacity-0">
-                    <label class="mb-2">Description:</label>
-                    <p>In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis az pede mollis.
+                    <label class="mb-2"><i class="ri-information-line"></i>Description:</label>
+                    <p id="eventDescription">
                     </p>
                 </div><!-- modal-body -->
                 <div class="modal-footer">
+                    {{-- deleteButton --}}
+                    @if (Auth::user()->isAdmin())
+                        <button type="button" class="btn btn-danger" id="btnDeleteEvent">Supprimer</button>
+                    @endif
                     <button type="button" class="btn btn-white" data-bs-dismiss="modal">Close</button>
                 </div><!-- modal-footer -->
             </div><!-- modal-content -->
@@ -118,101 +154,28 @@
 
 @push('scripts')
     <script>
-        $(document).ready(function() {
-            $('#salle_id').select2({
-                placeholder: 'Choisisssez la salle'
-            });
-            $("#classe_cours_id").select2({
-                placeholder: "Choisissez le cours"
-            });
-            $("#professeur_id").select2({
-                placeholder: "Choisissez le prof"
-            });
-            new PerfectScrollbar('#calSidebar', {
-                suppressScrollX: true
-            });
+        var classeId = {{ $classe->id }};
+        var baseUrl = "{{ url('/') }}";
+    </script>
+    <script src="{{ asset('assets/js/emploi.js') }}"></script>
+    <script>
+        'use strict';
+        new PerfectScrollbar('#calSidebar', {
+            suppressScrollX: true
+        });
 
-            var events = JSON.parse('{{ $emplois->toJson() }}');
-            // Initialiser un tableau pour stocker les événements au format attendu par FullCalendar
-            var calendarEvents = [];
+        $('#btnCreateEvent').on('click', function(e) {
+            e.preventDefault();
 
-            // Parcourir les données récupérées et les formater pour FullCalendar
-            events.forEach(function(event) {
-                // Créer un objet pour chaque événement au format attendu par FullCalendar
-                var calendarEvent = {
-                    title: event.classeCours.name,
-                    description: "Cours: " + event.classeCours.name + ", " +
-                        "Professeur: " + event.professeur.first_name + event.professeur.last_name +
-                        ", " +
-                        "Salle: " + event.salle.name,
-                    ,
-                    start: event.start_date_time,
-                    end: event.end_date_time,
-                    allDay: false,
-                    backgroundColor: '#00c5dc',
-                };
+            var startDate = moment().format('LL');
+            $('#startDate').val(startDate);
 
-                // Ajouter l'événement formaté au tableau des événements
-                calendarEvents.push(calendarEvent);
-            });
+            var endDate = moment().add(1, 'days');
+            $('#endDate').val(endDate.format('LL'));
+
+            $('#modalCreateEvent').modal('show');
+        });
 
 
-            $('#datepicker1').datepicker({
-                showOtherMonths: true,
-                selectOtherMonths: true
-            });
-
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                locale: 'fr',
-                headerToolbar: {
-                    left: 'custom1 prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                eventSources: [calendarEvents],
-                selectable: true,
-                select: function(info) {
-                    var startDate = moment(info.start).format('LL');
-                    $('#startDate').val(startDate);
-
-                    var endDate = moment(info.startStr).add(1, 'days');
-                    $('#endDate').val(endDate.format('LL'));
-
-                    $('#modalCreateEvent').modal('show');
-                },
-                eventClick: function(info) {
-                    console.log(info.event.start);
-
-                    // Set title
-                    $('#modalLabelEventView').text(info.event.title);
-
-                    $('#modalEventView').modal('show');
-                },
-                customButtons: {
-                    custom1: {
-                        icon: 'chevron-left',
-                        click: function() {
-                            $('.main-calendar').toggleClass('show');
-                        }
-                    }
-                }
-            });
-
-            calendar.render();
-
-            $('#btnCreateEvent').on('click', function(e) {
-                e.preventDefault();
-
-                var startDate = moment().format('LL');
-                $('#startDate').val(startDate);
-
-                var endDate = moment().add(1, 'days');
-                $('#endDate').val(endDate.format('LL'));
-
-                $('#modalCreateEvent').modal('show');
-            });
-        })
     </script>
 @endpush

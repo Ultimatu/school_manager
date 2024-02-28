@@ -3,7 +3,7 @@
 @section('title', 'Tableau de bord')
 
 @section('content')
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    {{-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <div>
             <ol class="breadcrumb fs-sm mb-1">
                 <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
@@ -116,7 +116,7 @@
                 </div><!-- card-body -->
             </div><!-- card -->
         </div><!-- col -->
-    </div>
+    </div> --}}
 @endsection
 
 @push('scripts')

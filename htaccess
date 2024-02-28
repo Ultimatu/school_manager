@@ -1,0 +1,23 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Rediriger toutes les demandes HTTP vers HTTPS
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Réécrire les demandes vers /public/ s'il n'y a pas déjà une redirection vers HTTPS
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^ /public%{REQUEST_URI} [L]
+
+    # Si la demande est déjà en HTTPS mais ne commence pas par /public/, réécrire vers /public/
+    RewriteCond %{HTTPS} =on
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ /public/$1 [L,QSA]
+
+
+</IfModule>

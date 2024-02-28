@@ -34,7 +34,7 @@
     <div class="dropdown dropdown-notification ms-3 ms-xl-4">
         <a href="" class="dropdown-link" data-bs-toggle="dropdown"
             data-bs-auto-close="outside"><small>3</small><i class="ri-notification-3-line"></i></a>
-        <div class="dropdown-menu dropdown-menu-end mt-10-f me--10-f">
+        {{-- <div class="dropdown-menu dropdown-menu-end mt-10-f me--10-f">
             <div class="dropdown-menu-header">
                 <h6 class="dropdown-menu-title">Notifications</h6>
             </div><!-- dropdown-menu-header -->
@@ -79,7 +79,7 @@
                 </li>
             </ul>
             <div class="dropdown-menu-footer"><a href="">Show all Notifications</a></div>
-        </div><!-- dropdown-menu -->
+        </div><!-- dropdown-menu --> --}}
     </div><!-- dropdown -->
     <div class="dropdown dropdown-profile ms-3 ms-xl-4">
         <a href="" class="dropdown-link" data-bs-toggle="dropdown" data-bs-auto-close="outside">

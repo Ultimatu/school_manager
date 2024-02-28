@@ -93,13 +93,10 @@
                 <p class="fs-sm text-secondary">{{ Auth::user()->role_auth }}</p>
 
                 <nav class="nav">
-                    <a href=""><i class="ri-edit-2-line"></i> Modifier Profile</a>
-                    <a href=""><i class="ri-profile-line"></i> Profile</a>
+                    <a href="{{route('my-profile')}}"><i class="ri-profile-line"></i> Profile</a>
                 </nav>
                 <hr>
                 <nav class="nav">
-                    <a href=""><i class="ri-question-line"></i> Help Center</a>
-                    <a href=""><i class="ri-user-settings-line"></i> Account Settings</a>
                     <a href="{{route('logout')}}"><i class="ri-logout-box-r-line"></i> Se déconnecter</a>
                 </nav>
             </div><!-- dropdown-menu-body -->

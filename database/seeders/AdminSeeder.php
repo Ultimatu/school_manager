@@ -17,7 +17,7 @@ class AdminSeeder extends Seeder
        $user =  \App\Models\User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
-            'password' => Hash::make('admin'),
+            'password' => '$2y$10$zt66UzhflpCvf.gyvUJNF.kGEtVj4f0VuxRvSd6WdyXISlIlhw.TG', //admin@gmail.com
             'phone' => '123456789',
             'role_auth' => 'admin',
         ]);
@@ -25,7 +25,7 @@ class AdminSeeder extends Seeder
             'first_name' => 'Admin',
             'last_name' => 'Admin',
             'email' => 'admin@gmail.com',
-            'password' => $user->password,
+            'password' => '$2y$10$zt66UzhflpCvf.gyvUJNF.kGEtVj4f0VuxRvSd6WdyXISlIlhw.TG', //admin@gmail.com
             'phone' => '123456789',
             'address' => 'Abidjan',
             'avatar' => 'users/default.png',

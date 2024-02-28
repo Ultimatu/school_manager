@@ -29,7 +29,7 @@ class UserFactory extends Factory
             'phone'=> fake()->unique()->phoneNumber(),
             'role_auth'=> fake()->randomElement(['admin', 'consellor', 'comptable', 'professeur', 'etudiant']),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => '$2y$10$zt66UzhflpCvf.gyvUJNF.kGEtVj4f0VuxRvSd6WdyXISlIlhw.TG', //admin@gmail.com,
             'remember_token' => Str::random(10),
         ];
     }

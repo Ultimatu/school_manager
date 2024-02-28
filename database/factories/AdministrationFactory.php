@@ -45,7 +45,7 @@ class AdministrationFactory extends Factory
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
-            'password' => Hash::make('password'),
+            'password' => '$2y$10$zt66UzhflpCvf.gyvUJNF.kGEtVj4f0VuxRvSd6WdyXISlIlhw.TG', //admin@gmail.com
             'phone' => fake()->unique()->phoneNumber(),
             'address' => fake()->address(),
             'avatar' => 'users/default.png',

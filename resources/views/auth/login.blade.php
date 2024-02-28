@@ -11,6 +11,7 @@
             {{-- <div class="d-flex justify-content-between">
                 <a href="{{ route('login') }}" class="btn btn-primary">Se connecter en tant que parent</a>
             </div> --}}
+         
 
             <h3 class="card-title">Connexion!</h3>
             <p class="card-text">Bienvenue! Connectez-vous pour continuer s'il vous plaît.</p>

@@ -29,7 +29,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Les données fournies ne corresponde à aucune de nos informations.',
+            'email' => 'erreur dans le code .',
         ])->withInput();
     }
 

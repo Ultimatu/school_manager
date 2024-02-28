@@ -70,10 +70,7 @@ class ProfesseurController extends Controller
         if (env('MAIL_SERVICE_STATE') == 'on') {
             Mail::to($request->email)->send(new AccountActivatedMail('professeur', $professeur));
         }
-
         return redirect()->route('professeur.index')->with('success', 'Nouveau professeur ajouté avec succès');
-
-
     }
 
     /**

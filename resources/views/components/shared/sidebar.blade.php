@@ -58,6 +58,11 @@
                     <a href="{{ route('evenements.index') }}" class="nav-link {{ request()->routeIs('evenements.*') ? 'active' : '' }}"><i class="ri-calendar-check-fill fs-2"></i>
                         <span>Evements</span></a>
                 </li>
+                {{-- notes --}}
+                <li class="nav-item">
+                    <a href="{{ route('notes.index') }}" class="nav-link {{ request()->routeIs('notes.*') ? 'active' : '' }}"><i class="fas fa-book fs-2 text-info"></i>
+                        <span>Notes</span></a>
+                </li>
                 {{-- examens --}}
                 <li class="nav-item">
                     <a href="{{ route('examens.index') }}" class="nav-link {{ request()->routeIs('examens.*') ? 'active' : '' }}"><i class="ri-file-list-3-line fs-2"></i>
@@ -86,16 +91,16 @@
             <a href="#" class="nav-label">Gestion du cars</a>
             <ul class="nav nav-sidebar">
                 <li class="nav-item">
-                    <a href="" class="nav-link has-sub"><i class="ri-car-line"></i>
+                    <a href="" class="nav-link {{ request()->routeIs(['chauffeurs.*', 'cars.*', 'car_inscriptions.*', 'trajets.*']) ? 'active' : '' }} has-sub"><i class="ri-car-line"></i>
                          <span>Car & Transport</span></a>
                     <nav class="nav nav-sub">
                         <a href="{{route('cars.index')}}" class="nav-sub-link">
                             <i class="ri-car-line"></i>
                             Voitures</a>
-                        <a href="#" class="nav-sub-link">
+                        <a href="{{ route("chauffeurs.index") }}" class="nav-sub-link">
                             <i class="ri-user-3-line"></i>
                             Chauffeurs</a>
-                        <a href="#" class="nav-sub-link">
+                        <a href="{{ route('trajets.index') }}" class="nav-sub-link">
                             <i class="ri-map-pin-line"></i>
                             Trajets</a>
                         <a href="{{route('car_inscriptions.index')}}" class="nav-sub-link">
@@ -109,19 +114,16 @@
             <a href="#" class="nav-label">Gestions de la cité</a>
             <ul class="nav nav-sidebar">
                 <li class="nav-item">
-                    <a href="" class="nav-link has-sub"><i class="ri-building-2-line"></i>
+                    <a href="" class="nav-link {{ request()->routeIs(['cites.*', 'chambres.*', 'citeInscriptions.*']) ? 'active' : '' }} has-sub"><i class="ri-building-2-line"></i>
                         <span>Cité & Logements</span></a>
                     <nav class="nav nav-sub">
-                        <a href="#" class="nav-sub-link">
+                        <a href="{{route('cites.index')}}" class="nav-sub-link">
                             <i class="ri-building-2-line"></i>
                             Batiments</a>
-                        <a href="#" class="nav-sub-link">
-                            <i class="ri-user-3-line"></i>
-                            Etudiants</a>
-                        <a href="#" class="nav-sub-link">
+                        <a href="{{route('chambres.index')}}" class="nav-sub-link">
                             <i class="ri-map-pin-line"></i>
                             Chambres</a>
-                        <a href="#" class="nav-sub-link">
+                        <a href="{{route('citeInscriptions.index')}}" class="nav-sub-link">
                             <i class="ri-checkbox-multiple-line"></i>
                             Inscriptions</a>
                     </nav>
@@ -142,8 +144,8 @@
         </div><!-- sidebar-footer-top -->
         <div class="sidebar-footer-menu">
           <nav class="nav">
-            <a href="{{route('my-profile')}}"><i class="ri-edit-2-line"></i> Edit Profile</a>
-            <a href="{{route('my-profile')}}"><i class="ri-profile-line"></i> View Profile</a>
+            <a href="{{ route('my-profile') }}"><i class="ri-edit-2-line"></i> Edit Profile</a>
+            <a href="{{ route('my-profile') }}"><i class="ri-profile-line"></i> View Profile</a>
           </nav>
           <hr>
           <nav class="nav">

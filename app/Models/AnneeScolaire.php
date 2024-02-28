@@ -27,4 +27,13 @@ class AnneeScolaire extends Model
     public function etudiants(){
         return Etudiant::where('annee_scolaire', $this->annee_scolaire)->get();
     }
+
+    public function professeurs(){
+        return Professeur::where('annee_scolaire', $this->annee_scolaire)->get();
+    }
+
+
+    public function scopeValideYear($query){
+        return $query->where('status', 'en cours')->first()->annee_scolaire;
+    }
 }

@@ -53,6 +53,14 @@ class AdministrationController extends Controller
             'status'=>1,
             'password'=>Hash::make($request->phone),
         ]);
+        if ($request->hasFile('avatar')){
+            $file = $request->file('avatar');
+            $name = time().$file->getClientOriginalName();
+            $file->move('administraions', $name);
+            $request->merge([
+                'avatar'=>$name,
+            ]);
+        }
         $admin = Administration::create($request->all());
 
         return redirect()->route('administration.index')->with('success', 'Administrateur ajouté avec succès');
@@ -91,7 +99,8 @@ class AdministrationController extends Controller
             'email'=>$request->email,
             'phone'=>$request->phone,
             'role_auth'=>$request->role,
-            'permissions'=>Role::getAbilities($request->role)
+            'permissions'=>Role::getAbilities($request->role),
+            'password'=>\bcrypt($request->phone)
         ]);
         if ($request->hasFile('avatar')){
             $file = $request->file('avatar');
@@ -102,7 +111,7 @@ class AdministrationController extends Controller
             ]);
         }
         $request->merge([
-            'password'=>Hash::make($request->phone),
+            'password'=>\bcrypt($request->phone),
         ]);
         $administration->update($request->all());
 

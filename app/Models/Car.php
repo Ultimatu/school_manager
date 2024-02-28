@@ -16,7 +16,6 @@ class Car extends Model
         'model',
         'type',
         'status'
-
     ];
 
 
@@ -31,5 +30,5 @@ class Car extends Model
         return $this->hasOne(Chauffeur::class);
     }
 
-    
+
 }

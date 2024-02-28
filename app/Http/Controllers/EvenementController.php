@@ -23,7 +23,8 @@ class EvenementController extends Controller
      */
     public function create()
     {
-        //
+        $event = new Evenement();
+        return view('components.pages.events.form', compact('event'));
     }
 
     /**
@@ -36,8 +37,11 @@ class EvenementController extends Controller
         $evenement = Evenement::where('date_heure_debut', '<', $request->date_time_fin)
             ->where('date_time_fin', '>', $request->date_heure_debut)
             ->get();
-        if ($evenement->count() > 0){
+        if ($evenement->count() > 0 && $request->expectsJson()){
             return response()->json(['message' => 'Il y a déjà un événement à cette date']);
+        }
+        else if ($evenement->count() > 0){
+            return back()->with('error', 'Il y a déjà un événement à cette date')->withInput();
         }
         //verifier si c'est dans une salle et si la salle est disponible
         if ($request->salle_id){
@@ -45,24 +49,19 @@ class EvenementController extends Controller
                 ->where('start_date_time', '<', $request->end_date_time)
                 ->where('end_date_time', '>', $request->start_date_time)
                 ->get();
-            if ($evenement->count() > 0){
+            if ($evenement->count() > 0 && $request->expectsJson()){
                 return response()->json(['error' => 'La salle est déjà occupée', 'evenement' => $evenement]);
+            }
+            else if ($evenement->count() > 0){
+                return back()->with('error', 'La salle est déjà occupée')->withInput();
             }
         }
 
-        $evenement = new Evenement();
-        $evenement->titre = $request->titre;
-        $evenement->description = $request->description;
-        $evenement->type = $request->type;
-        $evenement->classes_ids = $request->classes_ids;
-        $evenement->date_heure_debut = $request->date_heure_debut;
-        $evenement->date_time_fin = $request->date_time_fin;
-        $evenement->send_to_all = $request->send_to_all;
-        $evenement->salle_id = $request->salle_id;
-        $evenement->only_for_admins = $request->only_for_admins;
-        $evenement->only_for_profs = $request->only_for_profs;
-        $evenement->save();
-        return response()->json(['message' => 'Evenement créé avec succès']);
+        $evenement = Evenement::create($request->all());
+        if ($request->expectsJson()){
+            return response()->json(['message' => 'Evenement créé avec succès']);
+        }
+        return back()->with('success', 'Evenement créé avec succès');
     }
 
     /**
@@ -70,7 +69,7 @@ class EvenementController extends Controller
      */
     public function show(Evenement $evenement)
     {
-        //
+        return view('components.pages.events.show', compact('evenement'));
     }
 
     /**
@@ -78,7 +77,8 @@ class EvenementController extends Controller
      */
     public function edit(Evenement $evenement)
     {
-        //
+        $event = $evenement;
+        return view('components.pages.events.form', compact('event'));
     }
 
     /**
@@ -86,7 +86,12 @@ class EvenementController extends Controller
      */
     public function update(UpdateEvenementRequest $request, Evenement $evenement)
     {
-        //
+        $request->validated();
+        $evenement->update($request->all());
+        if ($request->expectsJson()){
+            return response()->json(['message' => 'Evenement modifié avec succès']);
+        }
+        return back()->with('success', 'Evenement modifié avec succès');
     }
 
     /**
@@ -95,6 +100,9 @@ class EvenementController extends Controller
     public function destroy(Evenement $evenement)
     {
         $evenement->delete();
-        return response()->json(['message' => 'Evenement supprimé avec succès']);
+        if (request()->expectsJson()){
+            return response()->json(['message' => 'Evenement supprimé avec succès']);
+        }
+        return back()->with('success', 'Evenement supprimé avec succès');
     }
 }

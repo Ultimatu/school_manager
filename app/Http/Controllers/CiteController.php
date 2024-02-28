@@ -13,7 +13,8 @@ class CiteController extends Controller
      */
     public function index()
     {
-        //
+        $cites = Cite::all();
+        return view('components.pages.citee.index', compact('cites'));
     }
 
     /**
@@ -21,7 +22,8 @@ class CiteController extends Controller
      */
     public function create()
     {
-        //
+        $cite = new Cite();
+        return view('components.pages.citee.form', compact('cite'));
     }
 
     /**
@@ -29,7 +31,9 @@ class CiteController extends Controller
      */
     public function store(StoreCiteRequest $request)
     {
-        //
+        $request->validated();
+        $cite = Cite::create($request->all());
+        return redirect()->route('cites.index')->with('success', 'Cite ajoutée avec succès');
     }
 
     /**
@@ -37,7 +41,7 @@ class CiteController extends Controller
      */
     public function show(Cite $cite)
     {
-        //
+        return view('components.pages.citee.show', compact('cite'));
     }
 
     /**
@@ -45,7 +49,7 @@ class CiteController extends Controller
      */
     public function edit(Cite $cite)
     {
-        //
+        return view('components.pages.citee.form', compact('cite'));
     }
 
     /**
@@ -53,7 +57,9 @@ class CiteController extends Controller
      */
     public function update(UpdateCiteRequest $request, Cite $cite)
     {
-        //
+        $request->validated();
+        $cite->update($request->all());
+        return redirect()->route('cites.index')->with('success', 'Cite modifiée avec succès');
     }
 
     /**
@@ -61,6 +67,7 @@ class CiteController extends Controller
      */
     public function destroy(Cite $cite)
     {
-        //
+        $cite->delete();
+        return redirect()->route('cites.index')->with('success', 'Cite supprimée avec succès');
     }
 }

@@ -84,7 +84,6 @@ class UpdateExamenRequest extends FormRequest
     {
         $classeCours = ClasseCours::find($this->classe_cours_id);
         $this->merge([
-            'id' => $this->id,
             'classe_id' => $classeCours->classe_id,
             'salle_id' => $this->salle_id,
             'classe_cours_id' => $this->classe_cours_id,

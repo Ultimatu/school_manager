@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\AnneeScolaire;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePaymentScolariteRequest extends FormRequest
@@ -11,7 +12,7 @@ class UpdatePaymentScolariteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -74,5 +75,15 @@ class UpdatePaymentScolariteRequest extends FormRequest
             'observation' => 'observation',
             'annee_scolaire' => 'année scolaire',
         ];
+    }
+
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'amount' => (float)$this->amount,
+            'is_paid' =>  $this->has('is_paid') ? (bool)$this->is_paid : false,
+            'annee_scolaire' => AnneeScolaire::where('status', 'en_cours')->first()->annee_scolaire,
+        ]);
     }
 }

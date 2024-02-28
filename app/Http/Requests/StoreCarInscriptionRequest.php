@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\AnneeScolaire;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCarInscriptionRequest extends FormRequest
@@ -54,5 +55,15 @@ class StoreCarInscriptionRequest extends FormRequest
     }
 
 
-
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'etudiant_id' => (int)$this->etudiant_id,
+            'trajet_id' => (int)$this->trajet_id,
+            'is_paid' =>  $this->has('is_paid') ? (bool)$this->is_paid : false,
+            'versements' => (array)$this->versements,
+            'total_amount' => (float)$this->total_amount,
+            'annee_scolaire' => AnneeScolaire::where('status', 'en_cours')->first()->annee_scolaire,
+        ]);
+    }
 }

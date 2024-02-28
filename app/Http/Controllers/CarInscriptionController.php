@@ -26,10 +26,17 @@ class CarInscriptionController extends Controller
      */
     public function create()
     {
-        $car_inscription = new CarInscription();
+        $inscription = new CarInscription();
         $etudiants = Etudiant::where('annee_scolaire', AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire)->get();
-        return view('components.pages.cars.inscriptions.form', compact('inscriptions', 'etudiants'));
+        return view('components.pages.cars.inscriptions.form', compact('inscription', 'etudiants'));
 
+    }
+    public function createBy(Etudiant $etudiant)
+    {
+        $inscription = new CarInscription();
+        $inscription->etudiant_id = $etudiant->id;
+        $etudiants = Etudiant::where('annee_scolaire', AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire)->get();
+        return view('components.pages.cars.inscriptions.form', compact('inscription', 'etudiants'));
     }
 
     public function addVersement(CarInscription $inscription)
@@ -45,15 +52,12 @@ class CarInscriptionController extends Controller
             'versements' => 'required|numeric',
         ]);
         $versement = CarInscription::find($request->id);
-
         //verifier si le montant total est atteint
-
         if ($this->isPaid($versement->versements, $versement->total_amount)) {
             return redirect()->route('car_inscriptions.index')->with('error', 'Le montant total est déjà atteint');
         }
         //ajouter le versement sur le versement existant en array
         $versement->versements = $versement->versements . ';' . $request->versements;
-
         if ($this->isPaid($versement->versements, $versement->total_amount)) {
             $versement->is_paid = true;
         }
@@ -68,6 +72,7 @@ class CarInscriptionController extends Controller
         //supprimer un versement
         unset($versements[$versement]);
         $inscription->versements = implode(';', $versements);
+        $inscription->is_paid = $this->isPaid($inscription->versements, $inscription->total_amount);
         $inscription->save();
         return redirect()->route('car_inscriptions.index')->with('success', 'Versement supprimé avec succès');
     }
@@ -86,36 +91,37 @@ class CarInscriptionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CarInscription $carInscription)
+    public function show(CarInscription $car_nscription)
     {
+        $inscription = $car_nscription;
         return view('components.pages.cars.inscriptions.show', compact('inscription'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CarInscription $carInscription)
+    public function edit(CarInscription $car_inscription)
     {
-
+        $inscription = $car_inscription;
         return view('components.pages.cars.inscriptions.form', compact('inscription'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCarInscriptionRequest $request, CarInscription $carInscription)
+    public function update(UpdateCarInscriptionRequest $request, CarInscription $car_inscription)
     {
         $request->validated();
-        $carInscription->update($request->all());
+        $car_inscription->update($request->all());
         return redirect()->route('car_inscriptions.index')->with('success', 'Etudiant modifié avec succès');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CarInscription $carInscription)
+    public function destroy(CarInscription $car_inscription)
     {
-        $carInscription->delete();
+        $car_inscription->delete();
         return redirect()->route('car_inscriptions.index')->with('success', 'Etudiant supprimé avec succès');
     }
 

@@ -39,7 +39,7 @@ class UpdateCarRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'matricule.required' => 'Le matricule est obligatoire',
+            'matricule.required' => 'LL\'immatriculation est obligatoire',
             'marque.required' => 'La marque est obligatoire',
             'model.required' => 'Le model est obligatoire',
             'type.required' => 'Le type est obligatoire',
@@ -57,7 +57,7 @@ class UpdateCarRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'matricule' => 'Matricule',
+            'matricule' => 'Immatriculation',
             'marque' => 'Marque',
             'model' => 'Model',
             'type' => 'Type',

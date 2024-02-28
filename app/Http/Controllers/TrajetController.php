@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTrajetRequest;
 use App\Http\Requests\UpdateTrajetRequest;
+use App\Models\AnneeScolaire;
 use App\Models\Trajet;
 
 class TrajetController extends Controller
@@ -13,7 +14,8 @@ class TrajetController extends Controller
      */
     public function index()
     {
-        //
+        $trajets = Trajet::all();
+        return view('components.pages.trajets.index', compact('trajets'));
     }
 
     /**
@@ -21,7 +23,8 @@ class TrajetController extends Controller
      */
     public function create()
     {
-        //
+        $trajet = new Trajet();
+        return view('components.pages.trajets.form', compact('trajet'));
     }
 
     /**
@@ -29,7 +32,12 @@ class TrajetController extends Controller
      */
     public function store(StoreTrajetRequest $request)
     {
-        //
+
+        $request->merge(['waypoints' => json_encode($request->waypoints)]);
+        $request->validated();
+        //transormer requette waypoints en json
+        $trajet = Trajet::create($request->all());
+        return redirect()->route('trajets.index')->with('success', 'Trajet ajouté avec succès');
     }
 
     /**
@@ -37,7 +45,7 @@ class TrajetController extends Controller
      */
     public function show(Trajet $trajet)
     {
-        //
+        return view('components.pages.trajets.show', compact('trajet'));
     }
 
     /**
@@ -45,7 +53,7 @@ class TrajetController extends Controller
      */
     public function edit(Trajet $trajet)
     {
-        //
+        return view('components.pages.trajets.form', compact('trajet'));
     }
 
     /**
@@ -53,7 +61,9 @@ class TrajetController extends Controller
      */
     public function update(UpdateTrajetRequest $request, Trajet $trajet)
     {
-        //
+        $request->validated();
+        $trajet->update($request->all());
+        return redirect()->route('trajets.index')->with('success', 'Trajet modifié avec succès');
     }
 
     /**
@@ -61,6 +71,7 @@ class TrajetController extends Controller
      */
     public function destroy(Trajet $trajet)
     {
-        //
+        $trajet->delete();
+        return redirect()->route('trajets.index')->with('success', 'Trajet supprimé avec succès');
     }
 }

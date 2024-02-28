@@ -37,4 +37,9 @@ class Notes extends Model
         return $this->belongsTo(Professeur::class);
     }
 
+
+    public function scopeCurrentYear($query){
+        return $query->where('annee_scolaire', AnneeScolaire::valideYear())->get();
+    }
+
 }

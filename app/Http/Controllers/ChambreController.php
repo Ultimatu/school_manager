@@ -13,7 +13,8 @@ class ChambreController extends Controller
      */
     public function index()
     {
-        //
+        $chambres = Chambre::all();
+        return view('components.pages.chambres.index', compact('chambres'));
     }
 
     /**
@@ -21,7 +22,8 @@ class ChambreController extends Controller
      */
     public function create()
     {
-        //
+        $chambre = new Chambre();
+        return view('components.pages.chambres.form', compact('chambre'));
     }
 
     /**
@@ -29,7 +31,9 @@ class ChambreController extends Controller
      */
     public function store(StoreChambreRequest $request)
     {
-        //
+        $request->validated();
+        $chambre = Chambre::create($request->all());
+        return redirect()->route('chambres.index')->with('success', 'Chambre ajoutée avec succès');
     }
 
     /**
@@ -37,7 +41,7 @@ class ChambreController extends Controller
      */
     public function show(Chambre $chambre)
     {
-        //
+        return view('components.pages.chambres.show', compact('chambre'));
     }
 
     /**
@@ -45,7 +49,7 @@ class ChambreController extends Controller
      */
     public function edit(Chambre $chambre)
     {
-        //
+        return view('components.pages.chambres.form', compact('chambre'));
     }
 
     /**
@@ -53,7 +57,9 @@ class ChambreController extends Controller
      */
     public function update(UpdateChambreRequest $request, Chambre $chambre)
     {
-        //
+        $request->validated();
+        $chambre->update($request->all());
+        return redirect()->route('chambres.index')->with('success', 'Chambre modifiée avec succès');
     }
 
     /**
@@ -61,6 +67,7 @@ class ChambreController extends Controller
      */
     public function destroy(Chambre $chambre)
     {
-        //
+        $chambre->delete();
+        return redirect()->route('chambres.index')->with('success', 'Chambre supprimée avec succès');
     }
 }

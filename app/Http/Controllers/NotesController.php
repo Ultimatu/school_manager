@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreNotesRequest;
 use App\Http\Requests\UpdateNotesRequest;
+use App\Models\AnneeScolaire;
+use App\Models\ClasseCours;
+use App\Models\Etudiant;
 use App\Models\Notes;
+use App\Models\Professeur;
+use Illuminate\Support\Facades\Auth;
 
 class NotesController extends Controller
 {
@@ -13,15 +18,25 @@ class NotesController extends Controller
      */
     public function index()
     {
-        //
+        $notes = Notes::currentYear();
+        $professeur = Professeur::where('user_id', Auth::user()->id)->first();
+        return view('components.pages.notes.list', compact('notes', 'professeur'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(ClasseCours $classeCours)
     {
-        //
+        if (!auth()->user()->isProfesseur()) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page');
+        }
+        $notes = new Notes();
+        $notes->classe_cours_id = $classeCours->id;
+        $professeur = Professeur::where('user_id', Auth::user()->id)->first();
+        $notes->professeur_id = $professeur->id;
+        $etudiants = Etudiant::where('classe_id', $classeCours->classe_id)->get();
+        return view('components.pages.notes.form', compact('notes', 'etudiants'));
     }
 
     /**
@@ -29,7 +44,9 @@ class NotesController extends Controller
      */
     public function store(StoreNotesRequest $request)
     {
-        //
+        $request->validated();
+        $note = Notes::create($request->all());
+        return redirect()->route('notes.index')->with('success', 'Note ajoutée avec succès');
     }
 
     /**
@@ -37,7 +54,7 @@ class NotesController extends Controller
      */
     public function show(Notes $notes)
     {
-        //
+        return view('componenets.pages.notes.show', compact('notes'));
     }
 
     /**
@@ -45,7 +62,11 @@ class NotesController extends Controller
      */
     public function edit(Notes $notes)
     {
-        //
+        if (!auth()->user()->isProfesseur()) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page');
+        }
+        $etudiants = Etudiant::where('classe_id', $notes->classeCours->classe_id)->get();
+        return view('components.pages.notes.form', compact('notes', 'etudiants'));
     }
 
     /**
@@ -53,7 +74,10 @@ class NotesController extends Controller
      */
     public function update(UpdateNotesRequest $request, Notes $notes)
     {
-        //
+        $request->validated();
+        $notes->update($request->all());
+        return redirect()->route('notes.index')->with('success', 'Note modifiée avec succès');
+
     }
 
     /**
@@ -61,6 +85,11 @@ class NotesController extends Controller
      */
     public function destroy(Notes $notes)
     {
-        //
+        if (!auth()->user()->isProfesseur()) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page');
+        }
+
+        $notes->delete();
+        return redirect()->route('notes.index')->with('success', 'Note supprimée avec succès');
     }
 }

@@ -57,8 +57,6 @@
     <script src="{{ asset('lib/fullcalendar/locales-all.min.js') }}"></script>
     <script src="{{ asset('lib/fullcalendar/locales/fr.js') }}"></script>
     <script src="{{ asset('assets/js/script.js') }}"></script>
-    <script src="{{ asset('assets/js/calendar-events.js') }}"></script>
-    <script src="{{ asset('assets/js/calendar.js') }}"></script>
     @stack('scripts')
     <script>
         'use script'

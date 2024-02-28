@@ -73,7 +73,7 @@
                                                 {{ $administration->id }}
                                             </td>
                                             <td>
-                                                <img src="{{ asset($administration->avatar) }}"
+                                                <img src="{{ asset($administration->avatar??'administrations/avatar.png') }}"
                                                     alt="{{ $administration->first_name }}" class="img-fluid"
                                                     style="width: 50px; height: 50px; border-radius: 50%;">
                                             </td>

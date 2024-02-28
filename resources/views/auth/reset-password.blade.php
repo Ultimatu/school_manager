@@ -4,14 +4,12 @@
 
 @section('content')
 
-    <div class="card card-sign">
+    <div class="card card-auth">
         <div class="card-header">
             <a href="../" class="header-logo mb-4">UTA</a>
-            {{-- ask if user is parent and lead to parent_login.blade.php --}}
-            {{-- <div class="d-flex justify-content-between">
-                <a href="{{ route('login') }}" class="btn btn-primary">Se connecter en tant que parent</a>
-            </div> --}}
-
+            <div class="mb-5">
+                <object type="image/svg+xml" data="{{asset('assets/svg/forgot_password.svg')}}" class="w-50"></object>
+              </div>
             <h3 class="card-title">Réinitialisation de mot passe!</h3>
             <p class="card-text">Bienvenue! Veuillez entrez votre email svp.</p>
         </div><!-- card-header -->

@@ -13,7 +13,8 @@ class ChauffeurController extends Controller
      */
     public function index()
     {
-        //
+        $chauffeurs = Chauffeur::all();
+        return view('components.pages.chauffeurs.index', compact('chauffeurs'));
     }
 
     /**
@@ -21,7 +22,8 @@ class ChauffeurController extends Controller
      */
     public function create()
     {
-        //
+        $chauffeur = new Chauffeur();
+        return view('components.pages.chauffeurs.form', compact('chauffeur'));
     }
 
     /**
@@ -29,7 +31,9 @@ class ChauffeurController extends Controller
      */
     public function store(StoreChauffeurRequest $request)
     {
-        //
+        $request->validated();
+        $chauffeur = Chauffeur::create($request->all());
+        return redirect()->route('chauffeurs.index')->with('success', 'Chauffeur ajouté avec succès');
     }
 
     /**
@@ -37,7 +41,7 @@ class ChauffeurController extends Controller
      */
     public function show(Chauffeur $chauffeur)
     {
-        //
+        return view('components.pages.chauffeurs.show', compact('chauffeur'));
     }
 
     /**
@@ -45,7 +49,7 @@ class ChauffeurController extends Controller
      */
     public function edit(Chauffeur $chauffeur)
     {
-        //
+        return view('components.pages.chauffeurs.form', compact('chauffeur'));
     }
 
     /**
@@ -53,7 +57,16 @@ class ChauffeurController extends Controller
      */
     public function update(UpdateChauffeurRequest $request, Chauffeur $chauffeur)
     {
-        //
+        $request->validated();
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            $name = time() . $file->getClientOriginalName();
+            $file->move(public_path('images/chauffeurs'), $name);
+            $request->avatar = "images/chauffeurs/$name";
+        }
+
+        $chauffeur->update($request->all());
+        return redirect()->route('chauffeurs.index')->with('success', 'Chauffeur modifié avec succès');
     }
 
     /**
@@ -61,6 +74,10 @@ class ChauffeurController extends Controller
      */
     public function destroy(Chauffeur $chauffeur)
     {
-        //
+        if ($chauffeur->avatar) {
+            unlink(public_path($chauffeur->avatar));
+        }
+        $chauffeur->delete();
+        return redirect()->route('chauffeurs.index')->with('success', 'Chauffeur supprimé avec succès');
     }
 }

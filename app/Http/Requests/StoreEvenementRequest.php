@@ -26,8 +26,8 @@ class StoreEvenementRequest extends FormRequest
             'description' => 'required|string',
             'type' => 'required|string',
             'classes_ids' => 'nullable|array',
-            'date_heure_debut' => 'required|date',
-            'date_time_fin' => 'required|date',
+            'date_heure_debut' => 'required|date|date_format:Y-m-d H:i:s|before:date_time_fin',
+            'date_time_fin' => 'required|date|date_format:Y-m-d H:i:s|after:date_heure_debut',
             'send_to_all' => 'required|boolean',
             'salle_id' => 'nullable|exists:salles,id',
             'only_for_admins' => 'required|boolean',
@@ -52,7 +52,8 @@ class StoreEvenementRequest extends FormRequest
             'send_to_all.required' => 'Le champ send_to_all est obligatoire',
             'only_for_admins.required' => 'Le champ only_for_admins est obligatoire',
             'only_for_profs.required' => 'Le champ only_for_profs est obligatoire',
-
+            'date_time_fin.after'=>'La date de fin doit être suprerieur à la date de début',
+            'date_heure_debut.before'=>'La date de debut doit être supérieur à la date de fin',
         ];
     }
 
@@ -75,5 +76,18 @@ class StoreEvenementRequest extends FormRequest
             'only_for_admins' => 'Reservé aux admins',
             'only_for_profs' => 'Reservé aux professeurs',
         ];
+    }
+
+
+    //beforeValidate
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'date_heure_debut' => date('Y-m-d H:i:s', strtotime($this->date_heure_debut)),
+            'date_time_fin' => date('Y-m-d H:i:s', strtotime($this->date_time_fin)),
+            'only_for_admins' => $this->has('only_for_admins') ? true : false,
+            'only_for_profs' => $this->has('only_for_profs') ? true : false,
+            'send_to_all' => $this->has('send_to_all') ? true : false,
+        ]);
     }
 }

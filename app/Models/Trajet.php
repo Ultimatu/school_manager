@@ -18,6 +18,15 @@ class Trajet extends Model
         'school_departure_time',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'waypoints' => 'array',
+    ];
+
 
     public function chauffeurs(){
         return $this->hasMany(Chauffeur::class);

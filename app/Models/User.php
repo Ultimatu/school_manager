@@ -105,7 +105,7 @@ class User extends Authenticatable
      */
     public function isAdmin()
     {
-        return $this->role_auth === 'admin' || $this->role_auth === 'directeur' || $this->role_auth === 'comptable' || $this->role_auth === 'secreteur';
+        return $this->role_auth === 'admin' || $this->role_auth === 'directeur' || $this->role_auth === 'comptable' || $this->role_auth === 'secreteur' || $this->role_auth === 'conselleir' || $this->role_auth === 'conseillor';
     }
 
     /**

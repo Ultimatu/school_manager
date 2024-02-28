@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdministrationController;
+use App\Http\Controllers\AnneeScolaireController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\CoursController;
 use App\Http\Controllers\EvenementController;
@@ -45,3 +46,7 @@ Route::delete('destroy-evenement/{evenement}', [EvenementController::class, 'des
 Route::get('get-examens/{id}', [ExamenController::class, 'getAll'])->name('api.examen.get-all');
 Route::post('store-examen', [ExamenController::class, 'store'])->name('api.examen.store');
 Route::delete('destroy-examen/{examen}', [ExamenController::class, 'destroy'])->name('api.examen.destroy');
+
+
+//annee
+Route::put('changeAnnee-state/{anneeScolaire}', [AnneeScolaireController::class, 'changeStatus'])->name('api.annee-scolaire.change-state');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreExamenNoteRequest;
 use App\Http\Requests\UpdateExamenNoteRequest;
+use App\Models\AnneeScolaire;
 use App\Models\Examen;
 use App\Models\ExamenNote;
 
@@ -14,7 +15,7 @@ class ExamenNoteController extends Controller
      */
     public function index()
     {
-        $examenNotes = ExamenNote::all();
+        $examenNotes = ExamenNote::where('annee_scolaire', AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire)->get();
         return view('components.pages.examens.notes.index', compact('examenNotes'));
     }
 
@@ -25,6 +26,7 @@ class ExamenNoteController extends Controller
     {
         $examenNote = new ExamenNote();
         $examenNote->examen_id = $examen->id;
+        $examenNote->annee_scolaire = $examen->annee_scolaire;
 
         return view('components.pages.examens.notes.form', compact('examenNote', 'examen'));
     }

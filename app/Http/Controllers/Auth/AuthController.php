@@ -7,7 +7,9 @@ use App\Mail\AccountActivatedMail;
 use App\Models\Classe;
 use App\Models\Etudiant;
 use App\Models\Parents;
+use App\Models\PasswordResetToken;
 use App\Models\User;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,6 +25,13 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
+            if (Auth::user()->isEtudiant()){
+                $etudiant = Etudiant::where('user_id', Auth::user()->id)->first();
+                if ($etudiant->status === 'is_pending'){
+                    Auth::logout();
+                    return redirect()->route('account-pending')->with('success', 'Votre compte a été créé avec succès. Veuillez attendre la validation de votre compte par l\'administrateur');
+                }
+            }
             $request->session()->regenerate();
 
             return redirect()->intended('dashboard');
@@ -68,7 +77,6 @@ class AuthController extends Controller
             'birth_place' => 'required|string|max:255',
             'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'nationality' => 'required|string|max:255',
-            'status' => 'required|string|max:255',
             'parent_first_name' => 'required|string|max:255',
             'parent_last_name' => 'required|string|max:255',
             'parent_email' => 'required|string|email|max:255|unique:users',
@@ -77,8 +85,6 @@ class AuthController extends Controller
             'parent_type' => 'required|string|max:255',
             'parent_is_legal_tutor' => 'required|boolean',
             'parent_profession' => 'required|string|max:255',
-            'parent_status' => 'required|string|max:255',
-
         ]);
 
         $user = User::where('email', $request->email)->orWhere('phone', $request->phone)->first();
@@ -116,7 +122,7 @@ class AuthController extends Controller
         $etudiant->birth_date = $request->birth_date;
         $etudiant->birth_place = $request->birth_place;
         $etudiant->nationality = $request->nationality;
-        $etudiant->status = $request->status;
+        $etudiant->status = 'is_pending';
         $etudiant->user_id = $user->id;
         if ($request->hasFile('avatar')){
             $photo = $request->file('avatar');
@@ -142,7 +148,7 @@ class AuthController extends Controller
             $parent->etudiants_ids = $etudiant->id;
             $parent->type = $request->parent_type;
             $parent->is_legal_tutor = $request->parent_is_legal_tutor;
-            $parent->status = $request->parent_status;
+            $parent->status = "is_pending";
 
             $user = new User();
             $user->name = $request->parent_first_name . ' ' . $request->parent_last_name;
@@ -177,7 +183,7 @@ class AuthController extends Controller
         $parent->status = 'is_active';
         $parent->save();
 
-        if (env('MAIL_SERVICE_STATE' === 'on')){
+        if (env('MAIL_SERVICE_STATE') === 'on'){
             $etudiant->user->notify(new AccountActivatedMail('etudiant', $etudiant));
             $parent->user->notify(new AccountActivatedMail('parent', $parent));
         }
@@ -186,8 +192,62 @@ class AuthController extends Controller
     }
 
 
-    public function resetPassword()
+    public function forgotPassword()
     {
-        return view('auth.reset-password');
+        return view('auth.reset-password', ['step' => 1]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        if (!$user){
+            return back()->withErrors([
+                'email' => 'Cet email ne correspond à aucun de nos utilisateurs',
+            ]);
+        }
+        if (env('MAIL_SERVICE_STATE') === 'on')
+            $user->notify(new ResetPassword($user));
+
+        return redirect()->route('login')->with('success', 'Un email de réinitialisation de mot de passe vous a été envoyé');
+
+    }
+
+    public function resetPasswordForm($token, $email)
+    {
+        PasswordResetToken::create([
+            'email' => $email,
+            'token' => $token,
+        ]);
+        return view('auth.reset-password', ['step' => 2, 'token' => $token, 'email' => $email]);
+    }
+
+    public function resetPasswordFormSubmit(Request $request)
+    {
+        $request->validate([
+            'token' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        // todo: check if token is valid
+        $token = PasswordResetToken::findByToken($request->token);
+        if (!$token){
+            return back()->withErrors([
+                'token' => 'Lien de réinitialisation de mot de passe invalide',
+            ]);
+        }
+
+
+        $user = User::where('email', $request->email)->first();
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        $user->notify(new AccountActivatedMail('password_reset', $user));
+
+        return redirect()->route('login')->with('success', 'Mot de passe réinitialisé avec succès');
     }
 }

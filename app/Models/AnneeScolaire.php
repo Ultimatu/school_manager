@@ -14,6 +14,17 @@ class AnneeScolaire extends Model
         'annee_scolaire',
         'debut',
         'fin',
-        'is_finish'
+        'is_finish',
+        'status'
     ];
+
+
+    public function classes()
+    {
+        return Classe::where('year', $this->annee_scolaire)->get();
+    }
+
+    public function etudiants(){
+        return Etudiant::where('annee_scolaire', $this->annee_scolaire)->get();
+    }
 }

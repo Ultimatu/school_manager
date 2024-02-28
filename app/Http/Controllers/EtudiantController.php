@@ -6,8 +6,10 @@ use App\Http\Requests\StoreEtudiantRequest;
 use App\Http\Requests\UpdateEtudiantRequest;
 use App\Mail\AccountActivatedMail;
 use App\Models\Classe;
+use App\Models\DetailsPayement;
 use App\Models\Etudiant;
 use App\Models\Parents;
+use App\Models\PaymentScolarite;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -30,62 +32,50 @@ class EtudiantController extends Controller
     {
         $etudiant = new Etudiant();
         $classes = Classe::all();
-        return view('components.pages.etudiants.form', compact('etudiant'));
+        return view('components.pages.etudiants.form', compact('etudiant', 'classes'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreEtudiantRequest $request)
     {
         //validate request
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:etudiants|unique:users',
-            'phone' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'classe_id' => 'required|exists:classes,id',
-            'student_mat' => 'required|string|max:255',
-            'card_id' => 'nullable|string|max:255',
-            'birth_date' => 'nullable|date',
-            'birth_place' => 'nullable|string|max:255',
-            'cni' => 'nullable|string|max:255',
-            'urgent_phone' => 'nullable|string|max:255',
-            'nationality' => 'nullable|string|max:255',
-            'cin' => 'nullable|string|max:255',
-        ]);
+        $request->validated();
         //create user with role etudiant
         $user = User::create([
             'name' => $request->first_name . ' ' . $request->last_name,
             'email' => $request->email,
-            'password' => bcrypt($request->student_mat),
+            'password' => \bcrypt($request->student_mat),
             'role_auth' => 'etudiant',
             'phone' => $request->phone,
+            'annee_scolaire'=>$request->annee_scolaire
         ]);
-
         //create etudiant
 
-        $etudiant = Etudiant::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => bcrypt($request->student_mat),
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'classe_id' => $request->classe_id,
-            $request->student_mat,
-            'card_id' => $request->card_id,
-            'birth_date' => $request->birth_date,
-            'birth_place' => $request->birth_place,
-            'cin' => $request->cin,
-            'user_id' => $user->id,
-            'status' => 'active',
-            'urgent_phone' => $request->urgent_phone,
+        $request->merge(['user_id' => $user->id]);
+        $etudiant = Etudiant::create($request->all());
+
+        $paymentScolarite = PaymentScolarite::create([
+            'etudiant_id' => $etudiant->id,
+            'amount' => $request->amount,
+            'is_paid' => $request->is_paid,
+            'date'=> now(),
+            'annee_scolaire' => $request->annee_scolaire,
         ]);
+        $versement = DetailsPayement::create([
+            'payment_scolarite_id' => $paymentScolarite->id,
+            'amount' => $request->versement_amount,
+            'date' => now(),
+        ]);
+
 
         if (env('MAIL_SERVICE_STATE') == 'on') {
             Mail::to($request->email)->send(new AccountActivatedMail('etudiant', $etudiant));
+        }
+
+        if ($request->has('add_parent')) {
+            return redirect()->route('parents.create', ['etudiant' => $etudiant->id]);
         }
 
         return redirect()->route('etudiant.show', $etudiant->id)->with('success', 'Nouvel étudiant ajouté avec succès');
@@ -107,7 +97,7 @@ class EtudiantController extends Controller
     public function edit(Etudiant $etudiant)
     {
         $classes = Classe::all();
-        return view('components.pages.etudiants.form', compact('etudiant'));
+        return view('components.pages.etudiants.form', compact('etudiant', 'classes'));
     }
 
     public function addParent(Etudiant $etudiant)
@@ -119,25 +109,10 @@ class EtudiantController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Etudiant $etudiant)
+    public function update(UpdateEtudiantRequest $request, Etudiant $etudiant)
     {
         //validate request
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:etudiants|unique:users',
-            'phone' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'classe_id' => 'required|exists:classes,id',
-            'student_mat' => 'required|string|max:255',
-            'card_id' => 'nullable|string|max:255',
-            'birth_date' => 'nullable|date',
-            'birth_place' => 'nullable|string|max:255',
-            'cni' => 'nullable|string|max:255',
-            'urgent_phone' => 'nullable|string|max:255',
-            'nationality' => 'nullable|string|max:255',
-            'cin' => 'nullable|string|max:255',
-        ]);
+        $request->validated();
         //update user
         $etudiant->user->update([
             'name' => $request->first_name . ' ' . $request->last_name,
@@ -164,6 +139,20 @@ class EtudiantController extends Controller
             'urgent_phone' => $request->urgent_phone,
         ]);
 
+        $paymentScolarite = PaymentScolarite::where('etudiant_id', $etudiant->id)->first();
+        $paymentScolarite->update([
+            'amount' => $request->amount,
+            'is_paid' => $request->is_paid,
+            'date'=> now(),
+            'annee_scolaire' => $request->annee_scolaire,
+        ]);
+
+        $versement = DetailsPayement::where('payment_scolarite_id', $paymentScolarite->id)->first();
+        $versement->update([
+            'amount' => $request->versement_amount,
+            'date' => now(),
+        ]);
+
         return redirect()->route('etudiant.show', $etudiant->id)->with('success', 'Etudiant modifié avec succès');
 
 
@@ -174,7 +163,9 @@ class EtudiantController extends Controller
      */
     public function destroy(Etudiant $etudiant)
     {
+        $user = User::find($etudiant->user_id);
         $etudiant->delete();
+        $user->delete();
         return redirect()->route('etudiant.index')->with('success', 'Etudiant supprimé avec succès');
     }
 }

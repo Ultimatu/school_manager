@@ -16,7 +16,10 @@ class ExamenController extends Controller
      */
     public function index()
     {
-        $examens = Examen::all();
+        $year = date('Y');
+        //si on est entre janvier et aout alors $annee_scolaire = year-1/year sinon $annee_scolaire = year/year+1
+        $annee_scolaire = date('m') < 9 ? ($year - 1) . '-' . $year : $year . '-' . ($year + 1);
+        $examens = Examen::where('annee_scolaire', $annee_scolaire)->get();
         if (request()->expectsJson()) {
             return response()->json(['data' => $examens], 200);
         }

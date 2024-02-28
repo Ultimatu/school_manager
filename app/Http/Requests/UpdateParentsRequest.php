@@ -26,11 +26,13 @@ class UpdateParentsRequest extends FormRequest
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'phone' => 'required|string|max:255|unique:users',
+            'email' => 'nullable|email|unique:users',
             'address' => 'required|string|max:255',
             'profession' => 'required|string|max:255',
             'is_legal_tutor' => 'required|boolean',
             'status' => 'required|boolean',
             'etudiants_ids' => 'required',
+            'type' => 'required|string|max:255',
         ];
     }
 
@@ -52,6 +54,9 @@ class UpdateParentsRequest extends FormRequest
             'is_legal_tutor.required' => 'Le statut de tuteur légal est obligatoire',
             'status.required' => 'Le statut est obligatoire',
             'etudiants_ids.required' => 'L\'étudiant est obligatoire',
+            'type.required' => 'Le type est obligatoire',
+            'email.unique' => 'L\'email est déjà utilisé',
+            'email.email' => 'L\'email est invalide',
         ];
     }
 
@@ -73,6 +78,7 @@ class UpdateParentsRequest extends FormRequest
             'is_legal_tutor' => 'statut de tuteur légal',
             'status' => 'statut',
             'etudiants_ids' => 'étudiant',
+            'type' => 'type de parent',
         ];
     }
 }

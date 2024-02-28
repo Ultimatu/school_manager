@@ -14,6 +14,7 @@ class Parents extends Model
         'last_name',
         'password',
         'phone',
+        'email', // add email
         'address',
         'etudiants_ids',
         'profession',
@@ -43,7 +44,7 @@ class Parents extends Model
 
     public function user()
     {
-        return $this->morphOne(User::class, 'role');
+        return $this->belongsTo(User::class);
     }
 
 

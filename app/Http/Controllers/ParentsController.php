@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateParentsRequest;
 use App\Models\Etudiant;
 use App\Models\Parents;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 class ParentsController extends Controller
 {
@@ -15,7 +16,9 @@ class ParentsController extends Controller
      */
     public function index()
     {
-        //
+        return view('components.pages.parent.list', [
+            'parents' => Parents::all()
+        ]);
     }
 
     /**
@@ -25,7 +28,7 @@ class ParentsController extends Controller
     {
         $parent = new Parents();
         $parents = Parents::all();
-        return view('components.pages.etudiant.add_parent', compact('etudiant', 'parent', 'parents'));
+        return view('components.pages.etudiants.parent.form', compact('etudiant', 'parent', 'parents'));
 
     }
 
@@ -53,13 +56,18 @@ class ParentsController extends Controller
         $parent->etudiants_ids = $request->etudiant_id;
         $parent->type = $request->type;
         $parent->is_legal_tutor = $request->is_legal_tutor;
+        $parent->status = 'active';
+        $parent->annee_scolaire = $etudiant->annee_scolaire;
+
 
         $user = new User();
         $user->name = $request->first_name . ' ' . $request->last_name;
         $user->email = $request->email;
+        $user->phone = $request->phone;
         $user->password = bcrypt($request->phone);
         $user->role_auth = 'parent';
         $user->save();
+
 
         $parent->user_id = $user->id;
         $parent->save();
@@ -74,7 +82,7 @@ class ParentsController extends Controller
      */
     public function show(Parents $parents)
     {
-        //
+        return view('components.pages.etudiants.parent.show', compact('parents'));
     }
 
     /**
@@ -82,7 +90,7 @@ class ParentsController extends Controller
      */
     public function edit(Parents $parents)
     {
-        return view('components.pages.etudiant.add_parent', compact('parents'));
+        return view('components.pages.etudiants.parent.form', compact('parents'));
     }
 
     /**
@@ -90,7 +98,17 @@ class ParentsController extends Controller
      */
     public function update(UpdateParentsRequest $request, Parents $parents)
     {
-         //
+        $request->validated();
+        $user = User::find($parents->user_id);
+        $user->update([
+            'name' => $request->first_name . ' ' . $request->last_name,
+            'email' => $request->email,
+            'password' => bcrypt($request->phone),
+            'role_auth' => 'parent',
+            'phone' => $request->phone,
+        ]);
+        $parents->update($request->all());
+        return redirect()->route('etudiant.show', $parents->etudiant_id)->with('success', 'Parent modifié avec succès');
 
     }
 
@@ -99,7 +117,6 @@ class ParentsController extends Controller
      */
     public function destroy(Parents $parents)
     {
-        $parents->delete();
         $user = User::find($parents->user_id);
         $user->delete();
         $parents->delete();

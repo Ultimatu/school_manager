@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreDetailsPayementRequest;
 use App\Http\Requests\UpdateDetailsPayementRequest;
+use App\Models\AnneeScolaire;
 use App\Models\DetailsPayement;
+use App\Models\PaymentScolarite;
 
 class DetailsPayementController extends Controller
 {
@@ -13,7 +15,12 @@ class DetailsPayementController extends Controller
      */
     public function index()
     {
-        //
+        //les versements où l'année scolaire est en cours
+        $currentYear = AnneeScolaire::where('status', 'en cours')->first();
+        $versements = DetailsPayement::whereHas('paymentScolarite', function ($query){
+            $query->where('annee_scolaire', AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire);
+        })->get();
+        return view('components.pages.versements.list', compact('versements'));
     }
 
     /**
@@ -21,7 +28,15 @@ class DetailsPayementController extends Controller
      */
     public function create()
     {
-        //
+        $scolarites = PaymentScolarite::where('annee_scolaire', AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire)->where('is_paid', 0)->get();
+        $versement = new DetailsPayement();
+        return view('components.pages.versements.form', compact('versement', 'scolarites'));
+    }
+
+    public function createByEtudiant(PaymentScolarite $scolarite)
+    {
+        $versement = new DetailsPayement();
+        return view('components.pages.versements.form_by', compact('versement', 'scolarite'));
     }
 
     /**
@@ -29,7 +44,9 @@ class DetailsPayementController extends Controller
      */
     public function store(StoreDetailsPayementRequest $request)
     {
-        //
+        $request->validated();
+        $versement = DetailsPayement::create($request->all());
+        return redirect()->route('versement.index')->with('success', 'Versement ajouté avec succès');
     }
 
     /**
@@ -37,7 +54,7 @@ class DetailsPayementController extends Controller
      */
     public function show(DetailsPayement $detailsPayement)
     {
-        //
+        return view('components.pages.versements.show', compact('detailsPayement'));
     }
 
     /**
@@ -45,7 +62,7 @@ class DetailsPayementController extends Controller
      */
     public function edit(DetailsPayement $detailsPayement)
     {
-        //
+        return view('components.pages.versements.form', compact('detailsPayement'));
     }
 
     /**
@@ -53,7 +70,9 @@ class DetailsPayementController extends Controller
      */
     public function update(UpdateDetailsPayementRequest $request, DetailsPayement $detailsPayement)
     {
-        //
+        $request->validated();
+        $detailsPayement->update($request->all());
+        return redirect()->route('versement.index')->with('success', 'Versement modifié avec succès');
     }
 
     /**
@@ -61,6 +80,7 @@ class DetailsPayementController extends Controller
      */
     public function destroy(DetailsPayement $detailsPayement)
     {
-        //
+        $detailsPayement->delete();
+        return redirect()->route('versement.index')->with('success', 'Versement supprimé avec succès');
     }
 }

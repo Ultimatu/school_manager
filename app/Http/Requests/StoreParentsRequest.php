@@ -30,6 +30,8 @@ class StoreParentsRequest extends FormRequest
             'is_legal_tutor' => 'required|boolean',
             'status' => 'required|boolean',
             'etudiants_ids' => 'required',
+            'email' => 'nullable|email|unique:users',
+            'type' => 'required|string|max:255',
         ];
     }
 
@@ -45,11 +47,14 @@ class StoreParentsRequest extends FormRequest
             'first_name.required' => 'Le prénom est obligatoire',
             'last_name.required' => 'Le nom est obligatoire',
             'phone.required' => 'Le numéro de téléphone est obligatoire',
+            'email.unique' => 'L\'email est déjà utilisé',
+            'email.email' => 'L\'email est invalide',
             'address.required' => 'L\'adresse est obligatoire',
             'profession.required' => 'La profession est obligatoire',
             'is_legal_tutor.required' => 'Le statut de tuteur légal est obligatoire',
             'status.required' => 'Le statut est obligatoire',
             'etudiants_ids.required' => 'L\'étudiant est obligatoire',
+            'type.required' => 'Le type est obligatoire'
         ];
     }
 
@@ -70,6 +75,9 @@ class StoreParentsRequest extends FormRequest
             'is_legal_tutor' => 'statut de tuteur légal',
             'status' => 'statut',
             'etudiants_ids' => 'étudiant',
+            'type' => 'type de parent',
         ];
     }
+
+
 }

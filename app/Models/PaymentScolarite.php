@@ -16,4 +16,20 @@ class PaymentScolarite extends Model
         'observation',
         'annee_scolaire',
     ];
+
+
+    public function etudiant()
+    {
+        return $this->belongsTo(Etudiant::class);
+    }
+
+
+    public function anneeScolaire()
+    {
+        return $this->belongsTo(AnneeScolaire::class, 'annee_scolaire', 'annee_scolaire');
+    }
+
+    public function details(){
+        return $this->hasMany(DetailsPayement::class);
+    }
 }

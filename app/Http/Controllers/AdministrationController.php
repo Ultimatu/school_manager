@@ -125,7 +125,9 @@ class AdministrationController extends Controller
      */
     public function destroy(Administration $administration)
     {
+        $user = User::find($administration->user_id);
         $administration->delete();
-        return redirect()->route('administration.index');
+        $user->delete();
+        return redirect()->route('administration.index')->with('success', 'Administrateur supprimé avec succès');
     }
 }

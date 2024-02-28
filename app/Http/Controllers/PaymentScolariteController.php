@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePaymentScolariteRequest;
 use App\Http\Requests\UpdatePaymentScolariteRequest;
+use App\Models\AnneeScolaire;
+use App\Models\Etudiant;
 use App\Models\PaymentScolarite;
 
 class PaymentScolariteController extends Controller
@@ -13,7 +15,9 @@ class PaymentScolariteController extends Controller
      */
     public function index()
     {
-        //
+        $currentYear = AnneeScolaire::where('status', 'en cours')->first();
+        $scolarites = PaymentScolarite::where('annee_scolaire', $currentYear->annee_scolaire)->get();
+        return view('components.pages.scolarite.list', compact('scolarites'));
     }
 
     /**
@@ -21,7 +25,9 @@ class PaymentScolariteController extends Controller
      */
     public function create()
     {
-        //
+        $scolarite = new PaymentScolarite();
+        $etudiants = Etudiant::all();
+        return view('components.pages.scolarite.form', compact('scolarite', 'etudiants'));
     }
 
     /**
@@ -29,7 +35,9 @@ class PaymentScolariteController extends Controller
      */
     public function store(StorePaymentScolariteRequest $request)
     {
-        //
+        $request->validated();
+        $scolarite = PaymentScolarite::create($request->all());
+        return redirect()->route('scolarite.index')->with('success', 'Paiement ajouté avec succès');
     }
 
     /**
@@ -37,7 +45,7 @@ class PaymentScolariteController extends Controller
      */
     public function show(PaymentScolarite $paymentScolarite)
     {
-        //
+        return view('components.pages.scolarite.show', compact('paymentScolarite'));
     }
 
     /**
@@ -45,7 +53,7 @@ class PaymentScolariteController extends Controller
      */
     public function edit(PaymentScolarite $paymentScolarite)
     {
-        //
+        return view('components.pages.scolarite.form', compact('paymentScolarite'));
     }
 
     /**
@@ -53,7 +61,9 @@ class PaymentScolariteController extends Controller
      */
     public function update(UpdatePaymentScolariteRequest $request, PaymentScolarite $paymentScolarite)
     {
-        //
+        $request->validated();
+        $paymentScolarite->update($request->all());
+        return redirect()->route('scolarite.index')->with('success', 'Paiement modifié avec succès');
     }
 
     /**
@@ -61,6 +71,7 @@ class PaymentScolariteController extends Controller
      */
     public function destroy(PaymentScolarite $paymentScolarite)
     {
-        //
+        $paymentScolarite->delete();
+        return redirect()->route('scolarite.index')->with('success', 'Paiement supprimé avec succès');
     }
 }

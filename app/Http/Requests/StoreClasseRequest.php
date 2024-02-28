@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\AnneeScolaire;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreClasseRequest extends FormRequest
@@ -72,6 +73,18 @@ class StoreClasseRequest extends FormRequest
             'filiere_id' => 'filière de la classe',
             'credits' => 'nombre de crédits de la classe',
         ];
+    }
+
+
+    protected function prepareForValidation()
+    {
+        $annee_scolaire = AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire;
+        $this->merge([
+            'name' => ucfirst($this->name),
+            'status' => ucfirst($this->status),
+            'level' => ucfirst($this->level),
+            'year' => $annee_scolaire,
+        ]);
     }
 
 }

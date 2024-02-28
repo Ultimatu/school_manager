@@ -1,10 +1,14 @@
 <?php
 
 use App\Http\Controllers\AdministrationController;
+use App\Http\Controllers\AnneeScolaireController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\CarController;
+use App\Http\Controllers\CarInscriptionController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\ClasseCoursController;
 use App\Http\Controllers\CoursController;
+use App\Http\Controllers\DetailsPayementController;
 use App\Http\Controllers\EmploiDuTempsController;
 use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\EvenementController;
@@ -12,6 +16,8 @@ use App\Http\Controllers\ExamenController;
 use App\Http\Controllers\ExamenNoteController;
 use App\Http\Controllers\FiliereController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\ParentsController;
+use App\Http\Controllers\PaymentScolariteController;
 use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\SalleController;
 use App\Http\Controllers\UserController;
@@ -33,8 +39,13 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/', [AuthController::class, 'login'])->name('login');
     Route::post('authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
     Route::get('register', [AuthController::class, 'register'])->name('register');
+    Route::post('create', [AuthController::class, 'create'])->name('createPending');
     Route::get('account-pending', [AuthController::class, 'accountPending'])->name('account-pending');
-    Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('reset-password');
+
+    Route::get('forgot-password', [AuthController::class, 'forgotPassword'])->name('passowrd.forgot');
+    Route::post('check-password', [AuthController::class, 'resetPassword'])->name('passowrd.send-reset-link');
+    Route::get('reset-password/{token}/{email}', [AuthController::class, 'resetPasswordForm'])->name('password.reset');
+    Route::post('reset-password', [AuthController::class, 'resetPasswordFormSubmit'])->name('passowrd.reset-action');
 
 });
 
@@ -43,18 +54,53 @@ Route::middleware(['guest'])->group(function () {
 Route::middleware(['auth'])->group(function () {
 
     Route::get('my-profile', [UserController::class, 'index'])->name('my-profile');
+    //Route::put('my-profile', [UserController::class, 'update'])->name('my-profile.update');
     /**
      * DASHBOARD
      */
-    Route::get('/dashboard', [MainController::class, 'dashboard'])->name('dashboard');
-
-
     Route::get('dashboard', [MainController::class, 'dashboard'])->name('dashboard');
 
-    Route::post('/create', [AuthController::class, 'create'])->name('create');
 
+    /**
+     * Annee Scolaire
+     */
+    Route::get('annee-scolaire', [AnneeScolaireController::class, 'index'])->name('years.index');
+    Route::get('annee-scolaire/create', [AnneeScolaireController::class, 'create'])->name('years.create');
+    Route::post('annee-scolaire/store', [AnneeScolaireController::class, 'store'])->name('years.store');
+    Route::get('annee-scolaire/{anneeScolaire}', [AnneeScolaireController::class, 'show'])->name('years.show');
+    Route::get('annee-scolaire/{anneeScolaire}/edit', [AnneeScolaireController::class, 'edit'])->name('years.edit');
+    Route::put('annee-scolaire/{anneeScolaire}', [AnneeScolaireController::class, 'update'])->name('years.update');
+    Route::delete('annee-scolaire/{anneeScolaire}', [AnneeScolaireController::class, 'destroy'])->name('years.destroy');
+
+    /**
+     * Scolarite
+     */
+    Route::get('scolarite', [PaymentScolariteController::class, 'index'])->name('scolarite.index');
+    Route::get('scolarite/create', [PaymentScolariteController::class, 'create'])->name('scolarite.create');
+    Route::post('scolarite/store', [PaymentScolariteController::class, 'store'])->name('scolarite.store');
+    Route::get('scolarite/{paymentScolarite}', [PaymentScolariteController::class, 'show'])->name('scolarite.show');
+    Route::get('scolarite/{paymentScolarite}/edit', [PaymentScolariteController::class, 'edit'])->name('scolarite.edit');
+    Route::put('scolarite/{paymentScolarite}', [PaymentScolariteController::class, 'update'])->name('scolarite.update');
+    Route::delete('scolarite/{paymentScolarite}', [PaymentScolariteController::class, 'destroy'])->name('scolarite.destroy');
+
+   /**
+    * Versements
+    */
+    Route::get('versements', [DetailsPayementController::class, 'index'])->name('versement.index');
+    Route::get('versements/create', [DetailsPayementController::class, 'create'])->name('versement.create');
+    Route::get('versements/{paymentScolarite}/create', [DetailsPayementController::class, 'createByEtudiant'])->name('versement.create');
+    Route::post('versements/store', [DetailsPayementController::class, 'store'])->name('versement.store');
+    Route::get('versements/{detailsPayement}', [DetailsPayementController::class, 'show'])->name('versement.show');
+    Route::get('versements/{detailsPayement}/edit', [DetailsPayementController::class, 'edit'])->name('versement.edit');
+    Route::put('versements/{detailsPayement}', [DetailsPayementController::class, 'update'])->name('versement.update');
+    Route::delete('versements/{detailsPayement}', [DetailsPayementController::class, 'destroy'])->name('versement.destroy');
+
+
+
+    /**
+     * Salles
+     */
     Route::get('salles', [SalleController::class, 'index'])->name('salle.index');
-
     Route::get('salles/create', [SalleController::class, 'create'])->name('salle.create');
     Route::post('salles/store', [SalleController::class, 'store'])->name('salle.store');
     Route::get('salles/{salle}', [SalleController::class, 'show'])->name('salle.show');
@@ -114,9 +160,6 @@ Route::middleware(['auth'])->group(function () {
     //evenements
     Route::get('evenements', [EvenementController::class, 'index'])->name('evenements.index');
 
-
-
-
     //administration
     Route::get('administration-in', [AdministrationController::class, 'index'])->name('administration.index');
     Route::get('administration/create', [AdministrationController::class, 'create'])->name('administration.create');
@@ -135,6 +178,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('etudiants/{etudiant}/edit', [EtudiantController::class, 'edit'])->name('etudiant.edit');
     Route::put('etudiants/{etudiant}', [EtudiantController::class, 'update'])->name('etudiant.update');
     Route::delete('etudiants/{etudiant}', [EtudiantController::class, 'destroy'])->name('etudiant.destroy');
+
+    //parents
+    Route::get('parents', [ParentsController::class, 'index'])->name('parents.index');
+    Route::get('parents/{etudiant}/create', [ParentsController::class, 'create'])->name('parents.create');
+    Route::post('parents/store', [ParentsController::class, 'store'])->name('parents.store');
+    Route::get('parents/{parents}', [ParentsController::class, 'show'])->name('parents.show');
+    Route::get('parents/{parents}/edit', [ParentsController::class, 'edit'])->name('parents.edit');
+    Route::put('parents/{parents}', [ParentsController::class, 'update'])->name('parents.update');
+    Route::delete('parents/{parents}', [ParentsController::class, 'destroy'])->name('parents.destroy');
 
 
     //professeurs
@@ -165,9 +217,37 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('examens/{examen}/notes/{examenNote}', [ExamenNoteController::class, 'destroy'])->name('examens.notes.destroy');
 
 
+    /**
+     * CAR & Transport
+     */
+    Route::get('cars', [CarController::class, 'index'])->name('cars.index');
+    Route::get('cars/create', [CarController::class, 'create'])->name('cars.create');
+    Route::post('cars/store', [CarController::class, 'store'])->name('cars.store');
+    Route::get('cars/{car}', [CarController::class, 'show'])->name('cars.show');
+    Route::get('cars/{car}/edit', [CarController::class, 'edit'])->name('cars.edit');
+    Route::put('cars/{car}', [CarController::class, 'update'])->name('cars.update');
+    Route::delete('cars/{car}', [CarController::class, 'destroy'])->name('cars.destroy');
+
+    /**
+     * CAR INSCRIPTION
+     */
+    Route::get('cars/inscription', [CarInscriptionController::class, 'index'])->name('car_inscriptions.index');
+    Route::get('cars/inscription/create', [CarInscriptionController::class, 'create'])->name('car_inscriptions.create');
+    Route::post('cars/inscription/store', [CarInscriptionController::class, 'store'])->name('car_inscriptions.store');
+    Route::get('cars/inscription/{carInscription}', [CarInscriptionController::class, 'show'])->name('car_inscriptions.show');
+    Route::get('cars/inscription/{carInscription}/edit', [CarInscriptionController::class, 'edit'])->name('car_inscriptions.edit');
+    Route::put('cars/inscription/{carInscription}', [CarInscriptionController::class, 'update'])->name('car_inscriptions.update');
+    Route::delete('cars/inscription/{carInscription}', [CarInscriptionController::class, 'destroy'])->name('car_inscriptions.destroy');
+    //by incription
+    Route::get('cars/inscription/{inscription}/etudiants', [CarInscriptionController::class, 'addVersement'])->name('car_inscriptions.addVersement');
+    Route::post('cars/inscription/{inscription}/etudiants', [CarInscriptionController::class, 'storeVersement'])->name('car_inscriptions.storeVersement');
+    Route::delete('cars/inscription/{inscription}/{versement}', [CarInscriptionController::class, 'destroyVersement'])->name('car_inscriptions.destroyVersement');
 
 
-    Route::get('validate-account', [AuthController::class, 'activateAccount'])->name('validate-account');
+
+
+
+    Route::post('validate-account', [AuthController::class, 'activateAccount'])->name('validate-account');
 
     /**
      * LOGOUT

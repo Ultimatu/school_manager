@@ -14,6 +14,7 @@ class DetailsPayement extends Model
         'amount',
         'date',
         'observation',
+        'mode_payement',
     ];
 
     public function paymentScolarite()

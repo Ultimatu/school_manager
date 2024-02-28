@@ -28,7 +28,8 @@ class Etudiant extends Model
         'user_id',
         'status',
         'urgent_phone',
-        'annee_scolaire'
+        'annee_scolaire',
+        'gender',
     ];
 
     protected $hidden = [
@@ -69,6 +70,14 @@ class Etudiant extends Model
 
     public function CiteInscriptions(){
         return $this->hasMany(CiteInscription::class);
+    }
+
+    public function scolarite(){
+        return $this->hasOne(PaymentScolarite::class);
+    }
+
+    public function versements(){
+        return DetailsPayement::where('payment_scolarite_id', $this->scolarite->id)->get();
     }
 
 

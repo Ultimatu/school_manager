@@ -88,7 +88,7 @@ Route::middleware(['auth'])->group(function () {
     */
     Route::get('versements', [DetailsPayementController::class, 'index'])->name('versement.index');
     Route::get('versements/create', [DetailsPayementController::class, 'create'])->name('versement.create');
-    Route::get('versements/{paymentScolarite}/create', [DetailsPayementController::class, 'createByEtudiant'])->name('versement.create');
+    Route::get('versements/{paymentScolarite}/create', [DetailsPayementController::class, 'createByEtudiant'])->name('versement.etudiant.create');
     Route::post('versements/store', [DetailsPayementController::class, 'store'])->name('versement.store');
     Route::get('versements/{detailsPayement}', [DetailsPayementController::class, 'show'])->name('versement.show');
     Route::get('versements/{detailsPayement}/edit', [DetailsPayementController::class, 'edit'])->name('versement.edit');

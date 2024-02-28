@@ -27,8 +27,7 @@ class ParentsController extends Controller
     public function create(Etudiant $etudiant)
     {
         $parent = new Parents();
-        $parents = Parents::all();
-        return view('components.pages.etudiants.parent.form', compact('etudiant', 'parent', 'parents'));
+        return view('components.pages.etudiants.parent.form', compact('etudiant', 'parent'));
 
     }
 
@@ -51,6 +50,7 @@ class ParentsController extends Controller
         $parent->first_name = $request->first_name;
         $parent->last_name = $request->last_name;
         $parent->phone = $request->phone;
+        $parent->email = $request->email;
         $parent->address = $request->address;
         $parent->profession = $request->profession;
         $parent->etudiants_ids = $request->etudiant_id;
@@ -64,14 +64,13 @@ class ParentsController extends Controller
         $user->name = $request->first_name . ' ' . $request->last_name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->password = bcrypt($request->phone);
+        $user->password = \bcrypt($request->phone);
         $user->role_auth = 'parent';
         $user->save();
 
 
         $parent->user_id = $user->id;
         $parent->save();
-
 
 
         return redirect()->route('etudiant.show', $etudiant->id)->with('success', 'Nouveau parent ajouté avec succès');
@@ -82,7 +81,7 @@ class ParentsController extends Controller
      */
     public function show(Parents $parents)
     {
-        return view('components.pages.etudiants.parent.show', compact('parents'));
+        return view('components.pages.parent.show', compact('parents'));
     }
 
     /**
@@ -90,7 +89,8 @@ class ParentsController extends Controller
      */
     public function edit(Parents $parents)
     {
-        return view('components.pages.etudiants.parent.form', compact('parents'));
+        $parent = $parents;
+        return view('components.pages.etudiants.parent.form', compact('parent'));
     }
 
     /**
@@ -103,7 +103,7 @@ class ParentsController extends Controller
         $user->update([
             'name' => $request->first_name . ' ' . $request->last_name,
             'email' => $request->email,
-            'password' => bcrypt($request->phone),
+            'password' => \bcrypt($request->phone),
             'role_auth' => 'parent',
             'phone' => $request->phone,
         ]);

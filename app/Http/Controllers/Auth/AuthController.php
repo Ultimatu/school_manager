@@ -24,7 +24,7 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $request->has('remember'))) {
             if (Auth::user()->isEtudiant()){
                 $etudiant = Etudiant::where('user_id', Auth::user()->id)->first();
                 if ($etudiant->status === 'is_pending'){

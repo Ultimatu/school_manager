@@ -36,9 +36,10 @@ class Parents extends Model
     }
 
 
-    public function etudiant()
+    public function etudiants()
     {
-        return $this->belongsTo(Etudiant::class);
+        //split etudiants_ids ; and return the etudiant
+        return Etudiant::whereIn('id', explode(';', $this->etudiants_ids))->get();
     }
 
 

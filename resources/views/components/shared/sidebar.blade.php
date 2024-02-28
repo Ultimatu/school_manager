@@ -28,6 +28,11 @@
                     <a href="{{ route('etudiant.index') }}" class="nav-link {{ request()->routeIs('etudiant.*') ? 'active' : '' }}"><i class="ri-user-3-line fs-2"></i>
                         <span>Etudiants</span></a>
                 </li>
+                {{-- parents --}}
+                <li class="nav-item">
+                    <a href="{{ route('parents.index') }}" class="nav-link {{ request()->routeIs('parents.*') ? 'active' : '' }}"><i class="ri-user-3-line fs-2"></i>
+                        <span>Parents</span></a>
+                </li>
                 {{-- Filiere --}}
                 <li class="nav-item">
                     <a href="{{ route('filiere.index') }}" class="nav-link {{ request()->routeIs('filiere.*') ? 'active' : '' }}"><i class="ri-book-3-line fs-2"></i>
@@ -45,7 +50,7 @@
                 </li>
                 {{-- Salles --}}
                 <li class="nav-item">
-                    <a href="{{ route('salle.index') }}" class="nav-link {{ request()->routeIs('salles.*') ? 'active' : '' }}"><i class="ri-home-2-line fs-2"></i>
+                    <a href="{{ route('salle.index') }}" class="nav-link {{ request()->routeIs('salle.*') ? 'active' : '' }}"><i class="ri-home-2-line fs-2"></i>
                         <span>Salles</span></a>
                 </li>
                 {{-- Emplois du temps --}}

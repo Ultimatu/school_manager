@@ -80,6 +80,11 @@ class Etudiant extends Model
         return DetailsPayement::where('payment_scolarite_id', $this->scolarite->id)->get();
     }
 
+    public function parents()
+    {
+        return Parents::where('etudiants_ids', 'like', '%'.$this->id.'%')->get();
+    }
+
 
     public function getFullname()
     {

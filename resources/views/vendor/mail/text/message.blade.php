@@ -2,7 +2,7 @@
     {{-- Header --}}
     <x-slot:header>
         @if (config('app.env') === 'production')
-            @lang('You are receiving this email because we received a password reset request for your account.')
+            @lang('Vous recevez ce courriel car nous avons reçu une demande de réinitialisation de mot de passe pour votre compte.')
         @else
 
         @endif
@@ -26,7 +26,7 @@
     {{-- Footer --}}
     <x-slot:footer>
         <x-mail::footer>
-            © {{ date('Y') }} {{ config('app.name') }}. @lang('All rights reserved.')
+            © {{ date('Y') }} {{ config('app.name') }}. @lang('Tous droits réservés.')
         </x-mail::footer>
     </x-slot:footer>
 </x-mail::layout>

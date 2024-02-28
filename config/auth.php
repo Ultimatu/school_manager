@@ -94,7 +94,7 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => 'password_reset_tokens',
-            'expire' => 60 * 5, 
+            'expire' => 60 * 5,
             'throttle' => 60,
         ],
     ],
@@ -111,5 +111,6 @@ return [
     */
 
     'password_timeout' => 10800,
+    'remember' => 1209600, // 2 weeks
 
 ];

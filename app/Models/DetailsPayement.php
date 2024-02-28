@@ -21,4 +21,10 @@ class DetailsPayement extends Model
     {
         return $this->belongsTo(PaymentScolarite::class);
     }
+
+    public function etudiant()
+    {
+        return Etudiant::find($this->paymentScolarite->etudiant_id);
+    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\AnneeScolaire;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreParentsRequest extends FormRequest
@@ -27,9 +28,9 @@ class StoreParentsRequest extends FormRequest
             'phone' => 'required|string|max:255|unique:users',
             'address' => 'required|string|max:255',
             'profession' => 'required|string|max:255',
-            'is_legal_tutor' => 'required|boolean',
+            'is_legal_tutor' => 'nullable|boolean',
             'status' => 'required|boolean',
-            'etudiants_ids' => 'required',
+            'etudiant_id' => 'required|exists:etudiants,id',
             'email' => 'nullable|email|unique:users',
             'type' => 'required|string|max:255',
         ];
@@ -53,7 +54,7 @@ class StoreParentsRequest extends FormRequest
             'profession.required' => 'La profession est obligatoire',
             'is_legal_tutor.required' => 'Le statut de tuteur légal est obligatoire',
             'status.required' => 'Le statut est obligatoire',
-            'etudiants_ids.required' => 'L\'étudiant est obligatoire',
+            'etudiant_id.required' => 'L\'étudiant est obligatoire',
             'type.required' => 'Le type est obligatoire'
         ];
     }
@@ -74,9 +75,23 @@ class StoreParentsRequest extends FormRequest
             'profession' => 'profession',
             'is_legal_tutor' => 'statut de tuteur légal',
             'status' => 'statut',
-            'etudiants_ids' => 'étudiant',
+            'etudiant_id' => 'étudiant',
             'type' => 'type de parent',
         ];
+    }
+
+
+
+    //before validation
+    public function prepareForValidation()
+    {
+        $annneScolaire = AnneeScolaire::where('status', 'en cours')->first();
+
+        $this->merge([
+            'status' => $this->status = 1,
+            'is_legal_tutor' => $this->has('is_legal_tutor') ? 1 : 0,
+            'annee_scolaire' => $this->annee_scolaire = $annneScolaire->annee_scolaire,
+        ]);
     }
 
 

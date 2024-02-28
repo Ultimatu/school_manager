@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreExamenRequest;
 use App\Http\Requests\UpdateExamenRequest;
+use App\Models\AnneeScolaire;
 use App\Models\ClasseCours;
 use App\Models\EmploiDuTemps;
 use App\Models\Examen;
@@ -16,9 +17,7 @@ class ExamenController extends Controller
      */
     public function index()
     {
-        $year = date('Y');
-        //si on est entre janvier et aout alors $annee_scolaire = year-1/year sinon $annee_scolaire = year/year+1
-        $annee_scolaire = date('m') < 9 ? ($year - 1) . '-' . $year : $year . '-' . ($year + 1);
+        $annee_scolaire = AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire;
         $examens = Examen::where('annee_scolaire', $annee_scolaire)->get();
         if (request()->expectsJson()) {
             return response()->json(['data' => $examens], 200);

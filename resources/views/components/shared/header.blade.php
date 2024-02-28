@@ -12,8 +12,8 @@
         <div class="dropdown-menu dropdown-menu-end mt-10-f">
             <label>Choix de la couleur</label>
             <nav id="skinMode" class="nav nav-skin">
-                <a href="" class="nav-link active">Blanche</a>
-                <a href="" class="nav-link">Noire</a>
+                <a href="" class="nav-link active">Light</a>
+                <a href="" class="nav-link">Dark</a>
             </nav>
             <hr>
             <label>Sidebar Skin</label>

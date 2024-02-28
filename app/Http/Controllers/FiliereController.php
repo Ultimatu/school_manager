@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreFiliereRequest;
 use App\Http\Requests\UpdateFiliereRequest;
+use App\Models\AnneeScolaire;
 use App\Models\Filiere;
 
 class FiliereController extends Controller
@@ -13,7 +14,7 @@ class FiliereController extends Controller
      */
     public function index()
     {
-        $filieres = Filiere::all();
+        $filieres = Filiere::where('annee_scolaire', AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire)->get();
         return view('components.pages.filiere.list', compact('filieres'));
     }
 

@@ -47,11 +47,11 @@
                                         Date de début
                                     </th>
                                     <th>
-                                        Statut
-
+                                        Date de fin
                                     </th>
                                     <th>
-                                        Date de fin
+                                        Statut
+
                                     </th>
                                     <th>
                                         Actions

@@ -33,9 +33,10 @@ class DetailsPayementController extends Controller
         return view('components.pages.versements.form', compact('versement', 'scolarites'));
     }
 
-    public function createByEtudiant(PaymentScolarite $scolarite)
+    public function createByEtudiant(PaymentScolarite $paymentScolarite)
     {
         $versement = new DetailsPayement();
+        $scolarite = $paymentScolarite;
         return view('components.pages.versements.form_by', compact('versement', 'scolarite'));
     }
 
@@ -62,7 +63,9 @@ class DetailsPayementController extends Controller
      */
     public function edit(DetailsPayement $detailsPayement)
     {
-        return view('components.pages.versements.form', compact('detailsPayement'));
+        $scolarites = PaymentScolarite::where('annee_scolaire', AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire)->where('is_paid', 0)->get();
+        $versement = $detailsPayement;
+        return view('components.pages.versements.form', compact('versement', 'scolarites'));
     }
 
     /**
@@ -80,6 +83,11 @@ class DetailsPayementController extends Controller
      */
     public function destroy(DetailsPayement $detailsPayement)
     {
+        //verifier si le parent a pour statut is_paid = 1
+        if($detailsPayement->paymentScolarite->is_paid === 1){
+           //changer le statut de is_paid à 0
+            $detailsPayement->paymentScolarite->update(['is_paid' => 0]);
+        }
         $detailsPayement->delete();
         return redirect()->route('versement.index')->with('success', 'Versement supprimé avec succès');
     }

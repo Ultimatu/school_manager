@@ -45,7 +45,8 @@ class PaymentScolariteController extends Controller
      */
     public function show(PaymentScolarite $paymentScolarite)
     {
-        return view('components.pages.scolarite.show', compact('paymentScolarite'));
+        $scolarite = $paymentScolarite;
+        return view('components.pages.scolarite.show', compact('scolarite'));
     }
 
     /**

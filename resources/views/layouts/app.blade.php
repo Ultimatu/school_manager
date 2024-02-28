@@ -64,7 +64,9 @@
         <script src="{{ asset('lib/prismjs/prism.js') }}"></script>
         <script src="{{ asset('lib/parsleyjs/parsley.min.js') }}"></script>
         <script src="{{ asset('lib/jquery-steps/build/jquery.steps.min.js') }}"></script>
+        <script src="{{ asset('lib/jqueryui/jquery-ui.min.js')}}"></script>
     @endif
+
     <script src="{{ asset('lib/sweealert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('lib/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

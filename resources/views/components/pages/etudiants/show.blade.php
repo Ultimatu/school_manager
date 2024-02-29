@@ -25,20 +25,20 @@
                         class="img-thumbnail" width="100">
                     {{ $etudiant->first_name }} {{ $etudiant->last_name }}
                     {{-- buttons --}}
-                    <div class="float-right d-flex justify-content-between">
+                    <div class="float-right d-flex justify-content-between gap-2">
                         {{-- edit --}}
-                        <a href="{{ route('etudiant.edit', $etudiant->id) }}" class="btn btn-warning">
+                        <a href="{{ route('etudiant.edit', $etudiant->id) }}" class="btn btn-warning mb-3">
                             <i class="ri-pencil-line fs-3 text-white"></i>
                             Modifier
                         </a>
                         {{-- add_parent button --}}
-                        <a href="{{ route('parents.create', ['etudiant' => $etudiant->id]) }}" class="btn btn-success">
+                        <a href="{{ route('parents.create', ['etudiant' => $etudiant->id]) }}" class="btn btn-success mb-3">
                             <i class="ri-user-add-line fs-3 text-white"></i>
                             Ajouter un parent
                         </a>
                         {{-- ajouter un versement --}}
                         <a href="{{ route('versement.etudiant.create', ["paymentScolarite"=>$etudiant->scolarite->id]) }}" class="btn btn-info">
-                            <i class="ri-money-dollar-circle-line fs-3 text-white"></i>
+                            <i class="ri-money-dollar-circle-line fs-3 text-white mb-3"></i>
                             Ajouter un versement
                         </a>
                         {{-- delete --}}
@@ -182,7 +182,7 @@
                                 </p>
                                 {{-- details payments --}}
                                 <div class="datatable">
-                                    <table class="table table-bordered table-striped">
+                                    <table class="table table-bordered table-striped table-responsive">
                                         <thead>
                                             <tr>
                                                 <th scope="col">Montant</th>

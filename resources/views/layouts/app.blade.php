@@ -6,9 +6,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Meta -->
-    <meta name="description" content="">
-    <meta name="author" content="Themepixels">
-    <!-- Favicon -->
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Logicielle de gestion des écoles, UTA (Université des Technologies d'Abidjan - Côte d'Ivoire) - SCHOOL - GENIUS est une solution de gestion des écoles, universités, centres de formation professionnelle, etc.">
+    <meta name="author" content="UTA - SCHOOL - GENIUS">
+
+    <meta property="og:title" content="UTA - SCHOOL - GENIUS">
+    <meta property="og:description" content="UTA - SCHOOL - GENIUS">
+    <meta property="og:image" content="https://uta-school.eveecorp.link/assets/img/favicon.png">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:site_name" content="UTA - SCHOOL - GENIUS">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <meta property="og:locale:alternate" content="{{ str_replace('_', '-', app()->getLocale()) }}">    <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/favicon.png') }}">
 
     <title>@yield('title', 'UTA SCHOOL')</title>

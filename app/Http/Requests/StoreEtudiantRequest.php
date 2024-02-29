@@ -127,7 +127,6 @@ class StoreEtudiantRequest extends FormRequest
             'birth_place' => ucfirst($this->birth_place),
             'annee_scolaire' => AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire,
             'status' => 'active',
-            'password' => bcrypt($this->student_mat),
         ]);
     }
 

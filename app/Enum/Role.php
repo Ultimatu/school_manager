@@ -9,7 +9,7 @@ namespace App\Enum;
  */
 class Role
 {
-    
+
     const ADMIN = 'admin';
     const ETUDIANT = 'etudiant';
     const CHAUFFEUR = 'chauffeur';
@@ -78,7 +78,7 @@ class Role
     }
 
 
-    public static function getAbilities($role)
+    public static function getAbilities($role): array
     {
         return self::rolesAbilities()[$role];
     }

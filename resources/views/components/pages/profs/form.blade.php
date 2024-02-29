@@ -51,7 +51,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group bmd-form-group">
-                                        <label for="last_name" class="bmd-label-floating">Nom</label>
+                                        <label for="last_name" class="bmd-label-floating">Prénom</label>
                                         <input type="text" class="form-control" id="last_name" name="last_name"
                                             value="{{ old('last_name') ?? $professeur->last_name }}">
                                         @error('last_name')
@@ -108,7 +108,7 @@
                                 </div>
                             </div>
                             <div class="row mb-1">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     {{-- gender --}}
                                     <div class="form-group bmd-form-group">
                                         <label for="gender" class="bmd-label-floating">Genre</label>
@@ -123,7 +123,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     {{-- is_available --}}
                                     <div class="form-group bmd-form-group">
                                         <label for="is_available" class="bmd-label-floating">Statut</label>
@@ -138,20 +138,6 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-4 mb-3">
-                                    <div class="form-group bmd-form-group">
-                                        <label for="annee_scolaire" class="bmd-label-floating">Année Scolaire</label>
-                                        <input type="text" class="form-control" id="annee_scolaire"
-                                            name="annee_scolaire"
-                                            value="{{ old('annee_scolaire', $professeur->annee_scolaire) }}"
-                                            placeholder="Entrez l'année scolaire Ex: 2023-2024" required minlength="9"
-                                            maxlength="9" pattern="^\d{4}-\d{4}$">
-                                        @error('annee_scolaire')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-
                             </div>
                             <div class="row mb-1">
                                 <div class="col-md-6">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\AnneeScolaire;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreProfesseurRequest extends FormRequest
@@ -78,4 +79,11 @@ class StoreProfesseurRequest extends FormRequest
     }
 
 
+    public function prepareForValidation()
+    {
+        $annneScolaire = AnneeScolaire::where('status', 'en cours')->first();
+        $this->merge([
+            'annee_scolaire' => $this->annee_scolaire = $annneScolaire->annee_scolaire,
+        ]);
+    }
 }

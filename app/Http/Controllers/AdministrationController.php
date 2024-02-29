@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enum\Role;
 use App\Http\Requests\StoreAdministrationRequest;
 use App\Http\Requests\UpdateAdministrationRequest;
+use App\Mail\AccountActivatedMail;
 use App\Models\Administration;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -40,28 +41,33 @@ class AdministrationController extends Controller
         if ($user){
             return redirect()->back()->withInput()->with('error', 'Cet email/phone est déjà associé à un utilisateur');
         }
+        $password = User::generatePassword();
         $user = User::create([
             'name'=>$request->first_name.' '.$request->last_name,
             'email'=>$request->email,
             'phone'=>$request->phone,
             'role_auth'=>$request->role,
-            'password'=>Hash::make($request->phone)
+            'password'=>\bcrypt($password),
         ]);
 
         $request->merge([
             'user_id'=>$user->id,
             'status'=>1,
-            'password'=>Hash::make($request->phone),
+            'password'=>\bcrypt($password),
         ]);
         if ($request->hasFile('avatar')){
             $file = $request->file('avatar');
             $name = time().$file->getClientOriginalName();
-            $file->move('administraions', $name);
+            $file->move('images/administraions', $name);
             $request->merge([
-                'avatar'=>$name,
+                'avatar'=> "images/administraions/".$name,
             ]);
         }
         $admin = Administration::create($request->all());
+
+        if (env('MAIL_SERVICE_STATE') === 'on'){
+            $user->notify(new AccountActivatedMail('admin', $user, $password, "created"));
+        }
 
         return redirect()->route('administration.index')->with('success', 'Administrateur ajouté avec succès');
 
@@ -93,6 +99,8 @@ class AdministrationController extends Controller
         if ($user && $user->id != $administration->user_id){
             return redirect()->back()->withInput()->with('error', 'Cet email/phone est déjà associé à un utilisateur');
         }
+        //build password of 8 characters, maj, min, number
+        $password = User::generatePassword();
         $user = User::find($administration->user_id);
         $user->update([
             'name'=>$request->first_name.' '.$request->last_name,
@@ -100,20 +108,24 @@ class AdministrationController extends Controller
             'phone'=>$request->phone,
             'role_auth'=>$request->role,
             'permissions'=>Role::getAbilities($request->role),
-            'password'=>\bcrypt($request->phone)
+            'password'=>\bcrypt($password)
         ]);
         if ($request->hasFile('avatar')){
             $file = $request->file('avatar');
             $name = time().$file->getClientOriginalName();
-            $file->move('administraions', $name);
+            $file->move('images/administraions', $name);
             $request->merge([
-                'avatar'=>$name,
+                'avatar'=> "images/administraions/".$name,
             ]);
         }
         $request->merge([
-            'password'=>\bcrypt($request->phone),
+            'password'=>\bcrypt($password),
         ]);
         $administration->update($request->all());
+
+        if (env('MAIL_SERVICE_STATE') === 'on'){
+            $user->notify(new AccountActivatedMail('admin', $user, $password, "updated"));
+        }
 
         return redirect()->route('administration.index')->with('success', 'Administrateur modifié avec succès');
     }

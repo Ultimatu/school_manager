@@ -118,7 +118,7 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-12 mb-3 d-flex justify-content-center">
+                                            <div class="col-md-6 mb-3">
                                                 <div class="form-group bmd-form-group">
                                                     <label for="avatar" class="bmd-label-floating">Photo</label>
                                                     <input type="file" class="form-control" id="avatar"
@@ -134,36 +134,19 @@
                                                     Photo de l'étudiant
                                                 @endif
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        {{-- gender, annee_scolaire --}}
-                                        <div class="col-md-6 mb-3">
-                                            <div class="form-group bmd-form-group">
-                                                <label for="gender" class="bmd-label-floating">Sexe</label>
-                                                <select name="gender" id="gender" required class="form-control">
-                                                    <option value="M"
-                                                        {{ $etudiant->gender === 'M' ? 'selected' : '' }}>Masculin</option>
-                                                    <option value="F"
-                                                        {{ $etudiant->gender === 'F' ? 'selected' : '' }}>Féminin</option>
-                                                </select>
-                                                @error('gender')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <div class="form-group bmd-form-group">
-                                                <label for="annee_scolaire" class="bmd-label-floating">Année
-                                                    Scolaire</label>
-                                                <input type="text" class="form-control" id="annee_scolaire"
-                                                    name="annee_scolaire"
-                                                    value="{{ old('annee_scolaire', $etudiant->annee_scolaire) }}"
-                                                    placeholder="Entrez l'année scolaire Ex: 2023-2024" minlength="9"
-                                                    maxlength="9" pattern="^\d{4}-\d{4}$" required>
-                                                @error('annee_scolaire')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
+                                            <div class="col-md-6 mb-3">
+                                                <div class="form-group bmd-form-group">
+                                                    <label for="gender" class="bmd-label-floating">Sexe</label>
+                                                    <select name="gender" id="gender" required class="form-control">
+                                                        <option value="M"
+                                                            {{ $etudiant->gender === 'M' ? 'selected' : '' }}>Masculin</option>
+                                                        <option value="F"
+                                                            {{ $etudiant->gender === 'F' ? 'selected' : '' }}>Féminin</option>
+                                                    </select>
+                                                    @error('gender')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -381,12 +364,12 @@
                 },
                 messages: {
                     first_name: {
-                        required: "Le prénom de l'étudiant est requis",
-                        minlength: "Le prénom de l'étudiant doit contenir au moins 3 caractères",
-                    },
-                    last_name: {
                         required: "Le nom de l'étudiant est requis",
                         minlength: "Le nom de l'étudiant doit contenir au moins 3 caractères",
+                    },
+                    last_name: {
+                        required: "Le prénom de l'étudiant est requis",
+                        minlength: "Le prénom de l'étudiant doit contenir au moins 3 caractères",
                     },
                     email: {
                         required: "L'adresse email de l'étudiant est requise",

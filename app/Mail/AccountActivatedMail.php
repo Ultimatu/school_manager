@@ -16,13 +16,20 @@ class AccountActivatedMail extends Mailable
     public string $type;
     public string $data;
 
+    public string $action;
+
+    public string $password;
+
     /**
      * Create a new message instance.
      */
-    public function __construct(string $type, string $data)
+    public function __construct(string $type, string $data,$password, $action = 'created')
     {
         $this->type = $type;
         $this->data = $data;
+        $this->action = $action;
+        $this->password = $password;
+
     }
 
     /**
@@ -43,26 +50,26 @@ class AccountActivatedMail extends Mailable
         if ($this->type === 'etudiant') {
             return new Content(
                 view: 'components.mails.etudiant-activated',
-                with: ['data' => $this->data],
+                with: ['data' => $this->data, 'action' => $this->action, 'password' => $this->password],
             );
         }
         elseif ($this->type === 'parent') {
             return new Content(
                 view: 'components.mails.parent-activated',
-                with: ['data' => $this->data],
+                 with: ['data' => $this->data, 'action' => $this->action, 'password' => $this->password],
             );
         }
 
         elseif ($this->type === 'professeur') {
             return new Content(
                 view: 'components.mails.prof-activated',
-                with: ['data' => $this->data],
+                 with: ['data' => $this->data, 'action' => $this->action, 'password' => $this->password],
             );
         }
         else{
             return new Content(
                 view: 'components.mails.admin-activated',
-                with: ['data' => $this->data],
+                 with: ['data' => $this->data, 'action' => $this->action, 'password' => $this->password],
             );
         };
 

@@ -43,17 +43,17 @@ class EtudiantController extends Controller
         //validate request
         $request->validated();
         //create user with role etudiant
+        $password = User::generatePassword("ETUDIANT");
         $user = User::create([
             'name' => $request->first_name . ' ' . $request->last_name,
             'email' => $request->email,
-            'password' => \bcrypt($request->student_mat),
+            'password' => \bcrypt($password),
             'role_auth' => 'etudiant',
             'phone' => $request->phone,
             'annee_scolaire'=>$request->annee_scolaire
         ]);
         //create etudiant
-
-        $request->merge(['user_id' => $user->id]);
+        $request->merge(['user_id' => $user->id, 'password' => \bcrypt($password)]);
         $etudiant = Etudiant::create($request->all());
 
         $paymentScolarite = PaymentScolarite::create([
@@ -71,7 +71,7 @@ class EtudiantController extends Controller
 
 
         if (env('MAIL_SERVICE_STATE') == 'on') {
-            Mail::to($request->email)->send(new AccountActivatedMail('etudiant', $etudiant));
+            Mail::to($request->email)->send(new AccountActivatedMail('etudiant', $etudiant, $password, "created"));
         }
 
         if ($request->has('add_parent')) {
@@ -114,11 +114,12 @@ class EtudiantController extends Controller
         //validate request
         $request->validated();
         //update user
+        $password = User::generatePassword("ETUDIANT");
         $etudiant->user->update([
             'name' => $request->first_name . ' ' . $request->last_name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'password' => bcrypt($request->student_mat),
+            'password' => \bcrypt($password)
         ]);
 
         //update etudiant
@@ -126,7 +127,7 @@ class EtudiantController extends Controller
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
-            'password' => bcrypt($request->student_mat),
+            'password' => \bcrypt($password),
             'phone' => $request->phone,
             'address' => $request->address,
             'classe_id' => $request->classe_id,
@@ -152,6 +153,9 @@ class EtudiantController extends Controller
             'amount' => $request->versement_amount,
             'date' => now(),
         ]);
+        if (env('MAIL_SERVICE_STATE') == 'on') {
+            Mail::to($request->email)->send(new AccountActivatedMail('etudiant', $etudiant, $password, "updated"));
+        }
 
         return redirect()->route('etudiant.show', $etudiant->id)->with('success', 'Etudiant modifié avec succès');
 

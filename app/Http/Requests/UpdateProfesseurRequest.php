@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\AnneeScolaire;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProfesseurRequest extends FormRequest
@@ -77,5 +78,14 @@ class UpdateProfesseurRequest extends FormRequest
             'user_id.exists' => 'L\'utilisateur n\'existe pas',
         ];
 
+    }
+
+
+    public function prepareForValidation()
+    {
+        $annneScolaire = AnneeScolaire::where('status', 'en cours')->first();
+        $this->merge([
+            'annee_scolaire' => $this->annee_scolaire = $annneScolaire->annee_scolaire,
+        ]);
     }
 }

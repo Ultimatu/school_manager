@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\Role;
 use App\Http\Requests\StoreProfesseurRequest;
 use App\Http\Requests\UpdateProfesseurRequest;
 use App\Mail\AccountActivatedMail;
@@ -40,12 +41,14 @@ class ProfesseurController extends Controller
         }
 
         $request->validated();
+        $password = User::generatePassword('PROF');
         $user = new User();
         $user->name = $request->first_name . ' ' . $request->last_name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->password = bcrypt($request->matricule);
+        $user->password = \bcrypt($password);
         $user->role_auth = 'professeur';
+        $user->permissions = Role::getAbilities('professeur');
         $user->save();
 
         $professeur = new Professeur();
@@ -68,7 +71,7 @@ class ProfesseurController extends Controller
         $professeur->save();
 
         if (env('MAIL_SERVICE_STATE') == 'on') {
-            Mail::to($request->email)->send(new AccountActivatedMail('professeur', $professeur));
+            Mail::to($request->email)->send(new AccountActivatedMail('professeur', $professeur, $password, 'created'));
         }
         return redirect()->route('professeur.index')->with('success', 'Nouveau professeur ajouté avec succès');
     }
@@ -96,11 +99,12 @@ class ProfesseurController extends Controller
     public function update(UpdateProfesseurRequest $request, Professeur $professeur)
     {
         $request->validated();
+        $password = User::generatePassword('PROF');
         $user = User::find($professeur->user_id);
         $user->name = $request->first_name . ' ' . $request->last_name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->password = bcrypt($request->matricule);
+        $user->password = \bcrypt($password);
         $user->save();
 
         $professeur->first_name = $request->first_name;
@@ -111,7 +115,7 @@ class ProfesseurController extends Controller
         $professeur->matricule = $request->matricule;
         $professeur->specialities = $request->specialities;
         $professeur->is_available = $request->is_available;
-        $professeur->password = bcrypt($request->matricule);
+        $professeur->password = \bcrypt($password);
         if ($request->hasFile('avatar')) {
             $avatar = $request->file('avatar');
             $avatar_name = time() . '.' . $avatar->getClientOriginalExtension();
@@ -120,6 +124,9 @@ class ProfesseurController extends Controller
         }
         $professeur->save();
 
+        if (env('MAIL_SERVICE_STATE') == 'on') {
+            Mail::to($request->email)->send(new AccountActivatedMail('professeur', $professeur, $password, 'updated'));
+        }
         return redirect()->route('professeur.index')->with('success', 'Professeur modifié avec succès');
     }
 

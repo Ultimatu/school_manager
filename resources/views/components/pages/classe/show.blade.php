@@ -24,24 +24,23 @@
                         <h4 class="card-title mt-0"> Détail classe </h4>
                         <p class="card-category"> Informations sur la classe </p>
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-4 mb-3">
                                 <a href="{{ route('classe.edit', $classe->id) }}" class="btn btn-warning float-right">
                                     <i class="ri-pencil-line"></i>
                                     Modifier</a>
                             </div>
                             {{-- add cours --}}
-                            <div class="col-md-4">
+                            <div class="col-md-4 mb-3">
                                 <a href="{{ route('classe.createClasseCours', ['classe'=>$classe->id]) }}" class="btn btn-success float-right">
                                     <i class="ri-add-line"></i>
                                     Ajouter un cours à la classe</a>
                             </div>
                             {{-- end add cours --}}
                             {{-- show emploi du temps --}}
-                            <div class="col-md-4">
+                            <div class="col-md-4 mb-3">
                                 <a href="{{ route('classe.createEmploi', ['classe'=>$classe->id]) }}" class="btn btn-info float-right">
                                     <i class="ri-calendar-todo-line"></i>
                                     Emploi du temps</a>
-
                         </div>
                     </div>
                     <div class="card-body">
@@ -76,7 +75,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover table-striped table-responsive-sm">
                                 <thead class="">
                                     <th>
                                         ID
@@ -116,10 +115,10 @@
                                                 {{ $cours->end_date }}
                                             </td>
                                             <td>
-                                                <a href="{{ route('classe.editClasseCours', $cours->id) }}" class="btn btn-warning">
+                                                <a href="{{ route('classe.editClasseCours', $cours->id) }}" class="btn btn-warning mb-3">
                                                     <i class="ri-pencil-line"></i>
                                                     Modifier</a>
-                                                <form action="{{ route('classe.destroyClasseCours', $cours->id) }}" method="post" class="d-inline" id="deleteForm-{{ $cours->id }}">
+                                                <form action="{{ route('classe.destroyClasseCours', $cours->id) }}" method="post" class="d-inline mb-3" id="deleteForm-{{ $cours->id }}">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="button" class="btn btn-danger" onclick="deleteItem({{ $cours->id }})" style="color: #fff;">

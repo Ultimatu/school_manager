@@ -174,5 +174,14 @@ class User extends Authenticatable
     }
 
 
+    public  static function generatePassword($type = 'ADMIN'): string
+    {
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        $password = substr(str_shuffle($chars), 0, 8);
+        //password =  3 premiere lettre de type + 5 premier lettre de password
+        return strtoupper(substr($type, 0, 3)).'-' . $password;
+    }
+
+
 
 }

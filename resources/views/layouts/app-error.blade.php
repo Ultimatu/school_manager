@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
 
     <!-- Required meta tags -->
@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="Themepixels">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/favicon.png') }}">
 
     <title>
         @yield('title', 'UTA SCHOOL GENIUS - error')
@@ -26,7 +26,7 @@
     <div class="header">
       <div class="container">
         <a href="{{url('/')}}" class="header-logo">
-          <img src="{{asset('assets/img/logo.png')}}" alt="UTA SCHOOL GENIUS">
+          <img src="{{asset('assets/img/favicon.png')}}" alt="UTA SCHOOL GENIUS">
         </a>
 
       </div><!-- container -->

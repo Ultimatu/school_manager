@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -43,13 +44,13 @@ class UserController extends Controller
         }
 
         //update the password
-        auth()->user()->update(['password' => \bcrypt($request->password), 'email' => $request->email]);
+        auth()->user()->update(['password' => Hash::make($request->password), 'email' => $request->email]);
         if (auth()->user()->isEtudiant()) {
-            auth()->user()->etudiant->update(['password' => \bcrypt($request->password), 'email' => $request->email]);
+            auth()->user()->etudiant->update(['password' => Hash::make($request->password), 'email' => $request->email]);
         } elseif (auth()->user()->isProfesseur()) {
-            auth()->user()->professeur->update(['password' => \bcrypt($request->password), 'email' => $request->email]);
+            auth()->user()->professeur->update(['password' => Hash::make($request->password), 'email' => $request->email]);
         } else {
-            auth()->user()->administration->update(['password' => \bcrypt($request->password), 'email' => $request->email]);
+            auth()->user()->administration->update(['password' => Hash::make($request->password), 'email' => $request->email]);
         }
 
         return back()->with('success', 'Le mot de passe et email mis à jours avec succès');
@@ -111,7 +112,8 @@ class UserController extends Controller
             $avatar = $request->file('avatar');
             $avatar_name = time() . '.' . $avatar->getClientOriginalExtension();
             $avatar->move(public_path("images/{$key}s"), $avatar_name);
-            $model->update(['avatar' => "images/{$key}s/" . $avatar_name]);
+            $model->update(['avatar' => "images/{$key}s/$avatar_name"]);
+            $validatedData['avatar'] = "images/{$key}s/$avatar_name";
         }
         $model->fill($validatedData)->save();
 

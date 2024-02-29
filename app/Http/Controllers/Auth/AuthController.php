@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Mail\AccountActivatedMail;
+use App\Mail\PasswordRsetSuccessfull;
 use App\Models\Classe;
 use App\Models\Etudiant;
 use App\Models\Parents;
@@ -12,6 +13,7 @@ use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -22,8 +24,11 @@ class AuthController extends Controller
     }
     public function authenticate(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string'
+        ]);
+        $credentials = $request->only(['email', 'password']);
         if (Auth::attempt($credentials, $request->has('remember'))) {
             if (Auth::user()->isEtudiant()){
                 $etudiant = Etudiant::where('user_id', Auth::user()->id)->first();
@@ -184,8 +189,8 @@ class AuthController extends Controller
         $parent->save();
 
         if (env('MAIL_SERVICE_STATE') === 'on'){
-            $etudiant->user->notify(new AccountActivatedMail('etudiant', $etudiant));
-            $parent->user->notify(new AccountActivatedMail('parent', $parent));
+            // $etudiant->user->notify(new AccountActivatedMail('etudiant', $etudiant));
+            // $parent->user->notify(new AccountActivatedMail('parent', $parent));
         }
 
         return redirect()->route('account-askings.index')->with('success', 'Compte activé avec succès');
@@ -247,8 +252,11 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
         $user->password = bcrypt($request->password);
         $user->save();
+        $token->delete();
 
-        $user->notify(new AccountActivatedMail('password_reset', $user));
+        if (env('MAIL_SERVICE_STATE') === 'on'){
+            Mail::to($user->email)->send(new PasswordRsetSuccessfull($user));
+        }
 
         return redirect()->route('login')->with('success', 'Mot de passe réinitialisé avec succès');
     }

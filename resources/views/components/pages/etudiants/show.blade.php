@@ -296,9 +296,13 @@
                 $(this).tab('show');
                 $("#infos .tab-pane").tabs({
                     collapsible: true,
-                    active: false
+                    active: false,
                 })
             });
+            let hash = window.location.hash;
+            if (hash) {
+                $('.nav-tabs a[href="' + hash + '"]').tab('show');
+            }
         });
     </script>
 @endpush

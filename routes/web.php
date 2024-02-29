@@ -172,6 +172,10 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
+Route::fallback(function () {
+    return view('components.errors.404');
+});
+
 
 
 

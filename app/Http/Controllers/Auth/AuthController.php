@@ -209,8 +209,10 @@ class AuthController extends Controller
                 'email' => 'Cet email ne correspond à aucun de nos utilisateurs',
             ]);
         }
-        if (env('MAIL_SERVICE_STATE') === 'on')
-            $user->notify(new ResetPassword($user));
+        if (env('MAIL_SERVICE_STATE') === 'on'){
+            $token = \Str::random(60);
+            $user->notify(new ResetPassword($token));
+        }
 
         return redirect()->route('login')->with('success', 'Un email de réinitialisation de mot de passe vous a été envoyé');
 

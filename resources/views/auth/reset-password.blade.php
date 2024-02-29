@@ -5,6 +5,7 @@
 @section('content')
 
     <div class="card card-auth">
+        @include('components.shared.alert')
         <div class="card-header">
             <a href="../" class="header-logo mb-4">UTA</a>
             <div class="mb-5">

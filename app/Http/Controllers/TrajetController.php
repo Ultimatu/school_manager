@@ -33,7 +33,6 @@ class TrajetController extends Controller
     public function store(StoreTrajetRequest $request)
     {
 
-        $request->merge(['waypoints' => json_encode($request->waypoints)]);
         $request->validated();
         //transormer requette waypoints en json
         $trajet = Trajet::create($request->all());

@@ -5,6 +5,7 @@
 @section('content')
 
     <div class="card card-sign">
+        @include('components.shared.alert')
         <div class="card-header">
             <a href="../" class="header-logo mb-4">UTA</a>
             {{-- ask if user is parent and lead to parent_login.blade.php --}}

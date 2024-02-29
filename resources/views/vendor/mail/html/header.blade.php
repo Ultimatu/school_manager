@@ -6,7 +6,7 @@
                 <img src="https://laravel.com/img/notification-logo.png" class="logo" alt="Laravel Logo">
             @else
                 @if (config('app.env') === 'production')
-                   <img src="{{config('app.url')}}/{{asset('assets/img/favicon.png')}}" class="logo" alt="Logo">
+                   <img src="https://uta-school.eveecorp.link/assets/img/favicon.png" class="logo" alt="Logo UTA">
                 @endif
                 {{ $slot }}
             @endif

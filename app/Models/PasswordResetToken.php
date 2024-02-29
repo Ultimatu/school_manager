@@ -9,6 +9,7 @@ class PasswordResetToken extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
         'email',
         'token'

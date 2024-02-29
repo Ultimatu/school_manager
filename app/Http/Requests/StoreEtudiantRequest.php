@@ -26,7 +26,6 @@ class StoreEtudiantRequest extends FormRequest
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'email' => 'required|email|unique:users',
-            'password' => 'required|string',
             'phone' => 'required|string',
             'address' => 'required|string',
             'student_mat' => 'required|string|unique:etudiants',
@@ -127,6 +126,7 @@ class StoreEtudiantRequest extends FormRequest
             'birth_place' => ucfirst($this->birth_place),
             'annee_scolaire' => AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire,
             'status' => 'active',
+            'is_paid' => $this->amount >= $this->versement_amount ? true : false,
         ]);
     }
 

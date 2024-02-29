@@ -40,7 +40,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::middleware(['guest'])->group(function () {
     Route::get('/', [AuthController::class, 'login'])->name('login');
     Route::post('authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
@@ -60,7 +59,8 @@ Route::middleware(['guest'])->group(function () {
 Route::middleware(['auth'])->group(function () {
 
     Route::get('my-profile', [UserController::class, 'index'])->name('my-profile');
-    //Route::put('my-profile', [UserController::class, 'update'])->name('my-profile.update');
+    Route::put('update-profile/{key}', [UserController::class, 'update'])->name('profile.update');
+    Route::put('change-password', [UserController::class, 'changePassword'])->name('profile.change-password');
     /**
      * DASHBOARD
      */

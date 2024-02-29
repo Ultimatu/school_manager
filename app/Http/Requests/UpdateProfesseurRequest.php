@@ -32,7 +32,6 @@ class UpdateProfesseurRequest extends FormRequest
             'matricule' => 'required|string|max:255|unique:professeurs,matricule',
             'specialities' => 'required|string|max:255',
             'is_available' => 'required|boolean',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'user_id' => 'required|integer|exists:users,id'
         ];
     }
@@ -83,6 +82,7 @@ class UpdateProfesseurRequest extends FormRequest
 
     public function prepareForValidation()
     {
+
         $annneScolaire = AnneeScolaire::where('status', 'en cours')->first();
         $this->merge([
             'annee_scolaire' => $this->annee_scolaire = $annneScolaire->annee_scolaire,

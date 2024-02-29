@@ -71,7 +71,7 @@ class EtudiantController extends Controller
 
 
         if (env('MAIL_SERVICE_STATE') == 'on') {
-            Mail::to($request->email)->send(new AccountActivatedMail('etudiant', $etudiant, $password, "created"));
+            Mail::to($request->email)->send(new AccountActivatedMail('etudiant', $user, $password, "created"));
         }
 
         if ($request->has('add_parent')) {
@@ -115,7 +115,7 @@ class EtudiantController extends Controller
         $request->validated();
         //update user
         $password = User::generatePassword("ETUDIANT");
-        $etudiant->user->update([
+        $user =$etudiant->user->update([
             'name' => $request->first_name . ' ' . $request->last_name,
             'email' => $request->email,
             'phone' => $request->phone,
@@ -154,7 +154,7 @@ class EtudiantController extends Controller
             'date' => now(),
         ]);
         if (env('MAIL_SERVICE_STATE') == 'on') {
-            Mail::to($request->email)->send(new AccountActivatedMail('etudiant', $etudiant, $password, "updated"));
+            Mail::to($request->email)->send(new AccountActivatedMail('etudiant', $user, $password, "updated"));
         }
 
         return redirect()->route('etudiant.show', $etudiant->id)->with('success', 'Etudiant modifié avec succès');

@@ -144,7 +144,7 @@
         </div><!-- sidebar-footer-top -->
         <div class="sidebar-footer-menu">
           <nav class="nav">
-            <a href="{{ route('my-profile') }}"><i class="ri-edit-2-line"></i> Edit Profile</a>
+            <a href="{{ route('my-profile') }}"><i class="ri-edit-2-line"></i>Edit Profile</a>
             <a href="{{ route('my-profile') }}"><i class="ri-profile-line"></i> View Profile</a>
           </nav>
           <hr>

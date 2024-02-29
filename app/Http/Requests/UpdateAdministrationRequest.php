@@ -31,7 +31,6 @@ class UpdateAdministrationRequest extends FormRequest
             'address' => 'required|string|max:255',
             'role' => 'required|string|max:255',
             'responsability' => 'required|string',
-            'avatar'=>'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'gender' => 'required|string|max:2',
         ];
 

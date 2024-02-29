@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -14,7 +15,7 @@ class AccountActivatedMail extends Mailable
     use Queueable, SerializesModels;
 
     public string $type;
-    public string $data;
+    public User $data;
 
     public string $action;
 
@@ -23,7 +24,7 @@ class AccountActivatedMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(string $type, string $data,$password, $action = 'created')
+    public function __construct(string $type, User $data,$password, $action = 'created')
     {
         $this->type = $type;
         $this->data = $data;

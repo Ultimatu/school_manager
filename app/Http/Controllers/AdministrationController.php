@@ -9,6 +9,7 @@ use App\Mail\AccountActivatedMail;
 use App\Models\Administration;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AdministrationController extends Controller
 {
@@ -55,18 +56,18 @@ class AdministrationController extends Controller
             'status'=>1,
             'password'=>\bcrypt($password),
         ]);
+        $name = null;
         if ($request->hasFile('avatar')){
             $file = $request->file('avatar');
             $name = time().$file->getClientOriginalName();
             $file->move('images/administraions', $name);
-            $request->merge([
-                'avatar'=> "images/administraions/".$name,
-            ]);
         }
         $admin = Administration::create($request->all());
-
+        if ($name !== null){
+            $admin->update(['avatar'=>"images/administraions/".$name]);
+        }
         if (env('MAIL_SERVICE_STATE') === 'on'){
-            $user->notify(new AccountActivatedMail('admin', $user, $password, "created"));
+            Mail::to($user->email)->send(new AccountActivatedMail('admin', $user, $password, "created"));
         }
 
         return redirect()->route('administration.index')->with('success', 'Administrateur ajouté avec succès');
@@ -110,21 +111,22 @@ class AdministrationController extends Controller
             'permissions'=>Role::getAbilities($request->role),
             'password'=>\bcrypt($password)
         ]);
+
+        $request->merge([
+            'password'=>\bcrypt($password),
+        ]);
+        $name = null;
         if ($request->hasFile('avatar')){
             $file = $request->file('avatar');
             $name = time().$file->getClientOriginalName();
             $file->move('images/administraions', $name);
-            $request->merge([
-                'avatar'=> "images/administraions/".$name,
-            ]);
         }
-        $request->merge([
-            'password'=>\bcrypt($password),
-        ]);
         $administration->update($request->all());
-
+        if ($name !== null){
+            $administration->update(['avatar'=>"images/administraions/".$name]);
+        }
         if (env('MAIL_SERVICE_STATE') === 'on'){
-            $user->notify(new AccountActivatedMail('admin', $user, $password, "updated"));
+            Mail::to($user->email)->send(new AccountActivatedMail('admin', $user, $password, "updated"));
         }
 
         return redirect()->route('administration.index')->with('success', 'Administrateur modifié avec succès');
@@ -146,7 +148,15 @@ class AdministrationController extends Controller
      */
     public function destroy(Administration $administration)
     {
+        if (auth()->user()->id == $administration->user_id){
+            return redirect()->route('administration.index')->with('error', 'Vous ne pouvez pas supprimer votre propre compte');
+        }
         $user = User::find($administration->user_id);
+        $user = User::find($administration->user_id);
+        $user->delete();
+        if (file_exists(public_path($administration->avatar)) && $administration->avatar != 'users/default.png' && $administration->avatar != 'users/avatar.png'  && $administration->avatar != 'administrations/avatar.png') {
+            unlink(public_path($administration->avatar));
+        }
         $administration->delete();
         $user->delete();
         return redirect()->route('administration.index')->with('success', 'Administrateur supprimé avec succès');

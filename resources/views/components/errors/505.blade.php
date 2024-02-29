@@ -1,10 +1,10 @@
 @extends('layouts.app-error')
 
-@section('title', '403')
+@section('title', '505')
 
 @section('content')
 <div class="col-lg-5 d-flex flex-column align-items-center">
-    <h1 class="error-number">403</h1>
+    <h1 class="error-number">505</h1>
     <h2 class="error-title">Interdit</h2>
     <p class="error-text">Oopps. Vous n'avez pas l'autorisation d'accéder à cette ressource.</p>
     <a href="{{url('/')}}" class="btn btn-primary btn-error">Retour à l'accueil</a>

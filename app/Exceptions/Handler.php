@@ -24,7 +24,38 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->reportable(function (Throwable $e) {
-            //
+            //error redirect
+            if ($this->isHttpException($e)) {
+                if ($e->getCode() == 404) {
+                    return response()->view('components.errors.404', [], 404);
+                }
+
+                if ($e->getCode() == 403) {
+                    return response()->view('components.errors.403', [], 403);
+                }
+
+                if ($e->getCode() == 500) {
+                    return response()->view('components.errors.500', [], 500);
+                }
+
+                if ($e->getCode() == 503) {
+                    return response()->view('components.errors.503', [], 503);
+                }
+
+                if ($e->getCode() == 401) {
+                    return response()->view('components.errors.401', [], 401);
+                }
+
+                if ($e->getCode() == 419) {
+                    return response()->view('components.errors.419', [], 419);
+                }
+
+                if ($e->getCode() == 505) {
+                    return response()->view('components.errors.505', [], 505);
+                }
+            }
+            return response()->view('components.errors.500', [], 500);
+
         });
     }
 }

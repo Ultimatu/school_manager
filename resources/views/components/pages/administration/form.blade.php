@@ -61,7 +61,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <div class="form-group" id="phone">
+                                    <div class="form-group">
                                         <label for="phone" class="form-label">Téléphone</label>
                                         <input type="tel" class="form-control" id="phone" name="phone"
                                             value="{{ old('phone', $administration->phone) }}" required
@@ -167,7 +167,24 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            $('#phone').mask('00 00 00 00 00');
+            //phone : prefix ex: +225 00 00 00 00 00 .. possible to limit to 8 at 10
+            $('#phone').mask('+225 00 00 00 00 00', {
+                translation: {
+                    '0': {
+                        pattern: /[0-9]/
+                    }
+                },
+                placeholder: '+225 00 00 00 00 00'
+            });
+            $('#role').select2({
+                placeholder: 'Selectionnez le role'
+            });
+
+            $('#gender').select2({
+                placeholder: 'Selectionnez le genre'
+            });
+
+
         });
     </script>
 @endpush

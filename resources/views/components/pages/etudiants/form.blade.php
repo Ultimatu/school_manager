@@ -228,7 +228,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12 mb-3 d-flex justify-content-between">
-                                            <div class="form-group bmd-form-group">
+                                            <div class="form-group bmd-form-group w-75">
                                                 <label for="card_id" class="bmd-label-floating">Carte scolaire</label>
                                                 <input type="text" class="form-control" id="card_id" name="card_id"
                                                     value="{{ old('card_id', $etudiant->card_id) }}"
@@ -549,8 +549,11 @@
                 return;
             }
             //trois premier caractère du nom, 1er caractère du prénom, jour de naissance, mois de naissance, année de naissance + 0001
-            var matricule = last_name.substring(0, 3) + first_name.substring(0, 1) + birth_date.substring(8, 10) +
-                birth_date.substring(5, 7) + birth_date.substring(2, 4) + '0001';
+            const birth_day = birth_date.substring(8, 10);
+            const birth_month = birth_date.substring(5, 7);
+            const birth_year_last_two_numbers = birth_date.substring(2, 4);
+            var matricule = first_name.substring(0, 3) + last_name.substring(0, 1) + birth_day +
+                birth_month + birth_year_last_two_numbers + '0001';
             $('#card_id').val(matricule.toUpperCase());
         }
     </script>

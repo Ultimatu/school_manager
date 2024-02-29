@@ -30,7 +30,6 @@ class StoreAdministrationRequest extends FormRequest
             'address' => 'required|string|max:255',
             'role' => 'required|string|max:255',
             'responsability' => 'required|string',
-            'avatar'=>'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'gender' => 'required|string|max:2',
         ];
 
@@ -57,6 +56,7 @@ class StoreAdministrationRequest extends FormRequest
 
     public function prepareForValidation()
     {
+       
         $annneScolaire = AnneeScolaire::where('status', 'en cours')->first();
         $this->merge([
             'annee_scolaire' => $this->annee_scolaire = $annneScolaire->annee_scolaire,

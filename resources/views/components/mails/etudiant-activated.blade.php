@@ -4,7 +4,7 @@
     <table class="panel" width="100%" cellpadding="0" cellspacing="0" role="presentation">
         <tr>
             <td class="panel-content">
-                <h1 class="panel-item">Bonjour! {{ $data->name ?? $data->first_name. ' '.$date->last_name }}</h1>
+                <h1 class="panel-item">Bonjour! {{ $data->name }}</h1>
                @if ($action === "created")
                <p class="panel-item break-all">Un administrateur a activé votre compte sur la plateforme <strong>UTA School GENIUS</strong> en tant  qu'étudiant.</p>
                @else

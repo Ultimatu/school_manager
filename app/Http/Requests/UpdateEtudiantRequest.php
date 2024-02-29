@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\AnneeScolaire;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateEtudiantRequest extends FormRequest
@@ -108,6 +109,34 @@ class UpdateEtudiantRequest extends FormRequest
             'versement_amount' => 'montant versé',
             'gender' => 'genre de l\'étudiant'
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'id' => (int)$this->id,
+            'first_name' => ucfirst($this->first_name),
+            'last_name' => ucfirst($this->last_name),
+            'email' => strtolower($this->email),
+            'phone' => $this->phone,
+            'address' => ucfirst($this->address),
+            'student_mat' => strtoupper($this->student_mat),
+            'classe_id' => (int)$this->classe_id,
+            'card_id' => $this->card_id,
+            'birth_date' => $this->birth_date,
+            'birth_place' => ucfirst($this->birth_place),
+            'status' => $this->status,
+            'urgent_phone' => $this->urgent_phone,
+            'amount' => (float)$this->amount,
+            'is_paid' => $this->amount >= $this->versement_amount ? true : false,
+            'versement_amount' => (float)$this->versement_amount,
+            'annee_scolaire' => AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire,
+        ]);
     }
 
 

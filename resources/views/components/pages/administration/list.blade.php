@@ -73,7 +73,7 @@
                                                 {{ $administration->id }}
                                             </td>
                                             <td>
-                                                <img src="{{ asset($administration->avatar??'administrations/avatar.png') }}"
+                                                <img src="{{ asset($administration->avatar ?? 'administrations/avatar.png') }}"
                                                     alt="{{ $administration->first_name }}" class="img-fluid"
                                                     style="width: 50px; height: 50px; border-radius: 50%;">
                                             </td>
@@ -108,7 +108,7 @@
                                                         style="color: #26c6da;">
                                                 </div>
                                             </td>
-                                            @if (auth()->user()->id !== $administration->user_id)
+                                            @if(auth()->user()->isAdmin())
                                                 <td>
                                                     <a href="{{ route('administration.show', $administration->id) }}"
                                                         class="btn btn-info texte-white">
@@ -120,10 +120,10 @@
                                                     </a>
                                                     <form
                                                         action="{{ route('administration.destroy', $administration->id) }}"
-                                                        method="post" style="display: inline-block;">
+                                                        method="post" style="display: inline-block;" id="delete-form-{{ $administration->id }}">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger">
+                                                        <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $administration->id }})">
                                                             <i class="ri-delete-bin-6-fill fs-2"></i>
                                                         </button>
                                                     </form>
@@ -133,10 +133,6 @@
                                                     <a href="{{ route('administration.show', $administration->id) }}"
                                                         class="btn btn-info texte-white">
                                                         <i class="ri-eye-fill fs-2"></i>
-                                                    </a>
-                                                    <a href="{{ route('administration.edit', $administration->id) }}"
-                                                        class="btn btn-warning">
-                                                        <i class="ri-pencil-fill fs-2"></i>
                                                     </a>
                                             @endif
                                         </tr>
@@ -162,6 +158,23 @@
                     console.log(response);
                     //refresh the page
                     //location.reload();
+                }
+            });
+        }
+
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Êtes-vous sûr?',
+                text: "Vous ne pourrez pas revenir en arrière!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Oui, supprimez-le!',
+                cancelButtonText: 'Annuler'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(`#delete-form-${id}`).submit();
                 }
             });
         }

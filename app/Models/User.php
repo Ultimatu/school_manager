@@ -70,23 +70,37 @@ class User extends Authenticatable
         return $this->hasMany(Administration::class);
     }
 
+    public function administration()
+    {
+        return $this->hasOne(Administration::class);
+    }
+
 
     /**
      * Get the user's professeur.
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function professeur()
+    public function professeurs()
     {
         return $this->hasMany(Professeur::class);
+    }
+    public function professeur()
+    {
+        return $this->hasOne(Professeur::class);
     }
 
     /**
      * Get the user's etudiant.
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function etudiant()
+    public function etudiants()
     {
         return $this->hasMany(Etudiant::class);
+    }
+
+    public function etudiant()
+    {
+        return $this->hasOne(Etudiant::class);
     }
 
 

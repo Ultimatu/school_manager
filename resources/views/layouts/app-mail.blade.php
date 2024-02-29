@@ -324,8 +324,7 @@
                 <table class="content" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                     <tr>
                         <td class="header" style="padding: 25px 0; text-align: center;">
-                            <a href="https://uta-school.eveecorp.link"
-                                style="color: #3d4852; font-size: 19px; font-weight: bold; text-decoration: none;">
+                            <a href="https://uta-school.eveecorp.link/assets/img/favicon.png" class="logo" style="color: #3d4852; font-size: 19px; font-weight: bold; text-decoration: none;">
                                 UTA - SCHOOL - GENIUS
                             </a>
                         </td>
@@ -349,7 +348,7 @@
                                         <p>L'équipe UTA - SCHOOL - GENIUS</p>
                                     </td> --}}
                                     <td class="content-cell">
-                                        {{ Illuminate\Mail\Markdown::parse(@(yield 'content')) }}
+                                        @yield('content')
                                     </td>
                                 </tr>
                             </table>

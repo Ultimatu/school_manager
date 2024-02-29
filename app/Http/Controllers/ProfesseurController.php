@@ -61,17 +61,18 @@ class ProfesseurController extends Controller
         $professeur->specialities = $request->specialities;
         $professeur->user_id = $user->id;
         $professeur->is_available = $request->is_available;
-        $professeur->password = bcrypt($request->matricule);
+        $professeur->password = \bcrypt($password);
         if ($request->hasFile('avatar')) {
             $avatar = $request->file('avatar');
             $avatar_name = time() . '.' . $avatar->getClientOriginalExtension();
             $avatar->move(public_path('images/professeurs'), $avatar_name);
-            $professeur->avatar = "images/professeurs/$avatar_name";
+            $professeur->avatar = 'images/professeurs/' . $avatar_name;
         }
+
         $professeur->save();
 
         if (env('MAIL_SERVICE_STATE') == 'on') {
-            Mail::to($request->email)->send(new AccountActivatedMail('professeur', $professeur, $password, 'created'));
+            Mail::to($request->email)->send(new AccountActivatedMail('professeur', $user, $password, 'created'));
         }
         return redirect()->route('professeur.index')->with('success', 'Nouveau professeur ajouté avec succès');
     }
@@ -120,12 +121,13 @@ class ProfesseurController extends Controller
             $avatar = $request->file('avatar');
             $avatar_name = time() . '.' . $avatar->getClientOriginalExtension();
             $avatar->move(public_path('images/professeurs'), $avatar_name);
-            $professeur->avatar = "images/professeurs/$avatar_name";
+            $professeur->avatar = 'images/professeurs/' . $avatar_name;
         }
+
         $professeur->save();
 
         if (env('MAIL_SERVICE_STATE') == 'on') {
-            Mail::to($request->email)->send(new AccountActivatedMail('professeur', $professeur, $password, 'updated'));
+            Mail::to($request->email)->send(new AccountActivatedMail('professeur', $user, $password, 'updated'));
         }
         return redirect()->route('professeur.index')->with('success', 'Professeur modifié avec succès');
     }

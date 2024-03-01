@@ -51,7 +51,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group bmd-form-group">
-                                        <label for="last_name" class="bmd-label-floating">Nom</label>
+                                        <label for="last_name" class="bmd-label-floating">Prenom</label>
                                         <input type="text" class="form-control" id="last_name" name="last_name"
                                             value="{{ old('last_name') ?? $professeur->last_name }}">
                                         @error('last_name')

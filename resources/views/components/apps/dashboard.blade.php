@@ -19,10 +19,10 @@
   <link rel="stylesheet" href="{{asset('assets/js/plugins/daterangepicker/daterangepicker.css')}}">
   <link rel="stylesheet" href="{{asset('assets/js/plugins/summernote/summernote-bs4.min.css')}}">
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
+<!-- <body class="hold-transition sidebar-mini layout-fixed"> -->
+<!-- <div class="container-fluid"> -->
     <!-- Content Header (Page header) -->
-    <div class="content-header"> 
+    <div class="row"> 
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
@@ -37,8 +37,8 @@
         </div>
       </div>
     </div>
-    
 
+  
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -46,7 +46,7 @@
           <div class="col-lg-3 col-6">
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3>{{$nbretudiant}}</h3>
 
                 <p>Etudiants</p>
               </div>
@@ -59,7 +59,7 @@
           <div class="col-lg-3 col-6">
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <h3>{{$nbrfiliere}}</h3>
 
                 <p>Filières</p>
               </div>
@@ -72,7 +72,7 @@
           <div class="col-lg-3 col-6">
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>44</h3>
+                <h3>{{$nbrprof}}</h3>
 
                 <p>Enseignants</p>
               </div>
@@ -99,9 +99,8 @@
         
       </div>
     </section>
-</div>
+<!-- </div> -->
 
-  
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>

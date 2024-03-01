@@ -29,7 +29,7 @@ class AuthController extends Controller
             'password' => 'required|string'
         ]);
         $credentials = $request->only(['email', 'password']);
-        if (Auth::attempt($credentials, $request->has('remember'))) {
+        if (auth()->attempt($credentials, $request->has('remember'))) {
             if (Auth::user()->isEtudiant()){
                 $etudiant = Etudiant::where('user_id', Auth::user()->id)->first();
                 if ($etudiant->status === 'is_pending'){
@@ -250,7 +250,7 @@ class AuthController extends Controller
 
 
         $user = User::where('email', $request->email)->first();
-        $user->password = bcrypt($request->password);
+        $user->password = bcrypt($request['password']);
         $user->save();
         $token->delete();
 

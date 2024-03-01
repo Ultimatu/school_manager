@@ -26,5 +26,9 @@ class Chambre extends Model
         return $this->belongsTo(Cite::class);
     }
 
+    public function occupants()
+    {
+        return CiteInscription::where('chambre_id', $this->id)->get();
+    }
     
 }

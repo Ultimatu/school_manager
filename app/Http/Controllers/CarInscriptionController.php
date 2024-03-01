@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateCarInscriptionRequest;
 use App\Models\AnneeScolaire;
 use App\Models\CarInscription;
 use App\Models\Etudiant;
+use App\Models\Trajet;
 use Illuminate\Support\Facades\Request;
 
 class CarInscriptionController extends Controller
@@ -28,7 +29,9 @@ class CarInscriptionController extends Controller
     {
         $inscription = new CarInscription();
         $etudiants = Etudiant::where('annee_scolaire', AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire)->get();
-        return view('components.pages.cars.inscriptions.form', compact('inscription', 'etudiants'));
+        $trajets = Trajet::all();
+
+        return view('components.pages.cars.inscriptions.form', compact('inscription', 'etudiants', 'trajets'));
 
     }
     public function createBy(Etudiant $etudiant)
@@ -36,7 +39,8 @@ class CarInscriptionController extends Controller
         $inscription = new CarInscription();
         $inscription->etudiant_id = $etudiant->id;
         $etudiants = Etudiant::where('annee_scolaire', AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire)->get();
-        return view('components.pages.cars.inscriptions.form', compact('inscription', 'etudiants'));
+        $trajets = Trajet::all();
+        return view('components.pages.cars.inscriptions.form', compact('inscription', 'etudiants', 'trajets'));
     }
 
     public function addVersement(CarInscription $inscription)

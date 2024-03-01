@@ -79,7 +79,8 @@ class StoreChambreRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'slug' => \Str::slug($this->number.'-'.$this->cite_id)
+            'slug' => \Str::slug($this->number.'-'.$this->cite_id),
+            'is_occupied' => $this->has('is_occupied') ? true : false
         ]);
     }
 }

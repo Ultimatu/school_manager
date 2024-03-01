@@ -21,6 +21,7 @@ class UserController extends Controller
     public function changePassword(Request $request)
     {
         //validation and validation messages
+        $user = auth()->user();
         $request->validate([
             'email' => 'required|email|unique:users,email,' . auth()->user()->id,
             'old_password' => 'required',
@@ -39,18 +40,22 @@ class UserController extends Controller
         }
 
         //check if the old password is correct
-        if (!\Hash::check($request->old_password, auth()->user()->password)) {
-            return back()->with('error', 'L\'ancien mot de passe est incorrect');
+        if (!password_verify($request->input('old_password'), $user->password)){
+            return redirect()->back()->with('error', 'Mot de passe actuel incorrect');
         }
 
+        //verifier que le nouveau mot de passe est different de l'ancien
+        if (password_verify($request->input('password'), $user->password)){
+            return redirect()->back()->with('error', 'Le nouveau mot de passe doit être différent de l\'ancien');
+        }
         //update the password
-        auth()->user()->update(['password' => Hash::make($request->password), 'email' => $request->email]);
+        auth()->user()->update(['password' => bcrypt($request->input('password')), 'email' => $request->email]);
         if (auth()->user()->isEtudiant()) {
-            auth()->user()->etudiant->update(['password' => Hash::make($request->password), 'email' => $request->email]);
+            auth()->user()->etudiant->update(['password' => bcrypt($request->input('password')), 'email' => $request->email]);
         } elseif (auth()->user()->isProfesseur()) {
-            auth()->user()->professeur->update(['password' => Hash::make($request->password), 'email' => $request->email]);
+            auth()->user()->professeur->update(['password' => bcrypt($request->input('password')), 'email' => $request->email]);
         } else {
-            auth()->user()->administration->update(['password' => Hash::make($request->password), 'email' => $request->email]);
+            auth()->user()->administration->update(['password' => bcrypt($request->input('password')), 'email' => $request->email]);
         }
 
         return back()->with('success', 'Le mot de passe et email mis à jours avec succès');

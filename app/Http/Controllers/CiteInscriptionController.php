@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCiteInscriptionRequest;
 use App\Http\Requests\UpdateCiteInscriptionRequest;
 use App\Models\AnneeScolaire;
+use App\Models\Chambre;
 use App\Models\CiteInscription;
 use App\Models\Etudiant;
 use Illuminate\Support\Facades\Request;
@@ -44,7 +45,18 @@ class CiteInscriptionController extends Controller
     public function store(StoreCiteInscriptionRequest $request)
     {
         $request->validated();
+        //verifier si l'espace de la chambre est disponible
+        $chambre = Chambre::find($request->chambre_id);
+        if ($chambre->is_occupied || $chambre->capacity <= $chambre->occupants()->count()) {
+            return redirect()->route('citeInscriptions.index')->with('error', 'La chambre est déjà occupée')->withInput();
+        }
         $citeInscription = CiteInscription::create($request->all());
+        //mettre à jour le statut de la chambre
+        if ($chambre->occupants()->count() >= $chambre->capacity) {
+            $chambre->is_occupied = true;
+            $chambre->save();
+        }
+
         return redirect()->route('citeInscriptions.index')->with('success', 'Inscription ajoutée avec succès');
     }
 
@@ -70,7 +82,17 @@ class CiteInscriptionController extends Controller
     public function update(UpdateCiteInscriptionRequest $request, CiteInscription $citeInscription)
     {
         $request->validated();
+        //verifier si l'espace de la chambre est disponible
+        $chambre = Chambre::find($request->chambre_id);
+        if ($chambre->is_occupied || $chambre->capacity <= $chambre->occupants()->count()) {
+            return redirect()->route('citeInscriptions.index')->with('error', 'La chambre est déjà occupée')->withInput();
+        }
         $citeInscription->update($request->all());
+        //mettre à jour le statut de la chambre
+        if ($chambre->occupants()->count() >= $chambre->capacity) {
+            $chambre->is_occupied = true;
+            $chambre->save();
+        }
         return redirect()->route('citeInscriptions.index')->with('success', 'Inscription modifiée avec succès');
     }
 

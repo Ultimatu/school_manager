@@ -68,8 +68,16 @@ class Etudiant extends Model
         return $this->hasMany(CarInscription::class);
     }
 
+    public function car(){
+        return $this->hasOne(CarInscription::class);
+    }
+
     public function CiteInscriptions(){
         return $this->hasMany(CiteInscription::class);
+    }
+
+    public function chambre(){
+        return $this->hasOne(CiteInscription::class);
     }
 
     public function scolarite(){

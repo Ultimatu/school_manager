@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreChauffeurRequest;
 use App\Http\Requests\UpdateChauffeurRequest;
+use App\Models\Car;
 use App\Models\Chauffeur;
+use App\Models\Cite;
+use App\Models\Trajet;
 
 class ChauffeurController extends Controller
 {
@@ -23,7 +26,9 @@ class ChauffeurController extends Controller
     public function create()
     {
         $chauffeur = new Chauffeur();
-        return view('components.pages.chauffeurs.form', compact('chauffeur'));
+        $cars = Car::all();
+        $trajets = Trajet::all();
+        return view('components.pages.chauffeurs.form', compact('chauffeur', 'cars', 'trajets'));
     }
 
     /**
@@ -49,7 +54,9 @@ class ChauffeurController extends Controller
      */
     public function edit(Chauffeur $chauffeur)
     {
-        return view('components.pages.chauffeurs.form', compact('chauffeur'));
+        $cites = Car::all();
+        $trajets = Trajet::all();
+        return view('components.pages.chauffeurs.form', compact('chauffeur', 'cites', 'trajets'));
     }
 
     /**

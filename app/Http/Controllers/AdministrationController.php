@@ -48,19 +48,21 @@ class AdministrationController extends Controller
             'email'=>$request->email,
             'phone'=>$request->phone,
             'role_auth'=>$request->role,
-            'password'=>\bcrypt($password),
+            'password'=>bcrypt($password),
+            'permissions'=>Role::getAbilities($request->role),
         ]);
 
         $request->merge([
             'user_id'=>$user->id,
             'status'=>1,
-            'password'=>\bcrypt($password),
+            'password'=>bcrypt($password),
         ]);
         $name = null;
         if ($request->hasFile('avatar')){
             $file = $request->file('avatar');
             $name = time().$file->getClientOriginalName();
             $file->move('images/administraions', $name);
+            $request->merge(['avatar'=>"images/administraions/$name"]);
         }
         $admin = Administration::create($request->all());
         if ($name !== null){
@@ -109,17 +111,18 @@ class AdministrationController extends Controller
             'phone'=>$request->phone,
             'role_auth'=>$request->role,
             'permissions'=>Role::getAbilities($request->role),
-            'password'=>\bcrypt($password)
+            'password'=>bcrypt($password)
         ]);
 
         $request->merge([
-            'password'=>\bcrypt($password),
+            'password'=>bcrypt($password),
         ]);
         $name = null;
         if ($request->hasFile('avatar')){
             $file = $request->file('avatar');
             $name = time().$file->getClientOriginalName();
             $file->move('images/administraions', $name);
+            $request->merge(['avatar'=>"images/administraions/$name"]);
         }
         $administration->update($request->all());
         if ($name !== null){

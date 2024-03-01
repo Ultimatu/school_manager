@@ -47,20 +47,8 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    /**
-     * Get all of the owning role models.
-     */
-    public function role()
-    {
-        return $this->morphTo();
-    }
 
-
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = bcrypt($value);
-    }
-
+   
     /**
      * Get the user's administration.
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -177,7 +165,6 @@ class User extends Authenticatable
         return $this->role_auth === 'parent';
     }
 
-
     /**
      * Check if the user is a etudiant.
      * @return bool
@@ -187,7 +174,6 @@ class User extends Authenticatable
         return $this->role_auth === 'etudiant';
     }
 
-
     public  static function generatePassword($type = 'ADMIN'): string
     {
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -195,7 +181,5 @@ class User extends Authenticatable
         //password =  3 premiere lettre de type + 5 premier lettre de password
         return strtoupper(substr($type, 0, 3)).'-' . $password;
     }
-
-
 
 }

@@ -46,7 +46,7 @@ class ProfesseurController extends Controller
         $user->name = $request->first_name . ' ' . $request->last_name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->password = \bcrypt($password);
+        $user->password = bcrypt($password);
         $user->role_auth = 'professeur';
         $user->permissions = Role::getAbilities('professeur');
         $user->save();
@@ -61,12 +61,12 @@ class ProfesseurController extends Controller
         $professeur->specialities = $request->specialities;
         $professeur->user_id = $user->id;
         $professeur->is_available = $request->is_available;
-        $professeur->password = \bcrypt($password);
+        $professeur->password = bcrypt($password);
         if ($request->hasFile('avatar')) {
             $avatar = $request->file('avatar');
             $avatar_name = time() . '.' . $avatar->getClientOriginalExtension();
             $avatar->move(public_path('images/professeurs'), $avatar_name);
-            $professeur->avatar = 'images/professeurs/' . $avatar_name;
+            $professeur->avatar = "images/professeurs/$avatar_name";
         }
 
         $professeur->save();
@@ -105,7 +105,7 @@ class ProfesseurController extends Controller
         $user->name = $request->first_name . ' ' . $request->last_name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->password = \bcrypt($password);
+        $user->password = bcrypt($password);
         $user->save();
 
         $professeur->first_name = $request->first_name;
@@ -116,12 +116,12 @@ class ProfesseurController extends Controller
         $professeur->matricule = $request->matricule;
         $professeur->specialities = $request->specialities;
         $professeur->is_available = $request->is_available;
-        $professeur->password = \bcrypt($password);
+        $professeur->password = bcrypt($password);
         if ($request->hasFile('avatar')) {
             $avatar = $request->file('avatar');
             $avatar_name = time() . '.' . $avatar->getClientOriginalExtension();
             $avatar->move(public_path('images/professeurs'), $avatar_name);
-            $professeur->avatar = 'images/professeurs/' . $avatar_name;
+            $professeur->avatar = "images/professeurs/$avatar_name";
         }
 
         $professeur->save();

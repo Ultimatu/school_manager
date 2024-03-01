@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreChambreRequest;
 use App\Http\Requests\UpdateChambreRequest;
 use App\Models\Chambre;
+use App\Models\Cite;
 
 class ChambreController extends Controller
 {
@@ -23,7 +24,8 @@ class ChambreController extends Controller
     public function create()
     {
         $chambre = new Chambre();
-        return view('components.pages.chambres.form', compact('chambre'));
+        $cites = Cite::all();
+        return view('components.pages.chambres.form', compact('chambre', 'cites'));
     }
 
     /**
@@ -49,7 +51,8 @@ class ChambreController extends Controller
      */
     public function edit(Chambre $chambre)
     {
-        return view('components.pages.chambres.form', compact('chambre'));
+        $cites = Cite::all();
+        return view('components.pages.chambres.form', compact('chambre', 'cites'));
     }
 
     /**

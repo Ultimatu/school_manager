@@ -1,7 +1,7 @@
 <form action="{{ route('profile.change-password') }}" method="post">
     @csrf
     @method('PUT')
-    <div class="row d-flex justify-content-center flex-column overflow-x-auto m-auto" style="width: 800px">
+    <div class="row d-flex justify-content-center flex-column overflow-x-auto m-auto">
         <div class="col-md-12 mb-3">
             <div class="form-group  bmd-form-group">
                 <label for="email" class="bmd-label-floating">Email</label>

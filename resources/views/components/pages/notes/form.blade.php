@@ -35,15 +35,6 @@
                             @if ($notes->id)
                                 @method('PUT')
                             @endif
-                              {{--   'etudiant_id',
-                                'classe_cours_id',
-                                'professeur_id',
-                                'note',
-                                'observation',
-                                'type',
-                                'date',
-                                'annee_scolaire'
-                                --}}
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <div class="form-group bmd-form-group">

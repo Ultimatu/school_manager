@@ -33,7 +33,7 @@
 
     <div class="dropdown dropdown-notification ms-3 ms-xl-4">
         <a href="" class="dropdown-link" data-bs-toggle="dropdown"
-            data-bs-auto-close="outside"><small>3</small><i class="ri-notification-3-line"></i></a>
+            data-bs-auto-close="outside"><small>0</small><i class="ri-notification-3-line"></i></a>
         {{-- <div class="dropdown-menu dropdown-menu-end mt-10-f me--10-f">
             <div class="dropdown-menu-header">
                 <h6 class="dropdown-menu-title">Notifications</h6>
@@ -83,7 +83,19 @@
     </div><!-- dropdown -->
     <div class="dropdown dropdown-profile ms-3 ms-xl-4">
         <a href="" class="dropdown-link" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-            <div class="avatar online"><img src="{{ asset('users/avatar.png') }}" alt=""></div>
+            <div class="avatar online">
+                @switch(auth()->user()->role_auth)
+                    @case('etudiant')
+                        <img src="{{ asset(auth()->user()->etudiant->avatar ?? 'users/avatar.png') }}" alt="">
+                        @break
+                    @case('professeur')
+                        <img src="{{ asset(auth()->user()->professeur->avatar ?? 'users/avatar.png') }}" alt="">
+                        @break
+                    @default
+                        <img src="{{ asset(auth()->user()->administration->avatar ?? 'users/avatar.png') }}" alt="">
+                        
+                @endswitch
+            </div>
         </a>
         <div class="dropdown-menu dropdown-menu-end mt-10-f">
             <div class="dropdown-menu-body">

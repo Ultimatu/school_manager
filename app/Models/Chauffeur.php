@@ -33,7 +33,5 @@ class Chauffeur extends Model
     {
         return $this->belongsTo(Trajet::class);
     }
-
-
-    
+ 
 }

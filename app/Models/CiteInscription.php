@@ -13,10 +13,11 @@ class CiteInscription extends Model
         'etudiant_id',
         'chambre_id',
         'is_paid',
-        'versements',
         'total_amount',
         'annee_scolaire'
     ];
+
+  
 
     public function chambre(){
         return $this->belongsTo(Chambre::class);
@@ -25,5 +26,9 @@ class CiteInscription extends Model
 
     public function etudiant(){
         return $this->belongsTo(Etudiant::class);
+    }
+
+    public function versements(){
+        return $this->hasMany(CiteInscriptionVersement::class);
     }
 }

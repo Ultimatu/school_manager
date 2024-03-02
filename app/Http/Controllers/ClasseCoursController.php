@@ -12,6 +12,18 @@ use App\Models\Professeur;
 class ClasseCoursController extends Controller
 {
 
+    public function index()
+    {
+        $classeCours = ClasseCours::all();
+        if (auth()->user()->isProfesseur()){
+            $classeCours = ClasseCours::where('professeur_id', auth()->user()->professeur->id)->get();
+        }elseif(auth()->user()->isEtudiant()){
+            $classeCours = ClasseCours::where('classe_id', auth()->user()->etudiant->classe_id)->get();
+        }
+        return view('components.pages.classe.cours.list', compact('classeCours'));
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */

@@ -5,8 +5,8 @@
 
 
 @section('content')
-  {{-- bread --}}
-  <div class="row">
+    {{-- bread --}}
+    <div class="row">
         <div class="col-md-12">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -15,7 +15,7 @@
                 </ol>
             </nav>
         </div>
-  </div>
+    </div>
 
     {{-- end bread --}}
     <div class="container-fluid">
@@ -25,7 +25,12 @@
                 <div class="card card-plain">
                     <div class="card-header card-header-primary">
                         <h4 class="card-title mt-0">Liste des notes</h4>
-                        <p class="card-category">Liste des notes enregistrées</p>
+                        @if (!auth()->user()->isEtudiant())
+                            <p class="card-category">Liste des notes enregistrées</p>
+                        @else
+                            <p class="card-category">Liste de vos notes enregistrées</p>
+
+                        @endif
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -34,6 +39,7 @@
                                     <th>
                                         ID
                                     </th>
+                                   
                                     <th>
                                         Matière
                                     </th>
@@ -43,9 +49,16 @@
                                     <th>
                                         Coefficient
                                     </th>
-                                    <th>
-                                        Actions
-                                    </th>
+                                    @if (!auth()->user()->isEtudiant())
+                                        <th>
+                                            Etudiant & classe
+                                        </th>
+                                    @endif
+                                    @if (auth()->user()->isProfesseur())
+                                        <th>
+                                            Actions
+                                        </th>
+                                    @endif
                                 </thead>
                                 <tbody>
                                     @foreach ($notes as $note)
@@ -59,21 +72,33 @@
                                             <td>
                                                 {{ $note->note }}
                                             </td>
+                                            @if (!auth()->user()->isEtudiant())
                                             <td>
-                                                <a href="{{ route('notes.show', $note) }}" class="btn btn-outline-primary">
-                                                    <i class="ri-eye-line"></i>
-                                                    Voir la note</a>
-                                                <a href="{{ route('notes.edit', $note) }}" class="btn btn-outline-primary">
-                                                    <i class="ri-edit-line"></i>
-                                                    Modifier la note</a>
-                                                <form method="POST" action="{{ route('notes.destroy', $note) }}" id="delete-form">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" class="btn btn-outline-danger" onclick="confirmDelete()">
-                                                        <i class="ri-delete-bin-line"></i>
-                                                        Supprimer la note</button>
-                                                </form>
+                                                {{$note->etudiant->student_mat.' - '.$note->etudiant->first_name. ' '. $note->etudiant->last_name }} - {{  $note->etudiant->classe->name. ' '.  $note->etudiant->classe->filiere->name}}
                                             </td>
+                                            @endif
+
+                                            @if (auth()->user()->isProfesseur())
+                                                <td>
+                                                    <a href="{{ route('notes.show', $note) }}"
+                                                        class="btn btn-outline-primary">
+                                                        <i class="ri-eye-line"></i>
+                                                        Voir la note</a>
+                                                    <a href="{{ route('notes.edit', $note) }}"
+                                                        class="btn btn-outline-primary">
+                                                        <i class="ri-edit-line"></i>
+                                                        Modifier la note</a>
+                                                    <form method="POST" action="{{ route('notes.destroy', $note) }}"
+                                                        id="delete-form">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="btn btn-outline-danger"
+                                                            onclick="confirmDelete()">
+                                                            <i class="ri-delete-bin-line"></i>
+                                                            Supprimer la note</button>
+                                                    </form>
+                                                </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -85,6 +110,3 @@
         </div>
     </div>
 @endsection
-
-
-

@@ -6,9 +6,10 @@ use App\Http\Requests\StoreCarInscriptionRequest;
 use App\Http\Requests\UpdateCarInscriptionRequest;
 use App\Models\AnneeScolaire;
 use App\Models\CarInscription;
+use App\Models\CarInscriptionVersement;
 use App\Models\Etudiant;
 use App\Models\Trajet;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 class CarInscriptionController extends Controller
 {
@@ -45,42 +46,61 @@ class CarInscriptionController extends Controller
 
     public function addVersement(CarInscription $inscription)
     {
-        return view('components.pages.cars.inscriptions.form_add', compact('inscription'));
+        $versements = $this->getVersement($inscription->versements);
+        //verifiy is user is_paid
+        if ($inscription->is_paid){
+            return redirect()->back()->with('warning', 'Cet étudiant a déjà soldé pour le car');
+        }elseif($this->isPaid($versements, $inscription->total_amount)){
+            $inscription->is_paid = true;
+            $inscription->save();
+            return redirect()->back()->with('warning', 'Cet étudiant a déjà soldé pour le car');
+        }
+
+        return view('components.pages.cars.inscriptions.form_add', compact('inscription', 'versements'));
     }
 
 
-    public function storeVersement(Request $request)
+    public function storeVersement(Request $request, CarInscription $inscription)
     {
         $request->validate([
-            'id' => 'required|numeric|exists:car_inscriptions,id',
-            'versements' => 'required|numeric',
+            'versement' => 'required|numeric',
+            'date_versement' => 'required|date'
         ]);
-        $versement = CarInscription::find($request->id);
+        if ($inscription->is_paid){
+            return redirect()->back()->with('warning', 'Cet étudiant a déjà soldé pour le car');
+        }
+        $versements = $this->getVersement($inscription->versements);
         //verifier si le montant total est atteint
-        if ($this->isPaid($versement->versements, $versement->total_amount)) {
-            return redirect()->route('car_inscriptions.index')->with('error', 'Le montant total est déjà atteint');
+        if ($this->isPaid($versements, $inscription->total_amount)) {
+            $inscription->is_paid = true;
+            $inscription->save();
+            return redirect()->route('car_inscriptions.index')->with('warning', 'Le montant total est déjà atteint');
         }
-        //ajouter le versement sur le versement existant en array
-        $versement->versements = $versement->versements . ';' . $request->versements;
-        if ($this->isPaid($versement->versements, $versement->total_amount)) {
-            $versement->is_paid = true;
+        CarInscriptionVersement::create([
+            'car_inscription_id' => $inscription->id,
+            'versement' => $request->versement,
+            'date_versement' => $request->date_versement
+        ]);
+       $versements = $this->getVersement($inscription->versements);
+        
+        if ($this->isPaid($versements, $inscription->total_amount)) {
+            $inscription->is_paid = true;
         }
-        $versement->save();
+        $inscription->versements = $versements;
         return redirect()->route('car_inscriptions.index')->with('success', 'Versement ajouté avec succès');
     }
 
-    public function destroyVersement($inscription, $versement)
+    public function destroyVersement(CarInscriptionVersement $versement)
     {
-        $inscription = CarInscription::find($inscription);
-        $versements = explode(';', $inscription->versements);
-        //supprimer un versement
-        unset($versements[$versement]);
-        $inscription->versements = implode(';', $versements);
-        $inscription->is_paid = $this->isPaid($inscription->versements, $inscription->total_amount);
+        $inscription = CarInscription::find($versement->car_inscription_id);
+        $versement->delete();
+        $versements = $this->getVersement($inscription->versements);
+        if ($this->isPaid($versements, $inscription->total_amount)) {
+            $inscription->is_paid = true;
+        }
         $inscription->save();
         return redirect()->route('car_inscriptions.index')->with('success', 'Versement supprimé avec succès');
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -89,15 +109,20 @@ class CarInscriptionController extends Controller
     {
         $request->validated();
         $car_inscription = CarInscription::create($request->all());
+        $versement = CarInscriptionVersement::create([
+            'car_inscription_id' => $car_inscription->id,
+            'versement' => $request->versements,
+            'date_versement' => now()
+        ]);
         return redirect()->route('car_inscriptions.index')->with('success', 'Etudiant ajouté avec succès');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(CarInscription $car_nscription)
+    public function show(CarInscription $car_inscription)
     {
-        $inscription = $car_nscription;
+        $inscription = $car_inscription;
         return view('components.pages.cars.inscriptions.show', compact('inscription'));
     }
 
@@ -117,6 +142,11 @@ class CarInscriptionController extends Controller
     {
         $request->validated();
         $car_inscription->update($request->all());
+        $versement = CarInscriptionVersement::where('car_inscription_id', $car_inscription->id)->first();
+        $versement->update([
+            'versement' => $request->versements,
+            'date_versement' => now()
+        ]);
         return redirect()->route('car_inscriptions.index')->with('success', 'Etudiant modifié avec succès');
     }
 
@@ -129,19 +159,13 @@ class CarInscriptionController extends Controller
         return redirect()->route('car_inscriptions.index')->with('success', 'Etudiant supprimé avec succès');
     }
 
-
     private function getVersement($versements)
     {
-        $versements = explode(';', $versements);
-        $versements = array_map(function ($versement) {
-            return floatval($versement);
-        }, $versements);
-        return array_sum($versements);
-    }
-
+        return $versements->sum('versement');
+    }   
+   
     private function isPaid($versements, $total_amount)
     {
-        $versements = $this->getVersement($versements);
         return $versements >= $total_amount;
     }
 

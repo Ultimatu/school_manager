@@ -63,7 +63,7 @@
                                                 {{ $inscription->id }}
                                             </td>
                                             <td>
-                                                <a href="{{ route('etudiants.show', $inscription->etudiant->id) }}">
+                                                <a href="{{ route('etudiant.show', $inscription->etudiant->id) }}">
                                                     {{ $inscription->etudiant->first_name }}
                                                     {{ $inscription->etudiant->last_name }}</a>
                                             </td>
@@ -77,23 +77,23 @@
                                                     <span class="badge bg-danger">Non payé</span>
                                                 @endif
                                             </td>
-                                            <td>
-                                                <a href="{{ route('car_inscriptions.edit', $inscription->id) }}"
-                                                    class="btn btn-warning btn-sm mb-3">
-                                                    <i class="ri-pencil-line"></i>
-                                                </a>
+                                            <td class="d-flex justify-content-around align-items-center gap-3">
                                                 <a href="{{ route('car_inscriptions.show', $inscription->id) }}"
-                                                    class="btn btn-info btn-sm mb-3">
-                                                    <i class="ri-eye-line"></i>
+                                                    class="btn btn-info mb-3">
+                                                    <i class="ri-eye-line fs-2"></i>
+                                                </a>
+                                                <a href="{{ route('car_inscriptions.edit', $inscription->id) }}"
+                                                    class="btn btn-warning mb-3">
+                                                    <i class="ri-pencil-line fs-2"></i>
                                                 </a>
                                                 <form action="{{ route('car_inscriptions.destroy', $inscription->id) }}"
-                                                    method="post" class="d-inline mb-3"
+                                                    method="post"
                                                     id="deleteForm-{{ $inscription->id }}">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                    <button type="button" class="btn btn-danger mb-3"
                                                         onclick="deleteItem({{ $inscription->id }})">
-                                                        <i class="ri-delete-bin-line"></i>
+                                                        <i class="ri-delete-bin-line fs-2"></i>
                                                     </button>
                                                 </form>
                                             </td>
@@ -130,7 +130,7 @@
                 cancelButtonText: 'Annuler'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + itemId).submit();
+                    document.getElementById('deleteForm-' + itemId).submit();
                 }
             })
         }

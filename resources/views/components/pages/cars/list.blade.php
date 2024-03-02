@@ -108,7 +108,7 @@
                                                 <form action="{{ route('cars.destroy', $car->id) }}" method="post"
                                                     class="d-inline" id="delete-form-{{ $car->id }}">
                                                     @csrf
-                                                    @method('delete')
+                                                    @method('DELETE')
                                                     <button type="button" class="btn btn-danger" onclick="deleteItem({{ $car->id }})">
                                                         <i class="ri-delete-bin-line"></i>
                                                     </button>

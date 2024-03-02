@@ -29,6 +29,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="{{ asset('lib/sweealert2/sweetalert2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('lib/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('lib/simple-datatables/style.css') }}">
     @stack('styles')
     @if (request()->routeIs('etudiant.*'))
         <link rel="stylesheet" href="{{ asset("lib/prismjs/themes/prism.min.css") }}">
@@ -49,7 +50,19 @@
 <body>
 
     {{-- sidebar --}}
-    <x-shared.sidebar />
+    @if (auth()->user()->isEtudiant())
+        <x-shared.student-sidebar />
+    @elseif (auth()->user()->isProfesseur())
+        <x-shared.profs-sidebar />
+    @elseif (auth()->user()->isConsellor())
+        <x-shared.consellor-sidebar />
+    @elseif (auth()->user()->isComptable())
+        <x-shared.comptable-sidebar />
+    @elseif (auth()->user()->isParent())
+        <x-shared.comptable-sidebar />
+    @else
+        <x-shared.sidebar />
+    @endif
     {{-- end sidebar --}}
 
     {{-- header --}}
@@ -59,7 +72,6 @@
     {{-- content --}}
     <div class="main  main-app p-3 p-lg-4">
         @yield('content')
-
         {{-- footer --}}
         <x-shared.footer />
         {{-- end footer --}}
@@ -69,6 +81,7 @@
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset("lib/jquery-validation/jquery.validate.min.js") }}"></script>
     <script src="{{ asset("lib/jquery-validation/localization/messages_fr.min.js") }}"></script>
+    <script src="{{ asset('lib/simple-datatables/simple-datatables.js') }}"> </script>
     @if (request()->routeIs('etudiant.*'))
         <script src="{{ asset('lib/prismjs/prism.js') }}"></script>
         <script src="{{ asset('lib/parsleyjs/parsley.min.js') }}"></script>
@@ -98,6 +111,7 @@
             $('#viewDemo').attr('href', loc);
 
         });
+
     </script>
 
 </body>

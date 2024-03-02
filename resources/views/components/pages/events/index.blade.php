@@ -8,9 +8,11 @@
     <div class="calendar-sidebar">
         @include('components.shared.alert')
         <div id="calSidebar" class="sidebar-body">
-            <div class="d-grid mb-3">
-                <a href="{{ route('evenements.create') }}" class="btn btn-primary">Ajouter un programe</a>
-            </div>
+            @if (auth()->user()->isCreator())
+                <div class="d-grid mb-3">
+                    <a href="{{ route('evenements.create') }}" class="btn btn-primary">Ajouter un programe</a>
+                </div>
+            @endif
             <div id="datepicker1" class="task-calendar mb-5"></div>
 
             <h5 class="section-title section-title-sm mb-4">Calendrier d'événements</h5>
@@ -35,12 +37,15 @@
                 </div><!-- modal-body -->
                 <div class="modal-footer d-flex justify-content-between align-items-center">
                     <button type="button" class="btn btn-white" data-bs-dismiss="modal">Close</button>
-                    <a href="" class="btn btn-outline-primary" id="btnEditEvent">
-                        <i class="ri-edit-line"></i> Modifier </a>
-                  <form action="" method="post" id="formDeleteEvent">
-                    @csrf
-                    @method('DELETE')
-                    <button type="button" class="btn btn-outline-danger" id="btnDeleteEvent" onclick="deleteEvent(this)">Supprimer</button>
+                    @if (auth()->user()->isCreator())
+                        <a href="" class="btn btn-outline-primary" id="btnEditEvent">
+                            <i class="ri-edit-line"></i> Modifier </a>
+                        <form action="" method="post" id="formDeleteEvent">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" class="btn btn-outline-danger" id="btnDeleteEvent"
+                                onclick="deleteEvent(this)">Supprimer</button>
+                    @endif
                 </div><!-- modal-footer -->
             </div><!-- modal-content -->
         </div><!-- modal-dialog -->
@@ -66,7 +71,7 @@
                 end: event.date_time_fin,
                 description: event.description,
                 id: event.id,
-                backgroundColor:randomColor(event.type)
+                backgroundColor: randomColor(event.type)
             });
         });
 
@@ -93,8 +98,8 @@
                 $("#modalEventView #eventEndDate").text(info.event.end);
                 $("#modalEventView #eventDescription").text(info.event.extendedProps.description);
                 $("#modalLabelEventView").text(info.event.title);
-                $("#btnDeleteEvent").attr("data-id", info.event.id);
-                $("#btnEditEvent").attr("href", "/evenements/" + info.event.id + "/edit");
+                $("#btnDeleteEvent")?.attr("data-id", info.event.id);
+                $("#btnEditEvent")?.attr("href", "/evenements/" + info.event.id + "/edit");
                 $("#modalEventView").modal("show");
 
             },

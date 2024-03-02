@@ -5,9 +5,11 @@
 @section('content')
     <div class="calendar-sidebar">
         <div id="calSidebar" class="sidebar-body">
-            <div class="d-grid mb-3">
-                <a id="btnCreateEvent" href="" class="btn btn-primary">Ajouter un programe</a>
-            </div>
+           @if (auth()->user()->isAdmin())
+                <div class="d-grid mb-3">
+                    <a id="btnCreateEvent" href="" class="btn btn-primary">Ajouter un programe</a>
+                </div>
+           @endif
             {{-- bread --}}
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -18,7 +20,8 @@
             </nav>
             {{-- end bread --}}
             <div id="datepicker1" class="task-calendar mb-5"></div>
-            <h5 class="section-title section-title-sm mb-4">Emploi du temps de la classe {{ $classe->name }} {{ $classe->level }}</h5>
+            <h5 class="section-title section-title-sm mb-4">Emploi du temps de la classe {{ $classe->name }}
+                {{ $classe->level }}</h5>
             <nav class="nav nav-calendar mb-4">
                 <a href="" class="nav-link calendar"><span></span> Cours avec crédit 1</a>
                 <a href="" class="nav-link birthday"><span></span> Cours avec crédit 2</a>
@@ -153,17 +156,54 @@
 @endsection
 
 @push('scripts')
-    <script>
-        var classeId = {{ $classe->id }};
-        var baseUrl = "{{ url('/') }}";
-    </script>
     <script src="{{ asset('assets/js/emploi.js') }}"></script>
+
     <script>
         'use strict';
         new PerfectScrollbar('#calSidebar', {
             suppressScrollX: true
         });
+        var classeId = {{ $classe->id }};
+        var baseUrl = "{{ url('/') }}";
+        var calendarEvents = [];
+        var events = @json($emplois);
+        var examens = @json($examens);
+        events.forEach(function(event) {
+            var calendarEvent = {
+                id: event.id,
+                title: event.classe_cours.cours.name +
+                    " - Prof: " +
+                    event.professeur.first_name +
+                    " " +
+                    event.professeur.last_name +
+                    " - Salle: " +
+                    event.salle.name,
+                description: buildDescription(event, false),
+                start: event.start_date_time,
+                end: event.end_date_time,
+                backgroundColor: randomColor(event.classe_cours.credit),
+                borderColor: randomColor(event.classe_cours.credit),
+                textColor: "white",
+            };
+            calendarEvents.push(calendarEvent);
+        });
 
+        examens.forEach(function(examen) {
+            var calendarEvent = {
+                id: examen.id,
+                title: "Examen: " + examen.classe_cours.cours.name + " - Salle: " + examen.salle.name,
+                description: buildDescription(examen, true),
+                start: examen.start_date_time,
+                end: examen.end_date_time,
+                backgroundColor: "#dc3545",
+                borderColor: "#dc3545",
+                textColor: "white",
+            };
+            calendarEvents.push(calendarEvent);
+        });
+        initializeCalendar();
+    </script>
+    <script>
         $('#btnCreateEvent').on('click', function(e) {
             e.preventDefault();
 
@@ -175,7 +215,5 @@
 
             $('#modalCreateEvent').modal('show');
         });
-
-
     </script>
 @endpush

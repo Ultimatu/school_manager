@@ -35,25 +35,25 @@
                                         <h6 class="card-category text-gray">{{ $parents->type }}</h6>
                                         <h4 class="card-title text-center">{{ $parents->first_name}} {{ $parents->last_name }}</h4>
                                         <p class="card-description">
-                                            <strong>Nombre d'enfants:</strong> {{ $parents->etudiants()->count() }}<br>
+                                            <strong>Nombre d'enfants:</strong> {{ $parents->etudiants->count() }}<br>
                                             <strong>Email:</strong> {{ $parents->email }}<br>
                                             <strong>Téléphone:</strong> {{ $parents->phone }}<br>
                                             <strong>Adresse:</strong> {{ $parents->address }}<br>
                                             <strong>Profession:</strong> {{ $parents->profession }}<br>
 
-                                            @if($parents->etudiants()->count() > 1)
+                                            @if($parents->etudiants->count() > 1)
                                                 <strong>Enfants:</strong>
                                                 <ul>
-                                                    @foreach($parents->etudiants() as $child)
-                                                        <li> <a href="{{ route('etudiant.show', $child->id) }}" class="text-primary" style="text-decoration: none;" target="_blank">
-                                                            {{ $child->student_mat }} &nbsp; - {{ $child->first_name }} &nbsp; {{ $child->last_name }}  </a>
+                                                    @foreach($parents->etudiants as $child)
+                                                        <li> <a href="{{ route('etudiant.show', $child->etudiant_id) }}" class="text-primary" style="text-decoration: none;" target="_blank">
+                                                            {{ $child->etudiant->student_mat }} &nbsp; - {{ $child->etudiant->first_name }} &nbsp; {{ $child->etudiant->last_name }}  </a>
                                                         </li>
                                                     @endforeach
                                                 </ul>
                                             @else
                                                 <strong>Enfant:</strong>
-                                                <a href="{{ route('etudiant.show', $parents->etudiants()->first()->id) }}" class="text-primary" style="text-decoration: none;" target="_blank">
-                                                    {{ $parents->etudiants()->first()->student_mat }} &nbsp; - {{ $parents->etudiants()->first()->first_name }} &nbsp; {{ $parents->etudiants()->first()->last_name }}
+                                                <a href="{{ route('etudiant.show', $parents->etudiants->first()->id) }}" class="text-primary" style="text-decoration: none;" target="_blank">
+                                                    {{ $parents->etudiants->first()->student_mat }} &nbsp; - {{ $parents->etudiants->first()->etudiant->first_name }} &nbsp; {{ $parents->etudiants->first()->etudiant->last_name }}
                                                 </a>
                                             @endif
                                         </p>

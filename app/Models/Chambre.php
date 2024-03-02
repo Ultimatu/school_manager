@@ -31,4 +31,8 @@ class Chambre extends Model
         return CiteInscription::where('chambre_id', $this->id)->get();
     }
     
+
+    public function scopeDisponible($query){
+        return $query->where('is_occupied', false)->where("capacity", "<", $this->occupants()->count())->get();
+    }
 }

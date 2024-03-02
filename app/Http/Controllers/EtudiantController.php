@@ -22,6 +22,9 @@ class EtudiantController extends Controller
     public function index()
     {
         $etudiants = Etudiant::orderBy('classe_id')->get();
+        if (auth()->user()->isProfesseur()) {
+            $etudiants = Etudiant::profStudents(auth()->user()->professeur->id);
+        }
         return view('components.pages.etudiants.list', compact('etudiants'));
     }
 

@@ -12,7 +12,7 @@ class StoreCarInscriptionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->user()->isAdmin() || auth()->user()->isDirector() || auth()->user()->isConsellor();
     }
 
     /**
@@ -46,8 +46,8 @@ class StoreCarInscriptionRequest extends FormRequest
             'trajet_id.required' => 'L\'id du trajet est obligatoire',
             'trajet_id.exists' => 'L\'id du trajet n\'existe pas',
             'is_paid.required' => 'Le statut de paiement est obligatoire',
-            'versements.required' => 'Les versements sont obligatoires',
-            'versements.numeric' => 'Les versements doivent être des nombres',
+            'versements.required' => 'Le versement est obligatoires',
+            'versements.numeric' => 'Le versement doit être un nombre',
             'versements.min' => 'Les versements doivent être supérieurs à 0',
             'total_amount.required' => 'Le montant total est obligatoire',
             'annee_scolaire.required' => 'L\'année scolaire est obligatoire',
@@ -61,9 +61,8 @@ class StoreCarInscriptionRequest extends FormRequest
             'etudiant_id' => (int)$this->etudiant_id,
             'trajet_id' => (int)$this->trajet_id,
             'is_paid' =>  $this->has('is_paid') ? (bool)$this->is_paid : false,
-            'versements' => (array)$this->versements,
             'total_amount' => (float)$this->total_amount,
-            'annee_scolaire' => AnneeScolaire::where('status', 'en_cours')->first()->annee_scolaire,
+            'annee_scolaire' => AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire,
         ]);
     }
 }

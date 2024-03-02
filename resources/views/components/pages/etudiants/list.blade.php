@@ -22,14 +22,18 @@
                 <div class="card card-plain">
                     <div class="card-header card-header-primary">
                         <h4 class="card-title text-center">Liste des etudiants</h4>
-                        <p class="card-category">Liste des etudiants enregistrés</p>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <a href="{{ route('etudiant.create') }}" class="btn btn-primary float-right">
-                                    <i class="ri-add-line"></i>
-                                    Ajouter un etudiant</a>
+                        @if (!auth()->user()->isProfesseur())
+                            {
+                            <p class="card-category">Liste des etudiants enregistrés</p>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a href="{{ route('etudiant.create') }}" class="btn btn-primary float-right">
+                                        <i class="ri-add-line"></i>
+                                        Ajouter un etudiant</a>
+                                </div>
                             </div>
-                        </div>
+                            }
+                        @endif
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -53,15 +57,19 @@
                                     <th>
                                         Date & Lieu de naissance
                                     </th>
+                                    @if (!auth()->user()->isProfesseur())
+                                        <th>
+                                            Montant scolarité
+                                        </th>
+                                    @endif
                                     <th>
-                                        Scolarite
+                                        Email & téléphone
                                     </th>
-                                    <th>
-                                        Email  & téléphone
-                                    </th>
-                                    <th>
-                                        Statut
-                                    </th>
+                                    @if (!auth()->user()->isProfesseur())
+                                        <th>
+                                            Scolarité
+                                        </th>
+                                    @endif
                                     <th>
                                         Action
                                     </th>
@@ -88,39 +96,45 @@
                                             <td>
                                                 {{ $etudiant->birth_date }} - {{ $etudiant->birth_place }}
                                             </td>
+                                            @if (!auth()->user()->isProfesseur())
+                                                <td>
+                                                    <span class="badge bg-primary">
+                                                        {{ $etudiant->scolarite->amount }} FCFA
+                                                    </span>
+                                                </td>
+                                            @endif
                                             <td>
-                                                {{ $etudiant->scolarite->total_amuont }} FCFA
+                                                {{ $etudiant->email . '  ' . $etudiant->phone }}
                                             </td>
-                                            <td>
-                                                {{
-                                                    $etudiant->email . '  '. $etudiant->phone
-                                                }}
-                                            </td>
-                                            <td>
-                                                @if ($etudiant->scolarite->is_paid)
-                                                    <span class="badge bg-success">Soldé</span>
-                                                @else
-                                                    <span class="badge bg-danger">Non soldé</span>
-                                                @endif
-                                            </td>
+                                            @if (!auth()->user()->isProfesseur())
+                                                <td>
+                                                    @if ($etudiant->scolarite->is_paid)
+                                                        <span class="badge bg-success">Soldé</span>
+                                                    @else
+                                                        <span class="badge bg-danger">Non soldé</span>
+                                                    @endif
+                                                </td>
+                                            @endif
                                             <td class="d-flex justify-content-around align-items-center gap-2">
-                                                <a href="{{ route('etudiant.show', $etudiant->id) }}"
-                                                    class="btn btn-info">
+                                                <a href="{{ route('etudiant.show', $etudiant->id) }}" class="btn btn-info">
                                                     <i class="ri-eye-line fs-2"></i>
                                                 </a>
-                                                <a href="{{ route('etudiant.edit', $etudiant->id) }}"
-                                                    class="btn btn-warning">
-                                                    <i class="ri-pencil-line fs-2"></i>
-                                                </a>
-                                                <form action="{{ route('etudiant.destroy', $etudiant->id) }}"
-                                                    method="post" class="d-inline" id="delete-form-{{ $etudiant->id }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" class="btn btn-danger"
-                                                        onclick="confirmDelete({{ $etudiant->id }})">
-                                                        <i class="ri-delete-bin-line fs-2"></i>
-                                                    </button>
-                                                </form>
+                                                @if (!auth()->user()->isProfesseur())
+                                                    <a href="{{ route('etudiant.edit', $etudiant->id) }}"
+                                                        class="btn btn-warning">
+                                                        <i class="ri-pencil-line fs-2"></i>
+                                                    </a>
+                                                    <form action="{{ route('etudiant.destroy', $etudiant->id) }}"
+                                                        method="post" class="d-inline"
+                                                        id="delete-form-{{ $etudiant->id }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="btn btn-danger"
+                                                            onclick="confirmDelete({{ $etudiant->id }})">
+                                                            <i class="ri-delete-bin-line fs-2"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -142,10 +156,9 @@
 @endsection
 
 @push('scripts')
-
     <script>
         function confirmDelete(id) {
-           Swal.fire({
+            Swal.fire({
                 title: 'Etes-vous sûr?',
                 text: "Vous ne pourrez pas revenir en arrière!",
                 icon: 'warning',
@@ -160,7 +173,5 @@
                 }
             })
         }
-
     </script>
-
 @endpush

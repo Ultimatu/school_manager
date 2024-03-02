@@ -25,33 +25,38 @@
                         class="img-thumbnail" width="100">
                     {{ $etudiant->first_name }} {{ $etudiant->last_name }}
                     {{-- buttons --}}
-                    <div class="float-right d-flex justify-content-between gap-2">
-                        {{-- edit --}}
-                        <a href="{{ route('etudiant.edit', $etudiant->id) }}" class="btn btn-warning mb-3">
-                            <i class="ri-pencil-line fs-3 text-white"></i>
-                            Modifier
-                        </a>
-                        {{-- add_parent button --}}
-                        <a href="{{ route('parents.create', ['etudiant' => $etudiant->id]) }}" class="btn btn-success mb-3">
-                            <i class="ri-user-add-line fs-3 text-white"></i>
-                            Ajouter un parent
-                        </a>
-                        {{-- ajouter un versement --}}
-                        <a href="{{ route('versement.etudiant.create', ["paymentScolarite"=>$etudiant->scolarite->id]) }}" class="btn btn-info">
-                            <i class="ri-money-dollar-circle-line fs-3 text-white mb-3"></i>
-                            Ajouter un versement
-                        </a>
-                        {{-- delete --}}
-                        <form action="{{ route('etudiant.destroy', $etudiant->id) }}" method="post" class="d-inline"
-                            id="deleteEtudiant">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" class="btn btn-danger" onclick="deleteEtudiant()" style="color: #fff;">
-                                <i class="ri-delete-bin-line fs-3 text-white"></i>
-                                Supprimer {{ $etudiant->first_name }}
-                            </button>
-                        </form>
-                    </div>
+                    @if (!auth()->user()->isProfesseur())
+                        <div class="float-right d-flex justify-content-between gap-2">
+                            {{-- edit --}}
+                            <a href="{{ route('etudiant.edit', $etudiant->id) }}" class="btn btn-warning mb-3">
+                                <i class="ri-pencil-line fs-3 text-white"></i>
+                                Modifier
+                            </a>
+                            {{-- add_parent button --}}
+                            <a href="{{ route('parents.create', ['etudiant' => $etudiant->id]) }}"
+                                class="btn btn-success mb-3">
+                                <i class="ri-user-add-line fs-3 text-white"></i>
+                                Ajouter un parent
+                            </a>
+                            {{-- ajouter un versement --}}
+                            <a href="{{ route('versement.etudiant.create', ['paymentScolarite' => $etudiant->scolarite->id]) }}"
+                                class="btn btn-info">
+                                <i class="ri-money-dollar-circle-line fs-3 text-white mb-3"></i>
+                                Ajouter un versement
+                            </a>
+                            {{-- delete --}}
+                            <form action="{{ route('etudiant.destroy', $etudiant->id) }}" method="post" class="d-inline"
+                                id="deleteEtudiant">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn btn-danger" onclick="deleteEtudiant()"
+                                    style="color: #fff;">
+                                    <i class="ri-delete-bin-line fs-3 text-white"></i>
+                                    Supprimer {{ $etudiant->first_name }}
+                                </button>
+                            </form>
+                        </div>
+                    @endif
                     <!-- Header du tab -->
                     <!-- Ajoutez les liens pour chaque onglet -->
                     <ul class="nav nav-tabs mt-1">
@@ -61,9 +66,11 @@
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#parents">Parents</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#scolarite">Scolarité</a>
-                        </li>
+                        @if (!auth()->user()->isProfesseur())
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#scolarite">Scolarité</a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
                 <div class="card-body">
@@ -89,13 +96,15 @@
                                     <strong>Numéro de téléphone en cas d'urgence:</strong> <span class="badge bg-danger">
                                         {{ $etudiant->urgent_phone }}
                                     </span> <br>
-                                <p>
-                                    Statut: @if ($etudiant->scolarite->amount - $etudiant->versements()->sum('amount') == 0 || $etudiant->scolarite->is_paid == true)
-                                        <span class="badge bg-success">Soldé</span>
-                                    @else
-                                        <span class="badge bg-danger">Non soldé</span>
+                                    @if (!auth()->user()->isProfesseur())
+                                        <p>
+                                            Statut: @if ($etudiant->scolarite->amount - $etudiant->versements()->sum('amount') == 0 || $etudiant->scolarite->is_paid == true)
+                                                <span class="badge bg-success">Soldé</span>
+                                            @else
+                                                <span class="badge bg-danger">Non soldé</span>
+                                            @endif
+                                        </p>
                                     @endif
-                                </p>
                             </div>
                         </div>
                         <!-- Onglet Parents -->
@@ -103,8 +112,8 @@
                             <div class="card-body">
                                 {{-- parents --}}
                                 <hr>
-                                @if ($etudiant->parents()->count() > 0)
-                                    @foreach ($etudiant->parents() as $parent)
+                                @if ($etudiant->parents->count() > 0)
+                                    @foreach ($etudiant->parents as $parent)
                                         <div class="datatable table">
                                             <table class="table table-bordered table-striped table-responsive">
                                                 <thead>
@@ -115,39 +124,46 @@
                                                         <th scope="col">Adresse</th>
                                                         <th scope="col">Profession</th>
                                                         <th>Type de parent</th>
-                                                        <th>Actions</th>
+                                                        @if (!auth()->user()->isProfesseur())
+                                                            <th>Actions</th>
+                                                        @endif
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td>{{ $parent->first_name }} {{ $parent->last_name }}</td>
-                                                        <td>{{ $parent->email }}</td>
-                                                        <td>{{ $parent->phone }}</td>
-                                                        <td>{{ $parent->address }}</td>
-                                                        <td>{{ $parent->profession }}</td>
+                                                        <td>{{ $parent->parent->first_name }} {{ $parent->last_name }}
+                                                        </td>
+                                                        <td>{{ $parent->parent->email }}</td>
+                                                        <td>{{ $parent->parent->phone }}</td>
+                                                        <td>{{ $parent->parent->address }}</td>
+                                                        <td>{{ $parent->parent->profession }}</td>
                                                         <td>
                                                             <span class="badge bg-warning">
-                                                                {{ $parent->type }}
+                                                                {{ $parent->parent->type }}
                                                             </span>
-                                                        <td>
-                                                            <a href="{{ route('parents.edit', $parent->id) }}"
-                                                                class="btn btn-warning">
-                                                                <i class="ri-pencil-line"></i>
-                                                                Modifier
-                                                            </a>
-                                                            <form action="{{ route('parents.destroy', $parent->id) }}"
-                                                                method="post" class="d-inline"
-                                                                id="deleteParent-{{ $parent->id }}">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="button" class="btn btn-danger"
-                                                                    onclick="deleteParent({{ $parent->id }})"
-                                                                    style="color: #fff;">
-                                                                    <i class="ri-delete-bin-line"></i>
-                                                                    Supprimer
-                                                                </button>
-                                                            </form>
                                                         </td>
+                                                        @if (!auth()->user()->isProfesseur())
+                                                            <td>
+                                                                <a href="{{ route('parents.edit', $parent->parent_id) }}"
+                                                                    class="btn btn-warning">
+                                                                    <i class="ri-pencil-line"></i>
+                                                                    Modifier
+                                                                </a>
+                                                                <form
+                                                                    action="{{ route('parents.destroy', $parent->parent_id) }}"
+                                                                    method="post" class="d-inline"
+                                                                    id="deleteParent-{{ $parent->id }}">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="button" class="btn btn-danger"
+                                                                        onclick="deleteParent({{ $parent->parent_id }})"
+                                                                        style="color: #fff;">
+                                                                        <i class="ri-delete-bin-line"></i>
+                                                                        Supprimer
+                                                                    </button>
+                                                                </form>
+                                                            </td>
+                                                        @endif
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -159,77 +175,79 @@
                             </div>
                         </div>
                         <!-- Onglet Scolarité -->
-                        <div id="scolarite" class="tab-pane fade">
-                            <!-- Contenu de l'onglet -->
-                            <div class="card-body">
-                                {{-- scolarite --}}
-                                <p>
-                                    Montant de la scolarité: {{ $etudiant->scolarite->amount }} FCFA
-                                </p>
-                                <p>
-                                    Montant payé: {{ $etudiant->versements()->sum('amount') }} FCFA
-                                </p>
-                                <p>
-                                    Montant restant:
-                                    {{ $etudiant->scolarite->amount - $etudiant->versements()->sum('amount') }} FCFA
-                                </p>
-                                <p>
-                                    Statut: @if ($etudiant->scolarite->amount - $etudiant->versements()->sum('amount') == 0 || $etudiant->scolarite->is_paid == true)
-                                        <span class="badge bg-success">Soldé</span>
-                                    @else
-                                        <span class="badge bg-danger">Non soldé</span>
-                                    @endif
-                                </p>
-                                {{-- details payments --}}
-                                <div class="datatable">
-                                    <table class="table table-bordered table-striped table-responsive">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Montant</th>
-                                                <th scope="col">Date</th>
-                                                <th scope="col">Mode de paiement</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @forelse ($etudiant->versements() as $versement)
+                        @if (!auth()->user()->isProfesseur())
+                            <div id="scolarite" class="tab-pane fade">
+                                <!-- Contenu de l'onglet -->
+                                <div class="card-body">
+                                    {{-- scolarite --}}
+                                    <p>
+                                        Montant de la scolarité: {{ $etudiant->scolarite->amount }} FCFA
+                                    </p>
+                                    <p>
+                                        Montant payé: {{ $etudiant->versements()->sum('amount') }} FCFA
+                                    </p>
+                                    <p>
+                                        Montant restant:
+                                        {{ $etudiant->scolarite->amount - $etudiant->versements()->sum('amount') }} FCFA
+                                    </p>
+                                    <p>
+                                        Statut: @if ($etudiant->scolarite->amount - $etudiant->versements()->sum('amount') == 0 || $etudiant->scolarite->is_paid == true)
+                                            <span class="badge bg-success">Soldé</span>
+                                        @else
+                                            <span class="badge bg-danger">Non soldé</span>
+                                        @endif
+                                    </p>
+                                    {{-- details payments --}}
+                                    <div class="datatable">
+                                        <table class="table table-bordered table-striped table-responsive">
+                                            <thead>
                                                 <tr>
-                                                    <td>{{ $versement->amount }} FCFA</td>
-                                                    <td>{{ $versement->date }}</td>
-                                                    <td>
-                                                        <span class="badge bg-warning">
-                                                            {{ $versement->mode_payement ?? 'Espèce' }}
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <a href="{{ route('versement.edit', $versement->id) }}"
-                                                            class="btn btn-warning">
-                                                            <i class="ri-pencil-line"></i>
-                                                            Modifier
-                                                        </a>
-                                                        <form action="{{ route('versement.destroy', $versement->id) }}"
-                                                            method="post" class="d-inline"
-                                                            id="deleteForm-{{ $versement->id }}">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button" class="btn btn-danger"
-                                                                onclick="deleteItem({{ $versement->id }})"
-                                                                style="color: #fff;">
-                                                                <i class="ri-delete-bin-line"></i>
-                                                                Supprimer
-                                                            </button>
-                                                    </td>
+                                                    <th scope="col">Montant</th>
+                                                    <th scope="col">Date</th>
+                                                    <th scope="col">Mode de paiement</th>
+                                                    <th>Actions</th>
                                                 </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="3">Aucun versement enregistré</td>
-                                                </tr>
-                                            @endforelse
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($etudiant->versements() as $versement)
+                                                    <tr>
+                                                        <td>{{ $versement->amount }} FCFA</td>
+                                                        <td>{{ $versement->date }}</td>
+                                                        <td>
+                                                            <span class="badge bg-warning">
+                                                                {{ $versement->mode_payement ?? 'Espèce' }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <a href="{{ route('versement.edit', $versement->id) }}"
+                                                                class="btn btn-warning">
+                                                                <i class="ri-pencil-line"></i>
+                                                                Modifier
+                                                            </a>
+                                                            <form action="{{ route('versement.destroy', $versement->id) }}"
+                                                                method="post" class="d-inline"
+                                                                id="deleteForm-{{ $versement->id }}">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="button" class="btn btn-danger"
+                                                                    onclick="deleteItem({{ $versement->id }})"
+                                                                    style="color: #fff;">
+                                                                    <i class="ri-delete-bin-line"></i>
+                                                                    Supprimer
+                                                                </button>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="3">Aucun versement enregistré</td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

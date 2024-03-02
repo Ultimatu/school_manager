@@ -13,11 +13,11 @@ class CarInscription extends Model
         'etudiant_id',
         'trajet_id',
         'is_paid',
-        'versements',
         'total_amount',
         'annee_scolaire'
     ];
 
+   
     public function etudiant()
     {
         return $this->belongsTo(Etudiant::class);
@@ -26,6 +26,11 @@ class CarInscription extends Model
     public function trajet()
     {
         return $this->belongsTo(Trajet::class);
+    }
+
+    public function versements()
+    {
+        return $this->hasMany(CarInscriptionVersement::class);
     }
 
 

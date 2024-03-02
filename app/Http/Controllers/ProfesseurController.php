@@ -6,6 +6,9 @@ use App\Enum\Role;
 use App\Http\Requests\StoreProfesseurRequest;
 use App\Http\Requests\UpdateProfesseurRequest;
 use App\Mail\AccountActivatedMail;
+use App\Models\AnneeScolaire;
+use App\Models\Classe;
+use App\Models\Etudiant;
 use App\Models\Professeur;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
@@ -17,7 +20,10 @@ class ProfesseurController extends Controller
      */
     public function index()
     {
-        $professeurs = Professeur::all();
+        $professeurs = Professeur::where('annee_scolaire', AnneeScolaire::valideYear())->get();
+        if (auth()->user()->isEtudiant()){
+            $professeurs = Classe::where('id', auth()->user()->etudiant->classe_id)->first()->professeurs();
+        }
         return view('components.pages.profs.list', compact('professeurs'));
     }
 
@@ -48,7 +54,6 @@ class ProfesseurController extends Controller
         $user->phone = $request->phone;
         $user->password = bcrypt($password);
         $user->role_auth = 'professeur';
-        $user->permissions = Role::getAbilities('professeur');
         $user->save();
 
         $professeur = new Professeur();

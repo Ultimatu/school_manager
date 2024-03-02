@@ -1,75 +1,3 @@
-var calendarEvents = [];
-console.log("classeId :", classeId);
-console.log("baseUrl :", baseUrl);
-
-// Première requête AJAX pour récupérer les cours
-$.ajax({
-    url: baseUrl + "/api/get-emplois/" + classeId,
-    type: "GET",
-    success: function (response) {
-        console.log(response.data);
-        var events = response.data;
-
-        events.forEach(function (event) {
-            var calendarEvent = {
-                id: event.id,
-                title:
-                    event.classe_cours.cours.name +
-                    " - Prof: " +
-                    event.professeur.first_name +
-                    " " +
-                    event.professeur.last_name +
-                    " - Salle: " +
-                    event.salle.name,
-                description: buildDescription(event, false),
-                start: event.start_date_time,
-                end: event.end_date_time,
-                backgroundColor: randomColor(event.classe_cours.credit),
-                borderColor: randomColor(event.classe_cours.credit),
-                textColor: "white",
-            };
-            calendarEvents.push(calendarEvent);
-        });
-
-        // Appel de la deuxième requête AJAX après le traitement des cours
-        getExamens();
-    },
-    error: function (error) {
-        console.log("error :", error);
-    },
-});
-
-// Fonction pour récupérer les examens
-function getExamens() {
-    $.ajax({
-        url: baseUrl + "/api/get-examens/" + classeId,
-        type: "GET",
-        success: function (response) {
-            console.log(response.data);
-            var examens = response.data;
-
-            examens.forEach(function (examen) {
-                var calendarEvent = {
-                    id: examen.id,
-                    title: "Examen: " + examen.classe_cours.cours.name + " - Salle: " + examen.salle.name,
-                    description: buildDescription(examen, true),
-                    start: examen.start_date_time,
-                    end: examen.end_date_time,
-                    backgroundColor: "#dc3545",
-                    borderColor: "#dc3545",
-                    textColor: "white",
-                };
-                calendarEvents.push(calendarEvent);
-            });
-
-            // Une fois que les cours et les examens sont traités, initialiser le calendrier
-            initializeCalendar();
-        },
-        error: function (error) {
-            console.log("error :", error);
-        },
-    });
-}
 
 // Fonction pour initialiser le calendrier une fois que les données sont disponibles
 function initializeCalendar() {
@@ -358,9 +286,11 @@ $("#btnSaveEvent").on("click", function () {
     }
 });
 
-$("#datepicker1").datepicker({
-    showOtherMonths: true,
-    selectOtherMonths: true,
-    lang: "fr",
-
-});
+if ($('#datepicker1').length){
+    $("#datepicker1").datepicker({
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        lang: "fr",
+    
+    });
+}

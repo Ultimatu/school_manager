@@ -23,15 +23,16 @@
                 <div class="card card-plain">
                     <div class="card-header card-header-primary">
                         <h4 class="card-title">Liste des examens</h4>
-                        <p class="card-category">Liste des examens enregistrés</p>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <a href="{{ route('examens.create') }}" class="btn btn-primary float-right">
-                                    <i class="ri-add-line"></i>
-                                    Ajouter un examen</a>
+                        @if (auth()->user()->isCreator())
+                            <p class="card-category">Liste des examens enregistrés</p>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a href="{{ route('examens.create') }}" class="btn btn-primary float-right">
+                                        <i class="ri-add-line"></i>
+                                        Ajouter un examen</a>
+                                </div>
                             </div>
-
-                        </div>
+                        @endif
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -53,7 +54,7 @@
                                         Jour de la semaine
                                     </th>
                                     <th>
-                                       Date & Heure de début
+                                        Date & Heure de début
                                     </th>
                                     <th>
                                         Date & Heure de fin
@@ -86,24 +87,35 @@
                                             <td>
                                                 {{ $examen->end_date_time }}
                                             </td>
-                                            <td class="td-actions text-righ d-flex justify-content-end">
-                                                <a href="{{ route('examens.show', $examen->id) }}" class="btn btn-info">
-                                                    <i class="ri-eye-line"></i> </a>
-                                                <a href="{{ route('examens.edit', $examen->id) }}" class="btn btn-primary">
-                                                    <i class="ri-pencil-line"></i>
-                                                </a>
-                                                <form action="{{ route('examens.destroy', $examen->id) }}" method="post"
-                                                    style="display: inline-block" id="delete-form-{{ $examen->id }}">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $examen->id }})">
-                                                        <i class="ri-delete-bin-line"></i>
-                                                    </button>
-                                                </form>
-                                            </td>
+                                            @if (auth()->user()->isCreator())
+                                                <td class="td-actions text-righ d-flex justify-content-end">
+                                                    <a href="{{ route('examens.show', $examen->id) }}" class="btn btn-info">
+                                                        <i class="ri-eye-line"></i> </a>
+                                                    <a href="{{ route('examens.edit', $examen->id) }}"
+                                                        class="btn btn-primary">
+                                                        <i class="ri-pencil-line"></i>
+                                                    </a>
+                                                    <form action="{{ route('examens.destroy', $examen->id) }}"
+                                                        method="post" style="display: inline-block"
+                                                        id="delete-form-{{ $examen->id }}">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button type="button" class="btn btn-danger"
+                                                            onclick="confirmDelete({{ $examen->id }})">
+                                                            <i class="ri-delete-bin-line"></i>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            @elseif (auth()->user()->isProfesseur())
+                                                <td>
+                                                    <a href="{{ route('examens.show', $examen->id) }}"
+                                                        class="btn btn-info">
+                                                        <i class="ri-eye-line"></i> </a>
+                                                </td>
+                                            @endif
                                         </tr>
                                     @endforeach
-                                    @if($examens->count() === 0)
+                                    @if ($examens->count() === 0)
                                         <tr>
                                             <td colspan="8" class="text-center">
                                                 Aucun examen enregistré
@@ -123,23 +135,22 @@
 @endsection
 
 @push('scripts')
-
-<script>
-    function confirmDelete(id){
-        Swal.fire({
-            title: 'Êtes-vous sûr?',
-            text: "Vous ne pourrez pas revenir en arrière!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Oui, supprimez-le!',
-            cancelButtonText: 'Annuler'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('delete-form-'+id).submit();
-            }
-        })
-    }
-</script>
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Êtes-vous sûr?',
+                text: "Vous ne pourrez pas revenir en arrière!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Oui, supprimez-le!',
+                cancelButtonText: 'Annuler'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+    </script>
 @endpush

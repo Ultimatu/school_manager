@@ -14,9 +14,8 @@ class Parents extends Model
         'last_name',
         'password',
         'phone',
-        'email', // add email
+        'email', 
         'address',
-        'etudiants_ids',
         'profession',
         'user_id',
         'type',
@@ -38,8 +37,7 @@ class Parents extends Model
 
     public function etudiants()
     {
-        //split etudiants_ids ; and return the etudiant
-        return Etudiant::whereIn('id', explode(';', $this->etudiants_ids))->get();
+       return $this->hasMany(ParentChilds::class, 'parent_id', 'id');
     }
 
 
@@ -47,6 +45,4 @@ class Parents extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-
 }

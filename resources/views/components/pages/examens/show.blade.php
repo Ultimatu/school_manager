@@ -26,14 +26,17 @@
                 @include('components.shared.alert')
                 <div class="card card-plain">
                     <div class="card-header card-header-primary">
-                        <div class="row">
-                            {{-- ajouter des notes --}}
-                            <div class="col-md-12">
-                                <a href="{{ route('examens.notes.create', ['examen'=>$examen->id]) }}" class="btn btn-primary float-right">
-                                    <i class="ri-add-line fs-2"></i>
-                                    Ajouter des notes</a>
+                        @if (auth()->user()->isProfesseur())
+                            <div class="row">
+                                {{-- ajouter des notes --}}
+                                <div class="col-md-12">
+                                    <a href="{{ route('examens.notes.create', ['examen' => $examen->id]) }}"
+                                        class="btn btn-primary float-right">
+                                        <i class="ri-add-line fs-2"></i>
+                                        Ajouter des notes</a>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                         <h4 class="card-title text-center">Détails de l'examen</h4>
                         <p class="card-category">Détails de l'examen enregistré</p>
                     </div>
@@ -44,17 +47,18 @@
                         <p class="text-center">Jour de la semaine: {{ $examen->day }}</p>
                         <p class="text-center">Date & Heure de début: {{ $examen->start_date_time }}</p>
                         <p class="text-center">Date & Heure de fin: {{ $examen->end_date_time }}</p>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <a href="{{ route('examens.edit', $examen) }}" class="btn btn-primary float-right">
-                                    <i class="ri-pencil-line"></i>
-                                    Modifier</a>
+                        @if (auth()->user()->isCreator())
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a href="{{ route('examens.edit', $examen) }}" class="btn btn-primary float-right">
+                                        <i class="ri-pencil-line"></i>
+                                        Modifier</a>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
-

@@ -31,7 +31,19 @@
 <body class="app-calendar">
 
     {{-- sidebar --}}
-    <x-shared.sidebar />
+    @if (auth()->user()->isEtudiant())
+        <x-shared.student-sidebar />
+    @elseif (auth()->user()->isProfesseur())
+        <x-shared.profs-sidebar />
+    @elseif (auth()->user()->isConsellor())
+        <x-shared.consellor-sidebar />
+    @elseif (auth()->user()->isComptable())
+        <x-shared.comptable-sidebar />
+    @elseif (auth()->user()->isParent())
+        <x-shared.comptable-sidebar />
+    @else
+        <x-shared.sidebar />
+    @endif
     {{-- end sidebar --}}
 
     {{-- header --}}

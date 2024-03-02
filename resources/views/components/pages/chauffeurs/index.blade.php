@@ -145,6 +145,5 @@
                 }
             })
         }
-       
     </script>
 @endpush

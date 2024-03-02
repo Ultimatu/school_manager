@@ -63,9 +63,8 @@ class UpdateCiteInscriptionRequest extends FormRequest
             'etudiant_id' => (int)$this->etudiant_id,
             'chambre_id' => (int)$this->chambre_id,
             'is_paid' =>  $this->has('is_paid') ? (bool)$this->is_paid : false,
-            'versements' => (array)$this->versements,
             'total_amount' => (float)$this->total_amount,
-            'annee_scolaire' => AnneeScolaire::where('status', 'en_cours')->first()->annee_scolaire,
+            'annee_scolaire' => AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire,
         ]);
     }
 }

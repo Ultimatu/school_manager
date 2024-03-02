@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateClasseRequest;
 use App\Models\Classe;
 use App\Models\ClasseCours;
 use App\Models\EmploiDuTemps;
+use App\Models\Examen;
 use App\Models\Filiere;
 use App\Models\Professeur;
 use App\Models\Salle;
@@ -20,6 +21,9 @@ class ClasseController extends Controller
     public function index()
     {
         $classes = Classe::all();
+        if (auth()->user()->isProfesseur()) {
+            $classes = Classe::whereRelation('classeCours', 'professor_id', auth()->user()->professeur->id)->get();
+        }
         return view('components.pages.classe.list', compact('classes'));
     }
 
@@ -95,6 +99,15 @@ class ClasseController extends Controller
     //*================================================================================================
     //* EMPLOI DU TEMPS
 
+    public function profEmploie(Professeur $professeur)
+    {
+        $emplois = EmploiDuTemps::where('professeur_id', $professeur->id)->get();
+        $classeCours = ClasseCours::where('professor_id', $professeur->id)->where('is_available', 1)->get();
+        $professeurs = Professeur::where('is_available', 1)->get();
+        $salles = Salle::where('is_available', 1)->get();
+        $examens = Examen::where('professeur_id', $professeur->id)->get();
+        return view('components.pages.profs.emploi', compact('emplois', 'examens', 'professeur'));
+    }
 
     public function emploie(Classe $classe)
     {
@@ -102,7 +115,8 @@ class ClasseController extends Controller
         $classeCours = ClasseCours::where('classe_id', $classe->id)->where('is_available', 1)->get();
         $professeurs = Professeur::where('is_available', 1)->get();
         $salles = Salle::where('is_available', 1)->get();
-        return view('components.pages.classe.emploi.index', compact('emplois', 'classe', 'classeCours', 'professeurs', 'salles'));
+        $examens = Examen::where('classe_id', $classe->id)->get();
+        return view('components.pages.classe.emploi.index', compact('emplois', 'classe', 'classeCours', 'professeurs', 'salles', 'examens'));
     }
 
     public function getAll($id)

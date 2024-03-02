@@ -41,7 +41,6 @@
                             @csrf
                             @if ($parent->id)
                                 @method('PUT')
-                                <input type="hidden" name="etudiants_ids" value="{{ $parent->id }}">
                             @else
                                 <input type="hidden" name="etudiant_id" value="{{ $etudiant->id }}">
                             @endif

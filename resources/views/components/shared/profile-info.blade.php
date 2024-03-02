@@ -1,5 +1,5 @@
 @if (auth()->user()->isEtudiant())
-    <img src="{{ asset(auth()->user()->etudiant->avatar ?? 'users/default.png') }}" class="img-thumbnail" width="150" height="150"  alt="">
+    <img src="{{ asset(auth()->user()->etudiant->avatar?? 'users/avatar.png') }}" class="img-thumbnail" width="150" height="150"  alt="">
     <p class="mb-3"><strong>Matricule:</strong> {{ auth()->user()->etudiant->student_mat }}
     </p>
     <p class="mb-3"><strong>Nom:</strong> {{ auth()->user()->etudiant->first_name }}</p>
@@ -23,7 +23,7 @@
     <p class="mb-3"><strong>Numéro de la carte étudiante:</strong>
         {{ auth()->user()->etudiant->card_id }}</p>
 @elseif (auth()->user()->isProfesseur())
-    <img src="{{ asset(auth()->user()->professeur->avatar ?? 'users/default.png') }}" class="img-thumbnail" width="150" height="150"  alt="">
+    <img src="{{ asset(auth()->user()->professeur->avatar?? 'users/avatar.png') }}" class="img-thumbnail" width="150" height="150"  alt="">
     <p class="mb-3"><strong>Nom:</strong> {{ auth()->user()->professeur->first_name }}</p>
     <p class="mb-3"><strong>Prénom:</strong> {{ auth()->user()->professeur->last_name }}</p>
     <p class="mb-3"><strong>Email:</strong> {{ auth()->user()->email }}</p>
@@ -35,7 +35,7 @@
     <p class="mb-3"><strong>Specialité:</strong>
         {{ auth()->user()->professeur->specialities }}</p>
 @elseif (auth()->user()->administrations != null)
-    <img src="{{ asset(auth()->user()->administration->avatar ?? 'users/default.png') }}" class="img-thumbnail" width="150" height="150"  alt="">
+    <img src="{{ asset(auth()->user()->administration->avatar ?? 'users/avatar.png') }}" class="img-thumbnail" width="150" height="150"  alt="">
     <p class="mb-3"><strong>Nom:</strong> {{ auth()->user()->administration->first_name }}
     </p>
     <p class="mb-3"><strong>Prénom:</strong> {{ auth()->user()->administration->last_name }}

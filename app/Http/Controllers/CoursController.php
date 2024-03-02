@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCoursRequest;
 use App\Http\Requests\UpdateCoursRequest;
+use App\Models\AnneeScolaire;
+use App\Models\ClasseCours;
 use App\Models\Cours;
 
 class CoursController extends Controller
@@ -14,6 +16,10 @@ class CoursController extends Controller
     public function index()
     {
         $cours = Cours::all();
+        if (auth()->user()->isProfesseur()){
+            $classeCours = ClasseCours::profCours();
+            return view('components.pages.profs.cours', compact('classeCours'));
+        }
         return view('components.pages.cours.list', compact('cours'));
     }
 

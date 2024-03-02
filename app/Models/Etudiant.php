@@ -90,7 +90,7 @@ class Etudiant extends Model
 
     public function parents()
     {
-        return Parents::where('etudiants_ids', 'like', '%'.$this->id.'%')->get();
+        return $this->hasMany(ParentChilds::class, 'etudiant_id', 'id');
     }
 
 
@@ -101,7 +101,17 @@ class Etudiant extends Model
 
     public function getAvatar()
     {
-        return $this->avatar ? asset('students/' . $this->avatar) : asset('students/avatar.png');
+        return $this->avatar ? asset($this->avatar) : asset('user/avatar.png');
+    }
+
+
+    public function scopeProfStudents($query, $professeur_id)
+    {
+        return $query->whereHas('classe', function ($q) use ($professeur_id) {
+            $q->whereHas('classeCours', function ($q) use ($professeur_id) {
+                $q->where('professor_id', $professeur_id);
+            });
+        })->get();
     }
 
 

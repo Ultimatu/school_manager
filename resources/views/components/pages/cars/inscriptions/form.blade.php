@@ -32,7 +32,7 @@
                     </div>
                     <div class="card-body">
                         <form method="POST"
-                            action="{{ $inscription->id ? route('car_inscriptions.update', $inscription) : route('car_inscriptions.store') }}">
+                            action="{{ $inscription->id ? route('car_inscriptions.update', $inscription->id) : route('car_inscriptions.store') }}">
                             @csrf
                             @if ($inscription->id)
                                 @method('PUT')

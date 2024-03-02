@@ -101,6 +101,14 @@ class User extends Authenticatable
         return $this->hasMany(Parents::class);
     }
 
+     /**
+     * Check if the user is a super admin.
+     * @return bool
+     */
+    public function isSuperAdmin()
+    {
+        return $this->role_auth === 'admin';
+    }
     /**
      * Check if the user is an admin.
      * @return bool
@@ -172,6 +180,10 @@ class User extends Authenticatable
     public function isEtudiant()
     {
         return $this->role_auth === 'etudiant';
+    }
+
+    public function isCreator(){
+        return $this->isAdmin() || $this->isConsellor() || $this->isDirector();
     }
 
     public  static function generatePassword($type = 'ADMIN'): string

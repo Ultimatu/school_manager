@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreParentsRequest;
 use App\Http\Requests\UpdateParentsRequest;
+use App\Models\AnneeScolaire;
 use App\Models\Etudiant;
+use App\Models\ParentChilds;
 use App\Models\Parents;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
@@ -16,8 +18,15 @@ class ParentsController extends Controller
      */
     public function index()
     {
+        $parents = Parents::where('annee_scolaire', AnneeScolaire::valideYear())->get();
+        if (auth()->user()->isEtudiant()){
+            $etudiant = Etudiant::where('user_id', auth()->user()->id)->first();
+            $parents = ParentChilds::where('etudiant_id', $etudiant->id)->get()->map(function ($parent){
+                return Parents::find($parent->parent_id);
+            });
+        }
         return view('components.pages.parent.list', [
-            'parents' => Parents::all()
+            'parents' => $parents
         ]);
     }
 
@@ -38,10 +47,12 @@ class ParentsController extends Controller
     {
         if ($request->has('parent_id')){
             $parent = Parents::find($request->parent_id);
-            $parent->etudiants_ids = $parent->etudiants_ids . ';' . $request->etudiant_id;
-            $parent->save();
+            $child = ParentChilds::create([
+                'parent_id'=>$parent->id,
+                'etudiant_id'=>$request->etudiant_id
+            ]);
 
-            return redirect()->route('etudiant.show', $parent->etudiant_id)->with('success', 'Parent ajouté avec succès');
+            return redirect()->route('etudiant.show', $request->etudiant_id)->with('success', 'Parent ajouté avec succès');
         }
 
         $request->validated();
@@ -53,11 +64,11 @@ class ParentsController extends Controller
         $parent->email = $request->email;
         $parent->address = $request->address;
         $parent->profession = $request->profession;
-        $parent->etudiants_ids = $request->etudiant_id;
         $parent->type = $request->type;
         $parent->is_legal_tutor = $request->is_legal_tutor;
         $parent->status = 'active';
         $parent->annee_scolaire = $etudiant->annee_scolaire;
+       
 
 
         $user = new User();
@@ -71,6 +82,11 @@ class ParentsController extends Controller
 
         $parent->user_id = $user->id;
         $parent->save();
+
+        $child = ParentChilds::create([
+            'parent_id'=>$parent->id,
+            'etudiant_id'=>$etudiant->id
+        ]);
 
 
         return redirect()->route('etudiant.show', $etudiant->id)->with('success', 'Nouveau parent ajouté avec succès');

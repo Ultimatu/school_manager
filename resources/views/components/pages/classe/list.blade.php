@@ -3,18 +3,18 @@
 @section('title', 'Classe')
 
 @section('content')
-{{-- bread --}}
-<div class="row">
-    <div class="col-md-12">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Tableau de bord</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Classe</li>
-            </ol>
-        </nav>
+    {{-- bread --}}
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Tableau de bord</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Classe</li>
+                </ol>
+            </nav>
+        </div>
     </div>
-</div>
-{{-- end bread --}}
+    {{-- end bread --}}
     <div class="container-fluid">
         @include('components.shared.alert')
         <div class="row">
@@ -22,14 +22,16 @@
                 <div class="card card-plain">
                     <div class="card-header card-header-primary">
                         <h4 class="card-title mt-0"> Classe </h4>
-                        <p class="card-category"> Liste des classes </p>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <a href="{{ route('classe.create') }}" class="btn btn-success float-right">
-                                    <i class="ri-add-line"></i>
-                                    Ajouter une classe</a>
+                        @if (!auth()->user()->isProfesseur())
+                            <p class="card-category"> Liste des classes </p>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a href="{{ route('classe.create') }}" class="btn btn-success float-right">
+                                        <i class="ri-add-line"></i>
+                                        Ajouter une classe</a>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -41,9 +43,11 @@
                                     <th>
                                         Nom
                                     </th>
-                                    <th>
-                                        Statut
-                                    </th>
+                                    @if (!auth()->user()->isProfesseur())
+                                        <th>
+                                            Status
+                                        </th>
+                                    @endif
                                     <th>
                                         Niveau
                                     </th>
@@ -69,11 +73,16 @@
                                             <td>
                                                 {{ $classe->name }}
                                             </td>
-                                            <td>
-                                                <div class="form-check form-switch">
-                                                    <input type="checkbox" data-id="{{ $classe->id }}" role="switch" class="js-switch form-check-input" {{ $classe->status == 1 ? 'checked' : '' }} style="color: #26c6da;" onclick="toggleStatus({{ $classe->id }})"/>
-                                                </div>
-                                            </td>
+                                            @if (!auth()->user()->isProfesseur())
+                                                <td>
+                                                    <div class="form-check form-switch">
+                                                        <input type="checkbox" data-id="{{ $classe->id }}" role="switch"
+                                                            class="js-switch form-check-input"
+                                                            {{ $classe->status == 1 ? 'checked' : '' }} style="color: #26c6da;"
+                                                            onclick="toggleStatus({{ $classe->id }})" />
+                                                    </div>
+                                                </td>
+                                            @endif
                                             <td>
                                                 {{ $classe->level }}
                                             </td>
@@ -91,19 +100,21 @@
                                                     class="btn btn-info btn-sm fs-2">
                                                     <i class="ri-eye-line"></i>
                                                 </a>
-                                                <a href="{{ route('classe.edit', $classe->id) }}"
-                                                    class="btn btn-warning btn-sm fs-2">
-                                                    <i class="ri-pencil-line"></i>
-                                                </a>
-                                                <form action="{{ route('classe.destroy', $classe->id) }}" method="post"
-                                                    class="d-inline " id="delete-form-{{ $classe->id }}">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="button" class="btn btn-danger btn-sm fs-2"
-                                                        onclick="deleteConfirmation({{ $classe->id }})">
-                                                        <i class="ri-delete-bin-line"></i>
-                                                    </button>
-                                                </form>
+                                                @if (!auth()->user()->isProfesseur())
+                                                    <a href="{{ route('classe.edit', $classe->id) }}"
+                                                        class="btn btn-warning btn-sm fs-2">
+                                                        <i class="ri-pencil-line"></i>
+                                                    </a>
+                                                    <form action="{{ route('classe.destroy', $classe->id) }}" method="post"
+                                                        class="d-inline " id="delete-form-{{ $classe->id }}">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button type="button" class="btn btn-danger btn-sm fs-2"
+                                                            onclick="deleteConfirmation({{ $classe->id }})">
+                                                            <i class="ri-delete-bin-line"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -147,8 +158,5 @@
                 }
             });
         }
-
-
-
     </script>
 @endpush

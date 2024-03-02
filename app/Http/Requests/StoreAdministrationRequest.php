@@ -12,7 +12,7 @@ class StoreAdministrationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->user()->isAdmin() || auth()->user()->isDirector() || auth()->user()->isConsellor();
     }
 
     /**

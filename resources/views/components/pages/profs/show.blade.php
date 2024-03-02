@@ -35,7 +35,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <p><strong>Photo:</strong> <img src="{{ asset($professeur->avatar ?? 'administration/avatar.png') }}" alt="photo" width="100"></p>
+                                <p><strong>Photo:</strong> <img src="{{ asset($professeur->avatar??'administrations/avatar.png') }}" alt="photo" width="100"></p>
                                 <p><strong>Matricule:</strong> {{ $professeur->matricule }}</p>
                                 <p><strong>Nom:</strong> {{ $professeur->first_name }}</p>
                                 <p><strong>Prénom:</strong> {{ $professeur->last_name }}</p>

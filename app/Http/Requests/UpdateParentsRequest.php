@@ -54,7 +54,6 @@ class UpdateParentsRequest extends FormRequest
             'profession.required' => 'La profession est obligatoire',
             'is_legal_tutor.required' => 'Le statut de tuteur légal est obligatoire',
             'status.required' => 'Le statut est obligatoire',
-            'etudiants_ids.required' => 'L\'étudiant est obligatoire',
             'type.required' => 'Le type est obligatoire',
             'email.unique' => 'L\'email est déjà utilisé',
             'email.email' => 'L\'email est invalide',

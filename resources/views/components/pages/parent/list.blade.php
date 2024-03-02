@@ -23,8 +23,12 @@
                 @include('components.shared.alert')
                 <div class="card card-plain">
                     <div class="card-header card-header-primary">
-                        <h4 class="card-title mt-0">Liste des parents</h4>
-                        <p class="card-category">Liste des parents enregistrés</p>
+                        @if (!auth()->user()->isEtudiant())
+                            <h4 class="card-title mt-0">Liste des parents</h4>
+                            <p class="card-category">Liste des parents enregistrés</p>
+                        @else
+                            <h4 class="card-title mt-0">Vos parents</h4>
+                        @endif
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -43,7 +47,7 @@
                                         Type de parent
                                     </th>
                                     <th>
-                                        Nombre d'enfants
+                                        Nombre d'enfants inscrits
                                     </th>
                                     <th>
                                         Email
@@ -57,9 +61,11 @@
                                     <th>
                                         Profession
                                     </th>
-                                    <th>
-                                        Actions
-                                    </th>
+                                    @if (!auth()->user()->isEtudiant())
+                                        <th>
+                                            Actions
+                                        </th>
+                                    @endif
                                 </thead>
                                 <tbody>
                                     @foreach ($parents as $parent)
@@ -86,31 +92,33 @@
                                                 {{ $parent->phone }}
                                             </td>
                                             <td>
-                                                {{ $parent->adress }}
+                                                {{ $parent->address }}
                                             </td>
                                             <td>
                                                 {{ $parent->profession }}
                                             </td>
-                                            <td>
-                                                <a href="{{ route('parents.show', $parent) }}" class="btn btn-info">
-                                                    <i class="ri-eye-line"></i>
-                                                </a>
-                                                <a href="{{ route('parents.edit', $parent) }}" class="btn btn-warning">
-                                                    <i class="ri-pencil-line"></i>
-                                                </a>
-                                                <form action="{{ route('parents.destroy', $parent) }}" method="post"
-                                                    class="d-inline" id="delete-form-{{ $parent->id }}">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="button" class="btn btn-danger"
-                                                        onclick="deleteParent({{ $parent->id }})">
-                                                        <i class="ri-delete-bin-line"></i>
-                                                    </button>
-                                                </form>
-                                            </td>
+                                            @if (!auth()->user()->isEtudiant())
+                                                <td class="td-actions text-right d-flex justify-content-between gap-2">
+                                                    <a href="{{ route('parents.show', $parent) }}" class="btn btn-info">
+                                                        <i class="ri-eye-line"></i>
+                                                    </a>
+                                                    <a href="{{ route('parents.edit', $parent) }}" class="btn btn-warning">
+                                                        <i class="ri-pencil-line"></i>
+                                                    </a>
+                                                    <form action="{{ route('parents.destroy', $parent) }}" method="post"
+                                                        id="delete-form-{{ $parent->id }}">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button type="button" class="btn btn-danger"
+                                                            onclick="deleteParent({{ $parent->id }})">
+                                                            <i class="ri-delete-bin-line"></i>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            @endif
                                         </tr>
                                     @endforeach
-                                    @if($parents->count() == 0)
+                                    @if ($parents->count() == 0)
                                         <tr>
                                             <td colspan="9" class="text-center">
                                                 Aucun parent enregistré
@@ -147,5 +155,3 @@
         }
     </script>
 @endpush
-
-

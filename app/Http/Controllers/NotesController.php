@@ -10,6 +10,8 @@ use App\Models\Etudiant;
 use App\Models\Notes;
 use App\Models\Professeur;
 use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
 class NotesController extends Controller
 {
@@ -19,8 +21,10 @@ class NotesController extends Controller
     public function index()
     {
         $notes = Notes::currentYear();
-        $professeur = Professeur::where('user_id', Auth::user()->id)->first();
-        return view('components.pages.notes.list', compact('notes', 'professeur'));
+        if (auth()->user()->isEtudiant()){
+            $notes = Notes::where('annee_scolaire', AnneeScolaire::valideYear())->where('etudiant_id', auth()->user()->etudiant->id)->get();
+        }
+        return view('components.pages.notes.list', compact('notes'));
     }
 
     /**
@@ -88,8 +92,58 @@ class NotesController extends Controller
         if (!auth()->user()->isProfesseur()) {
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page');
         }
-
         $notes->delete();
         return redirect()->route('notes.index')->with('success', 'Note supprimée avec succès');
+    }
+
+
+
+    public function addNotes(ClasseCours $classeCours)
+    {
+        $notes = new Notes();
+        $notes->professeur_id = Professeur::where('user_id', Auth::user()->id)->first()->id;
+        $notes->classe_cours_id = $classeCours->id;
+        $etudiants = Etudiant::where('classe_id', $classeCours->classe_id)->get();
+        return view('components.pages.notes.form', compact('notes', 'etudiants'));
+    }
+
+    public function downloadFile(ClasseCours $classeCours){
+        // Créer le fichier CSV
+        $filename = $this->createCSV($classeCours);
+        // Télécharger le fichier
+        return ;
+    }
+
+
+
+
+    private function createCSV(ClasseCours $classeCours){
+        // Nom du fichier CSV
+        $filename = 'notes_'.$classeCours->classe->name.'_'.$classeCours->cours->name.'_'.$classeCours->professeur->first_name.'_'.$classeCours->professeur->last_name.'.csv';
+    
+        // Création d'un nouveau classeur
+        $spreadsheet = new Spreadsheet();
+    
+        // Sélection de la feuille de calcul active
+        $sheet = $spreadsheet->getActiveSheet();
+    
+        // Définition des en-têtes de colonne
+        $sheet->setCellValue('A1', 'Matricule');
+        $sheet->setCellValue('B1', 'Nom');
+        $sheet->setCellValue('C1', 'Prénom');
+        $sheet->setCellValue('D1', 'Email');
+        $sheet->setCellValue('E1', 'Note');    
+        // Verrouiller toutes les colonnes sauf la colonne des notes (colonne E)
+        for ($col = 'A'; $col <= 'D'; $col++) {
+            $sheet->getStyle($col . '1:' . $col . $sheet->getHighestRow())->getProtection()->setLocked(true);
+        } 
+        // Activer la protection de la feuille de calcul pour empêcher la modification des cellules verrouillées
+        $sheet->getProtection()->setSheet(true);
+    
+        // Générer le fichier CSV
+        $writer = new Csv($spreadsheet);
+        $writer->save($filename);
+    
+        return $filename;
     }
 }

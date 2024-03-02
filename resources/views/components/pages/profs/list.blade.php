@@ -21,14 +21,18 @@
                 <div class="card card-plain">
                     <div class="card-header card-header-primary">
                         <h4 class="card-title mt-0"> Liste des professeurs </h4>
-                        <p class="card-category"> Liste des professeurs de l'établissement </p>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <a href="{{ route('professeur.create') }}" class="btn btn-success float-right">
-                                    <i class="ri-add-line"></i>
-                                    Ajouter un professeur</a>
+                        @if (!auth()->user()->isEtudiant())
+                            <p class="card-category"> Liste des professeurs de l'établissement </p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <a href="{{ route('professeur.create') }}" class="btn btn-success float-right">
+                                        <i class="ri-add-line"></i>
+                                        Ajouter un professeur</a>
+                                </div>
                             </div>
-                        </div>
+                        @else
+                            <p class="card-category"> Liste de vos professeurs </p>
+                        @endif
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -64,9 +68,11 @@
                                     <th>
                                         Statut
                                     </th>
-                                    <th>
-                                        Actions
-                                    </th>
+                                    @if (!auth()->user()->isEtudiant())
+                                        <th>
+                                            Actions
+                                        </th>
+                                    @endif
                                 </thead>
                                 <tbody>
                                     @foreach ($professeurs as $prof)
@@ -75,8 +81,9 @@
                                                 {{ $prof->id }}
                                             </td>
                                             <td>
-                                                <img src="{{ asset($prof->avatar ?? 'users/default.png') }}" alt="photo de {{ $prof->nom }}"
-                                                    class="img-fluid" style="width: 50px; height: 50px; border-radius: 50%;">
+                                                <img src="{{ asset($prof->avatar ?? 'administrations/avatar.png') }}"
+                                                    alt="photo de {{ $prof->first_name }}" class="img-fluid"
+                                                    style="width: 50px; height: 50px; border-radius: 50%;">
                                             </td>
                                             <td>
                                                 {{ $prof->matricule }}
@@ -88,7 +95,7 @@
                                                 {{ $prof->last_name }}
                                             </td>
                                             <td>
-                                                {{$prof->gender}}
+                                                {{ $prof->gender }}
                                             </td>
                                             <td>
                                                 {{ $prof->email }}
@@ -106,19 +113,26 @@
                                                     <span class="badge bg-danger">Indisponible</span>
                                                 @endif
                                             </td>
-                                            <td>
-                                                <a href="{{ route('professeur.show', $prof->id) }}" class="btn btn-info">
-                                                    <i class="ri-eye-line fs-2"></i></a>
-                                                <a href="{{ route('professeur.edit', $prof->id) }}" class="btn btn-warning">
-                                                    <i class="ri-pencil-line fs-2"></i></a>
-                                                <form action="{{ route('professeur.destroy', $prof->id) }}" method="post" class="d-inline" id="deleteForm-{{ $prof->id }}">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="button" class="btn btn-danger" onclick="deleteItem({{ $prof->id }})">
-                                                        <i class="ri-delete-bin-line fs-2"></i>
+                                            @if (!auth()->user()->isEtudiant())
+                                                <td class="td-actions d-flex justify-content-between gap-2">
+                                                    <a href="{{ route('professeur.show', $prof->id) }}"
+                                                        class="btn btn-info">
+                                                        <i class="ri-eye-line"></i></a>
+                                                    <a href="{{ route('professeur.edit', $prof->id) }}"
+                                                        class="btn btn-warning">
+                                                        <i class="ri-pencil-line "></i></a>
+                                                    <form action="{{ route('professeur.destroy', $prof->id) }}"
+                                                        method="post" class="d-inline"
+                                                        id="deleteForm-{{ $prof->id }}">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button type="button" class="btn btn-danger"
+                                                            onclick="deleteItem({{ $prof->id }})">
+                                                            <i class="ri-delete-bin-line "></i>
                                                         </button>
-                                                </form>
-                                            </td>
+                                                    </form>
+                                                </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -135,22 +149,20 @@
 @push('scripts')
     <script>
         function deleteItem(id) {
-           Swal.fire({
-               title: 'Êtes-vous sûr?',
-               text: "Vous ne pourrez pas revenir en arrière!",
-               icon: 'warning',
-               showCancelButton: true,
-               confirmButtonColor: '#3085d6',
-               cancelButtonColor: '#d33',
-               confirmButtonText: 'Oui, supprimez-le!',
-               cancelButtonText: 'Annuler'
-           }).then((result) => {
-               if (result.isConfirmed) {
-                   document.getElementById('deleteForm-' + id).submit();
-               }
-           })
+            Swal.fire({
+                title: 'Êtes-vous sûr?',
+                text: "Vous ne pourrez pas revenir en arrière!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, supprimez-le!',
+                cancelButtonText: 'Annuler'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('deleteForm-' + id).submit();
+                }
+            })
         }
     </script>
-
 @endpush
-

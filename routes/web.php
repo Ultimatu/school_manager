@@ -107,9 +107,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('classecours/{classeCours}/edit', [ClasseCoursController::class, 'edit'])->name('classe.editClasseCours');
     Route::put('classecours/{classeCours}', [ClasseCoursController::class, 'update'])->name('classe.updateClasseCours');
     Route::delete('classecours/{classeCours}', [ClasseCoursController::class, 'destroy'])->name('classe.destroyClasseCours');
+    Route::get('downloadFile/{classeCours}', [NotesController::class, 'downloadFile'])->name('classe.addNote');
 
     //classe emploi du temps
     Route::get('classe/{classe}/emplois', [ClasseController::class, 'emploie'])->name('classe.createEmploi');
+    Route::get('profs/{professeur}/emplois', [ClasseController::class, 'profEmploie'])->name('professeur.emploi');
 
     //evenements, examen, administration, professeur, etudiant, classe
     Route::resources(
@@ -154,17 +156,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('notes/create/{classeCours}', [NotesController::class, 'create'])->name('notes.create');
 
     //by incription
-    Route::get('cars/inscription/{inscription}/etudiants', [CarInscriptionController::class, 'addVersement'])->name('car_inscriptions.addVersement');
+    Route::get('cars_inscription/{inscription}/etudiants', [CarInscriptionController::class, 'addVersement'])->name('car_inscriptions.addVersement');
     Route::post('cars/inscription/{inscription}/etudiants', [CarInscriptionController::class, 'storeVersement'])->name('car_inscriptions.storeVersement');
-    Route::delete('cars/inscription/{inscription}/{versement}', [CarInscriptionController::class, 'destroyVersement'])->name('car_inscriptions.destroyVersement');
+    Route::delete('cars/inscription/{versement}', [CarInscriptionController::class, 'destroyVersement'])->name('car_inscriptions.destroyVersement');
 
-    Route::get('cites/inscription/{inscription}/etudiants', [CiteInscriptionController::class, 'addVersement'])->name('car_inscriptions.addVersement');
-    Route::post('cites/inscription/etudiants', [CiteInscriptionController::class, 'storeVersement'])->name('car_inscriptions.storeVersement');
-    Route::delete('cites/inscription/{inscription}/{versement}', [CiteInscriptionController::class, 'destroyVersement'])->name('car_inscriptions.destroyVersement');
+    Route::get('cites/inscription/{inscription}/etudiants', [CiteInscriptionController::class, 'addVersement'])->name('citeInscriptions.addVersement');
+    Route::post('cites/inscription/{inscription}/etudiants', [CiteInscriptionController::class, 'storeVersement'])->name('citeInscriptions.storeVersement');
+    Route::delete('cites/inscription/{versement}', [CiteInscriptionController::class, 'destroyVersement'])->name('citeInscriptions.destroyVersement');
 
 
     Route::post('validate-account', [AuthController::class, 'activateAccount'])->name('validate-account');
-
     /**
      * LOGOUT
      */

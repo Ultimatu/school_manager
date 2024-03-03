@@ -57,5 +57,18 @@ class Professeur extends Model
         return $this->hasMany(EmploiDuTemps::class);
     }
 
+    public function notes()
+    {
+        return $this->hasMany(Notes::class);
+    }
 
+    public function hasCourseToday()
+    {
+        return $this->emploiDuTemps()->where('start_date_time', 'like', '%' . date('Y-m-d') . '%')->exists();
+    }
+
+
+    public function dailyEmplois(){
+        return $this->emploiDuTemps()->where('start_date_time', 'like', '%' . date('Y-m-d') . '%')->get();
+    }
 }

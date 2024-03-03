@@ -13,9 +13,11 @@ class Appointment extends Model
         'day',
         'start_date',
         'end_date',
-        'annee_scolaire'
+        'annee_scolaire',
+        'classe_id',
+        'professeur_id',
+        'classe_cours_id',
     ];
-
 
     public function etudiantAppointments(){
         return $this->hasMany(AppointmentEtudiant::class);

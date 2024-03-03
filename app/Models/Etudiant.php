@@ -93,6 +93,19 @@ class Etudiant extends Model
         return $this->hasMany(ParentChilds::class, 'etudiant_id', 'id');
     }
 
+    public function appointments()
+    {
+        return $this->hasMany(AppointmentEtudiant::class);
+    }
+
+    public function absences(){
+        return  AppointmentEtudiant::where('etudiant_id', $this->id)->where('is_present', 0)->get();
+    }
+
+    public function notes()
+    {
+        return $this->hasMany(Notes::class);
+    }
 
     public function getFullname()
     {
@@ -113,6 +126,4 @@ class Etudiant extends Model
             });
         })->get();
     }
-
-
 }

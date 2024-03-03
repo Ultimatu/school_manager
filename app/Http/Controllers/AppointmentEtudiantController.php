@@ -13,7 +13,10 @@ class AppointmentEtudiantController extends Controller
      */
     public function index()
     {
-        //
+        if (auth()->user()->isEtudiant()){
+            $appointments = auth()->user()->etudiant->appointments;
+            return view('components.pages.emmargement.index', compact('appointments'));
+        }
     }
 
     /**

@@ -22,16 +22,16 @@
         @endif
     </div>
 
-    {{-- <div class="row g-3">
+    <div class="row g-3">
         <div class="co-md-12">
             <div class="row g-3">
                 <div class="col-6 col-md-3 col-xl-6">
                     <div class="card card-one card-product">
                         <div class="card-body p-3">
                             <div class="d-flex align-items-center justify-content-between mb-5">
-                                <div class="card-icon"><i class="ri-user-fill"></i></div>
+                                <div class="card-icon"><i class="ri-wallet-3-fill"></i></div>
                             </div>
-                            <h2 class="card-value ls--1">14,803.80<span>FCFA</span></h2>
+                            <h2 class="card-value ls--1">{{ $totalBudget_scolaire }}</h2>
                             <label class="card-label fw-medium text-dark">Budget scolarité</label>
                         </div><!-- card-body -->
                     </div><!-- card -->
@@ -41,16 +41,10 @@
                         <div class="card-body p-3">
                             <div class="d-flex align-items-center justify-content-between mb-5">
                                 <div class="card-icon"><i class="ri-wallet-3-fill"></i></div>
-                                <h6 class="fw-normal ff-numerals text-danger mb-0">-3.8%</h6>
+                                {{-- <h6 class="fw-normal ff-numerals text-danger mb-0">-3.8%</h6> --}}
                             </div>
-                            <h2 class="card-value ls--1"><span>$</span>8,100.63</h2>
-                            <label class="card-label fw-medium text-dark">Total Expenses</label>
-                            <span class="d-flex gap-1 fs-xs">
-                                <span class="d-flex align-items-center text-danger">
-                                    <span class="ff-numerals">0.5%</span><i class="ri-arrow-down-line"></i>
-                                </span>
-                                <span class="text-secondary">than last week</span>
-                            </span>
+                            <h2 class="card-value ls--1"><span>{{ $totalBudget_scolaire_paid }}</span></h2>
+                            <label class="card-label fw-medium text-dark">Total Scolarité payée</label>
                         </div><!-- card-body -->
                     </div><!-- card -->
                 </div><!-- col -->
@@ -59,16 +53,10 @@
                         <div class="card-body p-3">
                             <div class="d-flex align-items-center justify-content-between mb-5">
                                 <div class="card-icon"><i class="ri-shopping-basket-fill"></i></div>
-                                <h6 class="fw-normal ff-numerals text-danger mb-0">-8.4%</h6>
+                                {{-- <h6 class="fw-normal ff-numerals text-danger mb-0">-8.4%</h6> --}}
                             </div>
-                            <h2 class="card-value ls--1">23,480</h2>
-                            <label class="card-label fw-medium text-dark">Total Products</label>
-                            <span class="d-flex gap-1 fs-xs">
-                                <span class="d-flex align-items-center text-danger">
-                                    <span class="ff-numerals">0.2%</span><i class="ri-arrow-down-line"></i>
-                                </span>
-                                <span class="text-secondary">than last week</span>
-                            </span>
+                            <h2 class="card-value ls--1">{{ $totalBudget_scolaire_unpaid }}</h2>
+                            <label class="card-label fw-medium text-dark">Total Scolarité non payée</label>
                         </div><!-- card-body -->
                     </div><!-- card -->
                 </div><!-- col -->
@@ -76,23 +64,41 @@
                     <div class="card card-one card-product">
                         <div class="card-body p-3">
                             <div class="d-flex align-items-center justify-content-between mb-5">
-                                <div class="card-icon"><i class="ri-shopping-basket-fill"></i></div>
-                                <h6 class="fw-normal ff-numerals text-success mb-0">+20.9%</h6>
+                                <div class="card-icon"><i class="ri-file-list-3-fill"></i></div>
+                                {{-- <h6 class="fw-normal ff-numerals text-success mb-0">+20.9%</h6> --}}
                             </div>
-                            <h2 class="card-value ls--1">18,060</h2>
-                            <label class="card-label fw-medium text-dark">Products Sold</label>
-                            <span class="d-flex gap-1 fs-xs">
-                                <span class="d-flex align-items-center text-success">
-                                    <span class="ff-numerals">5.8%</span><i class="ri-arrow-up-line"></i>
-                                </span>
-                                <span class="text-secondary">than last week</span>
-                            </span>
+                            <h2 class="card-value ls--1">{{ $filieres->count() }}</h2>
+                            <label class="card-label fw-medium text-dark">Nombres de filières</label>
+                        </div><!-- card-body -->
+                    </div><!-- card -->
+                </div><!-- col -->
+                <div class="col-6 col-md-3 col-xl-6">
+                    <div class="card card-one card-product">
+                        <div class="card-body p-3">
+                            <div class="d-flex align-items-center justify-content-between mb-5">
+                                <div class="card-icon"><i class="ri-archive-fill"></i></div>
+                                {{-- <h6 class="fw-normal ff-numerals text-success mb-0">+20.9%</h6> --}}
+                            </div>
+                            <h2 class="card-value ls--1">{{ $classes->count() }}</h2>
+                            <label class="card-label fw-medium text-dark">Nombres de classes</label>
+                        </div><!-- card-body -->
+                    </div><!-- card -->
+                </div><!-- col -->
+                <div class="col-6 col-md-3 col-xl-6">
+                    <div class="card card-one card-product">
+                        <div class="card-body p-3">
+                            <div class="d-flex align-items-center justify-content-between mb-5">
+                                <div class="card-icon"><i class="ri-user-fill"></i></div>
+                                {{-- <h6 class="fw-normal ff-numerals text-success mb-0">+20.9%</h6> --}}
+                            </div>
+                            <h2 class="card-value ls--1">{{ $etudiants->count() }}</h2>
+                            <label class="card-label fw-medium text-dark">Nombres d'étudiants</label>
                         </div><!-- card-body -->
                     </div><!-- card -->
                 </div><!-- col -->
             </div><!-- row -->
         </div><!-- col -->
-    </div> --}}
+    </div>
 @endsection
 
 @push('scripts')

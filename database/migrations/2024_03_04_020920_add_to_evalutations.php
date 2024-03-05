@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('evalutations', function (Blueprint $table) {
+        Schema::table('evaluations', function (Blueprint $table) {
             //rename the table to evaluations
             $table->string('annee_scolaire')->after('date');
         });

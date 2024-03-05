@@ -21,10 +21,6 @@
                         <span>Administration</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('professeur.index') }}" class="nav-link {{ request()->routeIs('professeur.*') ? 'active' : '' }}"><i class="ri-file-user-line fs-2"></i>
-                        <span>Enseignants</span></a>
-                </li>
-                <li class="nav-item">
                     <a href="{{ route('etudiant.index') }}" class="nav-link {{ request()->routeIs('etudiant.*') ? 'active' : '' }}"><i class="ri-user-3-line fs-2"></i>
                         <span>Etudiants</span></a>
                 </li>
@@ -33,35 +29,10 @@
                     <a href="{{ route('parents.index') }}" class="nav-link {{ request()->routeIs('parents.*') ? 'active' : '' }}"><i class="ri-user-3-line fs-2"></i>
                         <span>Parents</span></a>
                 </li>
-                {{-- Filiere --}}
-                <li class="nav-item">
-                    <a href="{{ route('filiere.index') }}" class="nav-link {{ request()->routeIs('filiere.*') ? 'active' : '' }}"><i class="ri-book-3-line fs-2"></i>
-                        <span>Filières</span></a>
-                </li>
-                {{-- Classe --}}
-                <li class="nav-item">
-                    <a href="{{ route('classe.index') }}" class="nav-link {{ request()->routeIs('classe.*') ? 'active' : '' }}"><i class="ri-group-fill fs-2"></i>
-                        <span>Classes</span></a>
-                </li>
-                {{-- Cours --}}
-                <li class="nav-item">
-                    <a href="{{ route('cours.index') }}" class="nav-link {{ request()->routeIs('cours.*') ? 'active' : '' }}"><i class="ri-book-2-fill fs-2"></i>
-                        <span>Cours</span></a>
-                </li>
-                {{-- Salles --}}
-                <li class="nav-item">
-                    <a href="{{ route('salle.index') }}" class="nav-link {{ request()->routeIs('salle.*') ? 'active' : '' }}"><i class="ri-home-2-line fs-2"></i>
-                        <span>Salles</span></a>
-                </li>
                 {{-- Emplois du temps --}}
                 <li class="nav-item">
                     <a href="{{ route('evenements.index') }}" class="nav-link {{ request()->routeIs('evenements.*') ? 'active' : '' }}"><i class="ri-calendar-check-fill fs-2"></i>
                         <span>Evements</span></a>
-                </li>
-                {{-- notes --}}
-                <li class="nav-item">
-                    <a href="{{ route('notes.index') }}" class="nav-link {{ request()->routeIs('notes.*') ? 'active' : '' }}"><i class="fas fa-book fs-2 text-info"></i>
-                        <span>Notes</span></a>
                 </li>
                 {{-- examens --}}
                 <li class="nav-item">
@@ -150,8 +121,8 @@
           <hr>
           <nav class="nav">
             <a href=""><i class="ri-question-line"></i> Help Center</a>
-            <a href=""><i class="ri-lock-line"></i> Privacy Settings</a>
-            <a href=""><i class="ri-user-settings-line"></i> Account Settings</a>
+            <a href="/my-profile#secure"><i class="ri-lock-line"></i> Privacy Settings</a>
+            <a href="/my-profile#edits"><i class="ri-user-settings-line"></i> Account Settings</a>
             <a href="{{ route('logout') }}"><i class="ri-logout-box-r-line"></i> Se déconnecter</a>
           </nav>
         </div><!-- sidebar-footer-menu -->

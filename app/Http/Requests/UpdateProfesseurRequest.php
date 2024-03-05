@@ -26,8 +26,8 @@ class UpdateProfesseurRequest extends FormRequest
             'id' => 'required|integer|exists:professeurs,id', // Add this line to check if the professeur exists
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'phone' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $this->id, // Add this line to ignore the current professeur
+            'phone' => 'required|string|max:20|unique:users',
             'address' => 'required|string|max:255',
             'matricule' => 'required|string|max:255|unique:professeurs,matricule',
             'specialities' => 'required|string|max:255',

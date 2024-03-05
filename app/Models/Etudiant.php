@@ -107,6 +107,11 @@ class Etudiant extends Model
         return $this->hasMany(Notes::class);
     }
 
+    public function reclamations()
+    {
+        return $this->hasMany(Reclamantion::class);
+    }
+
     public function getFullname()
     {
         return $this->first_name . ' ' . $this->last_name;

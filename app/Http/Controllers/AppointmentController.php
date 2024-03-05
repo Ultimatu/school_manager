@@ -13,6 +13,12 @@ class AppointmentController extends Controller
      */
     public function index()
     {
+        if (auth()->user()->isEtudiant()){
+            $appointments = Appointment::where('annee_scolaire',auth()->user()->etudiant->annee_scolaire)->where('classe_id', auth()->user()->etudiant->classe_id)->get();
+        }
+        elseif(auth()->user()->isProfesseur()){
+            
+        }
         
     }
 

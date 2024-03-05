@@ -57,10 +57,11 @@ class Professeur extends Model
         return $this->hasMany(EmploiDuTemps::class);
     }
 
-    public function notes()
+    public function evalutations()
     {
-        return $this->hasMany(Notes::class);
+        return $this->hasMany(Evaluation::class);
     }
+
 
     public function hasCourseToday()
     {

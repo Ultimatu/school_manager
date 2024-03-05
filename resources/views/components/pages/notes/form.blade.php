@@ -35,8 +35,9 @@
                             @if ($notes->id)
                                 @method('PUT')
                             @endif
+                            <input type="text" name="evaluation_id" value="{{ $notes->evaluation_id }}" hidden>
                             <div class="row mb-3">
-                                <div class="col-md-6">
+                                <div class="col-md-6 mb-3">
                                     <div class="form-group bmd-form-group">
                                         <label for="etudiant_id" class="bmd-label-floating">Etudiant</label>
                                         <select name="etudiant_id" id="etudiant_id" class="form-control">
@@ -49,26 +50,8 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group bmd-form-group">
-                                        <label for="classe_cours_id" class="bmd-label-floating">Matière</label>
-                                        <input type="text" class="form-control" id="classe_cours_id" name="classe_cours_id" value="{{ old('classe_cours_id', $notes->classeCours->cours->name) }}" readonly disabled>
-                                        @error('classe_cours_id')
-                                            <strong class="text-danger">{{ $message }}</strong>
-                                        @enderror
-                                    </div>
-                                </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <div class="form-group bmd-form-group">
-                                        <label for="professeur_id" class="bmd-label-floating">Professeur</label>
-                                        <input type="text" class="form-control" id="professeur_id" name="professeur_id" value="{{ old('professeur_id', $notes->professeur->first_name. " ". $notes->professeur->last_name) }}" readonly disabled>
-                                        @error('professeur_id')
-                                            <strong class="text-danger">{{ $message }}</strong>
-                                        @enderror
-                                    </div>
-                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group bmd-form-group">
                                         <label for="note" class="bmd-label-floating">Note</label>
@@ -85,26 +68,6 @@
                                         <label for="observation" class="bmd-label-floating">Observation</label>
                                         <input type="text" class="form-control" id="observation" name="observation" value="{{ old('observation', $notes->observation) }}">
                                         @error('observation')
-                                            <strong class="text-danger">{{ $message }}</strong>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group bmd-form-group">
-                                        <label for="type" class="bmd-label-floating">Type</label>
-                                        <select name="type" id="type" class="form-control">
-                                            <option value="devoir" {{ $notes->type == 'devoir' ? 'selected' : '' }}>Devoir</option>
-                                            <option value="interro" {{ $notes->type == 'interro' ? 'selected' : '' }}>Interro</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-md-12">
-                                    <div class="form-group bmd-form-group">
-                                        <label for="date" class="bmd-label-floating">Date</label>
-                                        <input type="date" class="form-control" id="date" name="date" value="{{ old('date', $notes->date) }}">
-                                        @error('date')
                                             <strong class="text-danger">{{ $message }}</strong>
                                         @enderror
                                     </div>

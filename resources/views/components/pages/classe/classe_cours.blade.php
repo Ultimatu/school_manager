@@ -93,6 +93,14 @@
                                             </option>
                                             <option value="2" {{ $classeCours->semester === 2 ? 'selected' : '' }}>2
                                             </option>
+                                            <option value="3" {{ $classeCours->semester === 3 ? 'selected' : '' }}>2
+                                            </option>
+                                            <option value="4" {{ $classeCours->semester === 4 ? 'selected' : '' }}>2
+                                            </option>
+                                            <option value="5" {{ $classeCours->semester === 5 ? 'selected' : '' }}>2
+                                            </option>
+                                            <option value="6" {{ $classeCours->semester === 6 ? 'selected' : '' }}>2
+                                            </option>
                                         </select>
                                         @error('semester')
                                             <span class="text-danger">{{ $message }}</span>

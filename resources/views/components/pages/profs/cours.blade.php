@@ -89,10 +89,6 @@
                                                 <span class="bade bg-success fs-4 text-white">{{ $classeCours->total_hours }}Heures</span>
                                             </td>
                                             <td>
-                                                <a href="{{ route('classe.addNote', $classeCours->id) }}"
-                                                    class="btn btn-warning mb-3">
-                                                    <i class="ri-add-line"></i>
-                                                    Ajouter une note</a>
                                                 <a href="{{ route('classe.show', $classeCours->classe_id) }}"
                                                         class="btn btn-warning mb-3">
                                                         <i class="ri-eye-line"></i>

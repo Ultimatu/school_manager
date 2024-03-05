@@ -19,22 +19,37 @@ class Classe extends Model
     ];
 
 
+    /**
+     * the filiere that the classe belongs to
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function filiere()
     {
         return $this->belongsTo(Filiere::class);
     }
 
 
+    /**
+     * the classe cours for the classe
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function classeCours()
     {
         return $this->hasMany(ClasseCours::class);
     }
 
+    /**
+     * the etudiants in the classe
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function etudiants()
     {
         return $this->hasMany(Etudiant::class);
     }
 
+    /**
+     * the professeurs in the classe
+     */
     public function professeurs()
     {
         return ClasseCours::where('classe_id', $this->id)->get()->map(function ($classeCours) {
@@ -43,15 +58,26 @@ class Classe extends Model
     }
 
 
+    /**
+     * the emploi du temps for the classe
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function emploiDuTemps()
     {
         return $this->hasMany(EmploiDuTemps::class);
     }
 
 
+    
     public function examens()
     {
-        return Examen::where('classe_id', $this->id)->get();
+        return $this->hasMany(Examen::class);
     }
+
+    public function evaluations()
+    {
+        return $this->hasMany(Evaluation::class);
+    }
+
 
 }

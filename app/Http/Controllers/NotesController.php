@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateNotesRequest;
 use App\Models\AnneeScolaire;
 use App\Models\ClasseCours;
 use App\Models\Etudiant;
+use App\Models\Evaluation;
 use App\Models\Notes;
 use App\Models\Professeur;
 use Illuminate\Support\Facades\Auth;
@@ -30,17 +31,20 @@ class NotesController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(ClasseCours $classeCours)
+    public function create(Evaluation $evaluation)
     {
         if (!auth()->user()->isProfesseur()) {
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page');
         }
         $notes = new Notes();
-        $notes->classe_cours_id = $classeCours->id;
+        $notes->evaluation_id = $evaluation->id;
         $professeur = Professeur::where('user_id', Auth::user()->id)->first();
-        $notes->professeur_id = $professeur->id;
-        $etudiants = Etudiant::where('classe_id', $classeCours->classe_id)->get();
-        return view('components.pages.notes.form', compact('notes', 'etudiants'));
+        $etudiants = Etudiant::where('classe_id', $evaluation->classeCours->classe_id)->get();
+        //selectionner les etudiants qui n'ont pas de notes pour cette évaluation
+        $etudiants = $etudiants->filter(function ($etudiant) use ($evaluation) {
+            return !$etudiant->notes->contains('evaluation_id', $evaluation->id);
+        });
+        return view('components.pages.evaluation.notes.form', compact('notes', 'etudiants'));
     }
 
     /**
@@ -50,7 +54,7 @@ class NotesController extends Controller
     {
         $request->validated();
         $note = Notes::create($request->all());
-        return redirect()->route('notes.index')->with('success', 'Note ajoutée avec succès');
+        return redirect()->route('notes.create', $note->evaluation_id)->with('success', 'Note créée avec succès');
     }
 
     /**

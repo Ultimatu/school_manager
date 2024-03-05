@@ -109,22 +109,22 @@
                                                 </div>
                                             </td>
                                             @if(auth()->user()->isAdmin())
-                                                <td>
+                                                <td class="td-actions text-right d-flex justify-content-end gap-2">
                                                     <a href="{{ route('administration.show', $administration->id) }}"
-                                                        class="btn btn-info texte-white">
-                                                        <i class="ri-eye-fill fs-2"></i>
+                                                        class="">
+                                                        <i class="ri-eye-fill fs-3 text-info"></i>
                                                     </a>
                                                     <a href="{{ route('administration.edit', $administration->id) }}"
-                                                        class="btn btn-warning">
-                                                        <i class="ri-pencil-fill fs-2"></i>
+                                                        class="">
+                                                        <i class="ri-pencil-fill fs-3 text-primary"></i>
                                                     </a>
                                                     <form
                                                         action="{{ route('administration.destroy', $administration->id) }}"
-                                                        method="post" style="display: inline-block;" id="delete-form-{{ $administration->id }}">
+                                                        method="post"  id="delete-form-{{ $administration->id }}">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $administration->id }})">
-                                                            <i class="ri-delete-bin-6-fill fs-2"></i>
+                                                        <button type="button" onclick="confirmDelete({{ $administration->id }})" class="btn">
+                                                            <i class="ri-delete-bin-6-fill fs-3 text-danger"></i>
                                                         </button>
                                                     </form>
                                                 </td>
@@ -132,7 +132,7 @@
                                                 <td>
                                                     <a href="{{ route('administration.show', $administration->id) }}"
                                                         class="btn btn-info texte-white">
-                                                        <i class="ri-eye-fill fs-2"></i>
+                                                        <i class="ri-eye-fill"></i>
                                                     </a>
                                             @endif
                                         </tr>

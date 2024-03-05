@@ -15,6 +15,7 @@ use App\Http\Controllers\CoursController;
 use App\Http\Controllers\DetailsPayementController;
 use App\Http\Controllers\EmploiDuTempsController;
 use App\Http\Controllers\EtudiantController;
+use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\EvenementController;
 use App\Http\Controllers\ExamenController;
 use App\Http\Controllers\ExamenNoteController;
@@ -24,6 +25,8 @@ use App\Http\Controllers\NotesController;
 use App\Http\Controllers\ParentsController;
 use App\Http\Controllers\PaymentScolariteController;
 use App\Http\Controllers\ProfesseurController;
+use App\Http\Controllers\ReclamantionController;
+use App\Http\Controllers\ReclamationResponseController;
 use App\Http\Controllers\SalleController;
 use App\Http\Controllers\TrajetController;
 use App\Http\Controllers\UserController;
@@ -132,6 +135,7 @@ Route::middleware(['auth'])->group(function () {
             'cites'=>CiteController::class,
             'citeInscriptions'=>CiteInscriptionController::class,
             'chambres'=>ChambreController::class,
+            'evaluations'=>EvaluationController::class,
         ],
     );
     Route::get('cite-incriptions_by/{etudiant}', [CiteInscriptionController::class, 'createBy'])->name('citeInscriptions.by_etudiant');
@@ -153,7 +157,22 @@ Route::middleware(['auth'])->group(function () {
 
     //Notes
     Route::resource('notes', NotesController::class)->except(['create']);
-    Route::get('notes/create/{classeCours}', [NotesController::class, 'create'])->name('notes.create');
+    Route::get('notes/create/{evaluation}', [NotesController::class, 'create'])->name('notes.create');
+
+    //Reclamations
+    Route::get('reclamations', [ReclamantionController::class, 'index'])->name('reclamations.index');
+    Route::get('reclamations/{reclamantion}', [ReclamantionController::class, 'show'])->name('reclamations.show');
+    Route::get('reclamations/create/{evaluation}', [ReclamantionController::class, 'createForEv'])->name('reclamations.createForEv');
+    Route::get('reclamations/create/{examen}', [ReclamantionController::class, 'createForEx'])->name('reclamations.createForEx');
+    Route::get('reclamations/{reclamation}/edit-examen', [ReclamantionController::class, 'editEx'])->name('reclamations.editEx');
+    Route::get('reclamations/{reclamation}/edit-eva', [ReclamantionController::class, 'editEv'])->name('reclamations.editEv');
+    Route::post('reclamations/store', [ReclamantionController::class, 'store'])->name('reclamations.store');
+    Route::put('reclamations/{reclamantion}', [ReclamantionController::class, 'update'])->name('reclamations.update');
+    Route::delete('reclamations/{reclamantion}', [ReclamantionController::class, 'destroy'])->name('reclamations.destroy');
+     
+    //Response
+    Route::get('reclamations/{reclamation}/response', [ReclamationResponseController::class, 'create'])->name('reclamations.response.create');
+    Route::post('reclamations/response', [ReclamationResponseController::class, 'store'])->name('reclamations.response.store');
 
     //by incription
     Route::get('cars_inscription/{inscription}/etudiants', [CarInscriptionController::class, 'addVersement'])->name('car_inscriptions.addVersement');

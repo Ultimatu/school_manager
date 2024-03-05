@@ -12,7 +12,7 @@ class StoreAdministrationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->isAdmin() || auth()->user()->isDirector() || auth()->user()->isConsellor();
+        return auth()->user()->isAdmin();
     }
 
     /**
@@ -25,8 +25,8 @@ class StoreAdministrationRequest extends FormRequest
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:administrations',
-            'phone' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'required|string|max:20|unique:users',
             'address' => 'required|string|max:255',
             'role' => 'required|string|max:255',
             'responsability' => 'required|string',

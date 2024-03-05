@@ -11,30 +11,22 @@ class Notes extends Model
 
 
     protected $fillable = [
+        'evaluation_id', // add this line
         'etudiant_id',
-        'classe_cours_id',
-        'professeur_id',
         'note',
         'observation',
-        'type',
-        'date',
         'annee_scolaire'
     ];
 
 
+    public function evalutation()
+    {
+        return $this->belongsTo(Evaluation::class);
+    }
+
     public function etudiant()
     {
         return $this->belongsTo(Etudiant::class);
-    }
-
-    public function classeCours()
-    {
-        return $this->belongsTo(ClasseCours::class);
-    }
-
-    public function professeur()
-    {
-        return $this->belongsTo(Professeur::class);
     }
 
 

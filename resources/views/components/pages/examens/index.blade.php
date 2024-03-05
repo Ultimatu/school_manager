@@ -99,7 +99,7 @@
                                                         method="post" style="display: inline-block"
                                                         id="delete-form-{{ $examen->id }}">
                                                         @csrf
-                                                        @method('delete')
+                                                        @method('DELETE')
                                                         <button type="button" class="btn btn-danger"
                                                             onclick="confirmDelete({{ $examen->id }})">
                                                             <i class="ri-delete-bin-line"></i>
@@ -131,7 +131,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @push('scripts')

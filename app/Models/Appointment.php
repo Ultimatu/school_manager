@@ -17,6 +17,7 @@ class Appointment extends Model
         'classe_id',
         'professeur_id',
         'classe_cours_id',
+        'date'
     ];
 
     public function etudiantAppointments(){

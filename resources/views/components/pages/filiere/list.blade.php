@@ -88,10 +88,10 @@
                                             </td>
                                             <td>
                                                 <a href="{{ route('filiere.show', $filiere->id) }}" class="btn btn-info">
-                                                    <i class="ri-eye-line fs-2"></i>
+                                                    <i class="ri-eye-line"></i>
                                                     </a>
                                                 <a href="{{ route('filiere.edit', $filiere->id) }}" class="btn btn-warning">
-                                                    <i class="ri-pencil-line fs-2"></i>
+                                                    <i class="ri-pencil-line"></i>
                                                     </a>
                                                 <form action="{{ route('filiere.destroy', $filiere->id) }}" method="POST"
                                                     style="display: inline-block" id="deleteForm-{{ $filiere->id }}">
@@ -99,7 +99,7 @@
                                                     @method('DELETE')
                                                     <button type="button" class="btn btn-danger"
                                                         onclick="confirmDelete({{ $filiere->id }})">
-                                                        <i class="ri-delete-bin-line fs-2"></i>
+                                                        <i class="ri-delete-bin-line"></i>
                                                         </button>
                                                 </form>
                                             </td>

@@ -16,7 +16,6 @@
             </nav>
         </div>
     </div>
-
     {{-- end bread --}}
     <div class="container-fluid">
         <div class="row">
@@ -29,7 +28,6 @@
                             <p class="card-category">Liste des notes enregistrées</p>
                         @else
                             <p class="card-category">Liste de vos notes enregistrées</p>
-
                         @endif
                     </div>
                     <div class="card-body">
@@ -39,7 +37,6 @@
                                     <th>
                                         ID
                                     </th>
-                                   
                                     <th>
                                         Matière
                                     </th>
@@ -67,7 +64,7 @@
                                                 {{ $note->id }}
                                             </td>
                                             <td>
-                                                {{ $note->etudiant->classe->classeCours->cours->name }}
+                                                {{ $note->evaluation->classeCours->cours->name }}
                                             </td>
                                             <td>
                                                 {{ $note->note }}
@@ -77,23 +74,22 @@
                                                 {{$note->etudiant->student_mat.' - '.$note->etudiant->first_name. ' '. $note->etudiant->last_name }} - {{  $note->etudiant->classe->name. ' '.  $note->etudiant->classe->filiere->name}}
                                             </td>
                                             @endif
-
                                             @if (auth()->user()->isProfesseur())
-                                                <td>
-                                                    <a href="{{ route('notes.show', $note) }}"
+                                                <td class="td-actions text-right d-flex justify-content-between align-items-center">
+                                                    <a href="{{ route('notes.show', $note->id) }}"
                                                         class="btn btn-outline-primary">
                                                         <i class="ri-eye-line"></i>
                                                         Voir la note</a>
-                                                    <a href="{{ route('notes.edit', $note) }}"
+                                                    <a href="{{ route('notes.edit', $note->id) }}"
                                                         class="btn btn-outline-primary">
                                                         <i class="ri-edit-line"></i>
                                                         Modifier la note</a>
-                                                    <form method="POST" action="{{ route('notes.destroy', $note) }}"
-                                                        id="delete-form">
+                                                    <form method="POST" action="{{ route('notes.destroy', $note->id) }}"
+                                                        id="delete-form-{{ $note->id }}">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="button" class="btn btn-outline-danger"
-                                                            onclick="confirmDelete()">
+                                                            onclick="confirmDelete({{ $note->id }})">
                                                             <i class="ri-delete-bin-line"></i>
                                                             Supprimer la note</button>
                                                     </form>
@@ -110,3 +106,24 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Êtes-vous sûr de vouloir supprimer cette note?',
+                text: "Cette action est irréversible!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, supprimer!',
+                cancelButtonText: 'Annuler'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+    </script>
+@endpush

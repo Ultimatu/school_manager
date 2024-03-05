@@ -36,14 +36,20 @@
                 </li>
                 {{-- notes --}}
                 <li class="nav-item">
-                    <a href="{{ route('notes.index') }}" class="nav-link {{ request()->routeIs('notes.*') ? 'active' : '' }}"><i class="fas fa-book fs-2 text-info"></i>
-                        <span>Mes Notes</span></a>
+                    <a href="{{ route('evaluations.index') }}" class="nav-link {{ request()->routeIs('evaluations.*') ? 'active' : '' }}"><i class="fas fa-book fs-2 text-info"></i>
+                        <span>Mes Evaluations</span></a>
                 </li>
                 {{-- examens --}}
                 <li class="nav-item">
-                    <a href="{{ route('examens.index') }}" class="nav-link"><i class="ri-file-list-3-line fs-2"></i>
+                    <a href="{{ route('examens.index') }}" class="nav-link {{ request()->routeIs('examens.*') ? 'active' : '' }}"><i class="ri-file-list-3-line fs-2"></i>
                         <span>Mes examens</span></a>
                 </li>
+                {{-- reclamantions --}}
+                <li class="nav-item">
+                    <a href="{{ route('reclamations.index') }}" class="nav-link {{ request()->routeIs('reclamations.*') ? 'active' : '' }}"><i class="ri-file-list-3-line fs-2"></i>
+                        <span>Mes réclamations</span></a>
+                </li>
+                {{-- emploi du temps --}}
                 <li class="nav-item">
                     <a href="{{ route('professeur.emploi', ['professeur'=>auth()->user()->professeur->id]) }}" class="nav-link"><i class="ri-file-list-3-line fs-2"></i>
                         <span>Mon emploi du temps</span></a>
@@ -70,8 +76,8 @@
           <hr>
           <nav class="nav">
             <a href=""><i class="ri-question-line"></i> Help Center</a>
-            <a href=""><i class="ri-lock-line"></i> Privacy Settings</a>
-            <a href=""><i class="ri-user-settings-line"></i> Account Settings</a>
+            <a href="/my-profile#secure"><i class="ri-lock-line"></i> Privacy Settings</a>
+            <a href="/my-profile#edits"><i class="ri-user-settings-line"></i> Account Settings</a>
             <a href="{{ route('logout') }}"><i class="ri-logout-box-r-line"></i> Se déconnecter</a>
           </nav>
         </div><!-- sidebar-footer-menu -->

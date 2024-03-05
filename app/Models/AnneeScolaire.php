@@ -19,21 +19,29 @@ class AnneeScolaire extends Model
     ];
 
 
-    public function classes()
+    public function classes(): mixed
     {
         return Classe::where('year', $this->annee_scolaire)->get();
     }
 
-    public function etudiants(){
+    public function etudiants(): mixed
+    {
         return Etudiant::where('annee_scolaire', $this->annee_scolaire)->get();
     }
 
-    public function professeurs(){
+    public function professeurs(): mixed
+    {
         return Professeur::where('annee_scolaire', $this->annee_scolaire)->get();
     }
 
 
-    public function scopeValideYear($query){
+    /**
+     * get the current year
+     * @param $query
+     * @return mixed
+     */
+    public function scopeValideYear($query): mixed
+    {
         return $query->where('status', 'en cours')->first()->annee_scolaire;
     }
 }

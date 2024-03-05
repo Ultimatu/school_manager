@@ -52,6 +52,10 @@ class ClasseCours extends Model
         return $this->hasOne(ExamenNote::class);
     }
 
+    public function evaluations(){
+        return $this->hasMany(Evaluation::class);
+    }
+
 
     public function scopeProfCours($query){
       return   $query->where('professor_id', auth()->user()->professeur->id)->get();
@@ -59,6 +63,6 @@ class ClasseCours extends Model
 
     public function scopeEtudiantCours($query){
         return   $query->where('classe_id', auth()->user()->etudiant->classe_id)->get();
-      }
+    }
 
 }

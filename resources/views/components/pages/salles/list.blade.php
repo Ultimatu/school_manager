@@ -92,14 +92,14 @@
                                             <td>
                                                 {{ $salle->updated_at->format('d/m/Y H:i') }}
                                             </td>
-                                            <td>
+                                            <td class="td-actions text-right d-flex justify-content-end gap-2">
                                                 <a href="{{ route('salle.show', $salle->id) }}"
                                                     class="btn btn-info btn-sm">
-                                                    <i class="ri-eye-line fs-2"></i>
+                                                    <i class="ri-eye-line "></i>
                                                 </a>
                                                 <a href="{{ route('salle.edit', $salle->id) }}"
                                                     class="btn btn-primary btn-sm">
-                                                    <i class="ri-pencil-line fs-2"></i>
+                                                    <i class="ri-pencil-line "></i>
                                                 </a>
                                                 <form action="{{ route('salle.destroy', $salle->id) }}" method="POST"
                                                     class="d-inline" id="delete-form-{{ $salle->id }}">
@@ -107,7 +107,7 @@
                                                     @method('DELETE')
                                                     <button type="button" class="btn btn-danger btn-sm"
                                                         onclick="deleteSalle({{ $salle->id }})">
-                                                        <i class="ri-delete-bin-line fs-2"></i>
+                                                        <i class="ri-delete-bin-line "></i>
                                                     </button>
                                                 </form>
                                             </td>

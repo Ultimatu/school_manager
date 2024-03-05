@@ -11,7 +11,7 @@ class StoreAppointmentEtudiantRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return !auth()->user()->isEtudiant();
     }
 
     /**
@@ -22,7 +22,7 @@ class StoreAppointmentEtudiantRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            
         ];
     }
 }

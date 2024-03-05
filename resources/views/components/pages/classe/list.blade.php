@@ -95,21 +95,21 @@
                                             <td>
                                                 {{ $classe->credits }}
                                             </td>
-                                            <td class="fs-2">
+                                            <td class="td-actions text-right d-flex justify-content-end gap-2">
                                                 <a href="{{ route('classe.show', $classe->id) }}"
-                                                    class="btn btn-info btn-sm fs-2">
+                                                    class="btn btn-info">
                                                     <i class="ri-eye-line"></i>
                                                 </a>
                                                 @if (!auth()->user()->isProfesseur())
                                                     <a href="{{ route('classe.edit', $classe->id) }}"
-                                                        class="btn btn-warning btn-sm fs-2">
+                                                        class="btn btn-warning">
                                                         <i class="ri-pencil-line"></i>
                                                     </a>
                                                     <form action="{{ route('classe.destroy', $classe->id) }}" method="post"
                                                         class="d-inline " id="delete-form-{{ $classe->id }}">
                                                         @csrf
                                                         @method('delete')
-                                                        <button type="button" class="btn btn-danger btn-sm fs-2"
+                                                        <button type="button" class="btn btn-danger"
                                                             onclick="deleteConfirmation({{ $classe->id }})">
                                                             <i class="ri-delete-bin-line"></i>
                                                         </button>

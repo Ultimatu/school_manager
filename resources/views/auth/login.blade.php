@@ -24,17 +24,16 @@
                     <input type="text" class="form-control" placeholder="Entrez votre adresse email" name="email"
                         value="{{ old('email') }}">
                     @error('email')
-                       <strong class="text-danger">{{ $message }}</strong>
+                        <strong class="text-danger">{{ $message }}</strong>
                     @enderror
                 </div>
 
                 <div class="mb-4">
-                    <label class="form-label d-flex justify-content-between">Mot de passe <a href="{{route('passowrd.forgot')}}">Mot de passe
-                            oublié?</a></label>
+                    <label class="form-label d-flex justify-content-between">Mot de passe <a href="{{ route('passowrd.forgot') }}">Mot de passe oublié?</a></label>
                     <input type="password" class="form-control" placeholder="Entrez votre adresse mot de passe" name="password">
                 </div>
-                 {{-- remmber me token --}}
-                 <div class="mb-4">
+                {{-- remmber me token --}}
+                <div class="mb-4">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="remember" name="remember" value="true">
                         <label class="form-check-label" for="remember">Se souvenir de moi</label>
@@ -44,10 +43,6 @@
             </form>
 
         </div><!-- card-body -->
-        <div class="card-footer">
-            Vous êtes étudiant et vous n'avez pas de compte? <a href="{{ route('register') }}">Faites une demande
-                d'inscription</a>
-        </div><!-- card-footer -->
     </div><!-- card -->
 
 @endsection

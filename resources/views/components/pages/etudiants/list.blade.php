@@ -117,12 +117,12 @@
                                             @endif
                                             <td class="d-flex justify-content-around align-items-center gap-2">
                                                 <a href="{{ route('etudiant.show', $etudiant->id) }}" class="btn btn-info">
-                                                    <i class="ri-eye-line fs-2"></i>
+                                                    <i class="ri-eye-line"></i>
                                                 </a>
                                                 @if (!auth()->user()->isProfesseur())
                                                     <a href="{{ route('etudiant.edit', $etudiant->id) }}"
                                                         class="btn btn-warning">
-                                                        <i class="ri-pencil-line fs-2"></i>
+                                                        <i class="ri-pencil-line"></i>
                                                     </a>
                                                     <form action="{{ route('etudiant.destroy', $etudiant->id) }}"
                                                         method="post" class="d-inline"
@@ -131,7 +131,7 @@
                                                         @method('DELETE')
                                                         <button type="button" class="btn btn-danger"
                                                             onclick="confirmDelete({{ $etudiant->id }})">
-                                                            <i class="ri-delete-bin-line fs-2"></i>
+                                                            <i class="ri-delete-bin-line"></i>
                                                         </button>
                                                     </form>
                                                 @endif

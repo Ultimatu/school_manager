@@ -22,7 +22,7 @@ class UpdateCarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'matricule' => 'required|string|max:255|unique:cars',
+            'matricule' => 'required|string|max:255|unique:cars,matricule,'.$this->id,
             'marque' => 'required|string|max:255',
             'model' => 'required|string|max:255',
             'type' => 'required|string|max:255',

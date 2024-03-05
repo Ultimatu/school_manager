@@ -23,7 +23,7 @@ class UpdateAnneeScolaireRequest extends FormRequest
     {
         return [
             'id' => 'required|integer|exists:annee_scolaires,id',
-            'annee_scolaire' => 'required|string|unique:annee_scolaires',
+            'annee_scolaire' => 'required|string|unique:annee_scolaires,annee_scolaire,'.$this->id,
             'debut' => 'required|date',
             'fin' => 'required|date',
             'is_finish' => 'required|boolean',

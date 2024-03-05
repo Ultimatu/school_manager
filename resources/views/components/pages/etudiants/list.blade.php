@@ -23,7 +23,6 @@
                     <div class="card-header card-header-primary">
                         <h4 class="card-title text-center">Liste des etudiants</h4>
                         @if (!auth()->user()->isProfesseur())
-                            {
                             <p class="card-category">Liste des etudiants enregistrés</p>
                             <div class="row">
                                 <div class="col-md-12">
@@ -32,7 +31,6 @@
                                         Ajouter un etudiant</a>
                                 </div>
                             </div>
-                            }
                         @endif
                     </div>
                     <div class="card-body">

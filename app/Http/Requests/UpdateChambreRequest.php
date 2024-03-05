@@ -23,14 +23,14 @@ class UpdateChambreRequest extends FormRequest
     {
         return [
             'id'=> 'required|exists:chambres,id',
-            'number' => 'required|string|max:255|unique:chambres,number',
+            'number' => 'required|string|max:255|unique:chambres,number,' . $this->id,
             'type' => 'required|string|max:255',
             'status' => 'required|string',
             'cite_id' => 'required|exists:cites,id',
             'is_occupied' => 'required|boolean',
             'location' => 'required|string',
             'capacity' => 'required|integer',
-            'slug' => 'required|string|unique:chambres,slug',
+            'slug' => 'required|string|unique:chambres,slug,' . $this->id,
         ];
     }
 
@@ -52,6 +52,7 @@ class UpdateChambreRequest extends FormRequest
             'location.required' => 'L\'emplacement de la chambre est obligatoire',
             'capacity.required' => 'La capacité de la chambre est obligatoire',
             'slug.required' => 'Le slug de la chambre est obligatoire',
+            'slug.unique' => 'Le slug doit être unique',
         ];
     }
 

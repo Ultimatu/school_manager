@@ -27,7 +27,7 @@ class UpdateAdministrationRequest extends FormRequest
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $this->id . ',id',
-            'phone' => 'required|string|max:20|unique:users',
+            'phone' => 'required|string|max:20|unique:users,phone,'.$this->id,
             'address' => 'required|string|max:255',
             'role' => 'required|string|max:255',
             'responsability' => 'required|string',

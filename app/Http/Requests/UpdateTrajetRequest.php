@@ -22,8 +22,8 @@ class UpdateTrajetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:trajets',
-            'slug' => 'required|string|unique:trajets,slug',
+            'name' => 'required|string|max:255|unique:trajets,name,' . $this->trajet->id,
+            'slug' => 'required|string|unique:trajets,slug,' . $this->trajet->id,
             'waypoints' => 'required|array',
             'city_departure_time' => 'required',
             'school_departure_time' => 'required',

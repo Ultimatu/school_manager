@@ -11,7 +11,7 @@ class UpdateCiteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,10 +23,10 @@ class UpdateCiteRequest extends FormRequest
     {
         return [
             'id'=> 'required|exists:cites,id',
-            'name' => 'required|string|max:255|unique:cites',
+            'name' => 'required|string|max:255|unique:cites,name,' . $this->id,
             'status' => 'required|string',
             'capacity' => 'required|integer',
-            'slug' => 'required|string|unique:cites,slug',
+            'slug' => 'required|string|unique:cites,slug,' . $this->id,
             'description' => 'nullable|string',
             'type' => 'required|string',
             'address'=> 'nullable|string'

@@ -33,7 +33,7 @@ class UpdateChauffeurRequest extends FormRequest
             'car_id' => 'required|exists:cars,id',
             'trajet_id' => 'required|exists:trajets,id',
             'annee_scolaire' => 'required|string',
-            'slug'=> 'required|string|unique:chauffeurs,slug'
+            'slug'=> 'required|string|unique:chauffeurs,slug,'.$this->id,
         ];
     }
 

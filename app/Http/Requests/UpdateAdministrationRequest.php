@@ -26,12 +26,13 @@ class UpdateAdministrationRequest extends FormRequest
             'id' => 'required|integer|exists:administrations,id',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $this->id . ',id',
-            'phone' => 'required|string|max:20|unique:users,phone,'.$this->id,
+            'email' => 'required|string|email|max:255|unique:users,email,' . $this->user_id,
+            'phone' => 'required|string|max:20|unique:users,phone,'.$this->user_id,
             'address' => 'required|string|max:255',
             'role' => 'required|string|max:255',
             'responsability' => 'required|string',
             'gender' => 'required|string|max:2',
+            'user_id' => 'required|integer|exists:users,id'
         ];
 
     }
@@ -52,6 +53,9 @@ class UpdateAdministrationRequest extends FormRequest
             'address.required' => 'L\'adresse est obligatoire',
             'role.required' => 'Le rôle est obligatoire',
             'responsability.required' => 'La responsabilité est obligatoire',
+            'user_id.required' => 'L\'identifiant de l\'utilisateur est obligatoire',
+            'user_id.integer' => 'L\'identifiant de l\'utilisateur doit être un entier',
+            'user_id.exists' => 'L\'identifiant de l\'utilisateur n\'existe pas',
         ];
     }
 

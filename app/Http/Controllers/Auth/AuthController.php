@@ -38,6 +38,9 @@ class AuthController extends Controller
                 }
             }
             $request->session()->regenerate();
+            if (Auth::user()->isParent()){
+                return redirect()->intended('parent-dashboard');
+            }
 
             return redirect()->intended('dashboard');
         }

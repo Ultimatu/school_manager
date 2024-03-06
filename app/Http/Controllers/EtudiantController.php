@@ -138,7 +138,7 @@ class EtudiantController extends Controller
             'card_id' => $request->card_id,
             'birth_date' => $request->birth_date,
             'birth_place' => $request->birth_place,
-            'cin' => $request->cin,
+            'cni' => $request->cni,
             'status' => 'active',
             'urgent_phone' => $request->urgent_phone,
         ]);
@@ -157,6 +157,7 @@ class EtudiantController extends Controller
             'date' => now(),
         ]);
         if (env('MAIL_SERVICE_STATE') == 'on') {
+            $user = User::find($etudiant->user_id);
             Mail::to($request->email)->send(new AccountActivatedMail('etudiant', $user, $password, "updated"));
         }
 

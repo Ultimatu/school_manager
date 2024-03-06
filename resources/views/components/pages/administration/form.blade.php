@@ -23,6 +23,7 @@
                             @if ($administration->id)
                                 @method('PUT')
                                 <input type="hidden" name="id" value="{{ $administration->id }}">
+                                <input type="hidden" name="user_id" value="{{ $administration->user_id }}">
                             @endif
                             <div class="row">
                                 <div class="col-md-6 mb-3">

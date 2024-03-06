@@ -35,6 +35,7 @@
                             @if ($etudiant->id)
                                 @method('PUT')
                                 <input type="hidden" name="id" value="{{ $etudiant->id }}">
+                                <input type="hidden" name="user_id" value="{{ $etudiant->user_id }}">
                             @endif
                             <div class="wizard-demo" id="wizard">
                                 <h2>Informations personnelles</h2>

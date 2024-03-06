@@ -26,8 +26,8 @@ class UpdateEtudiantRequest extends FormRequest
             'id'=>'required|integer|exists:etudiants,id',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'required|email|unique:users,email,'.$this->id,
-            'phone' => 'required|string|unique:users,phone,'.$this->id,
+            'email' => 'required|email|unique:users,email,'.$this->user_id,
+            'phone' => 'required|string|unique:users,phone,'.$this->user_id,
             'address' => 'required|string',
             'student_mat' => 'required|string|unique:etudiants,student_mat,'.$this->id,
             'classe_id' => 'required|integer|exists:classes,id',
@@ -35,13 +35,14 @@ class UpdateEtudiantRequest extends FormRequest
             'card_id' => 'nullable|string|unique:etudiants,card_id,'.$this->id,
             'birth_date' => 'required|date',
             'birth_place' => 'required|string',
-            'cni' => 'nullable|string|unique:etudiants,cni,'.$this->id,
+            'cni' => 'nullable|string|unique:etudiants,cni,'.$this->user_id,
             'status' => 'required|string',
             'urgent_phone' => 'required|string|max:20|min:8',
             'amount'=>'required|numeric|min:0',
             'is_paid'=>'required|boolean',
             'versement_amount'=>'required|numeric|min:0',
-            'gender' => 'required|string'
+            'gender' => 'required|string',
+            'user_id' => 'required|integer|exists:users,id',
         ];
     }
 
@@ -136,6 +137,7 @@ class UpdateEtudiantRequest extends FormRequest
             'is_paid' => $this->amount >= $this->versement_amount ? true : false,
             'versement_amount' => (float)$this->versement_amount,
             'annee_scolaire' => AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire,
+            'user_id' => (int)$this->user_id,
         ]);
     }
 

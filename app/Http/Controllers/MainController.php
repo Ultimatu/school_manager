@@ -49,4 +49,22 @@ class MainController extends Controller
         $anneeScolaire->save();
         return redirect()->route('dashboard');
     }
+
+
+    /* =================
+     * PARENT FUNCTIONS
+     */
+
+    public function parentDashboard(){
+        return view('parents.index');
+    }
+
+
+    public function parentProfile(){
+        return view('parents.profile');
+    }
+
+    public function parentEtudiants(){
+        return view('parents.etudiant');
+    }
 }

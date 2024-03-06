@@ -185,6 +185,13 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::post('validate-account', [AuthController::class, 'activateAccount'])->name('validate-account');
+
+    //
+
+    Route::get('parent-dashboard', [MainController::class, 'parentDashboard'])->name('parent-dashboard');
+
+
+
     /**
      * LOGOUT
      */

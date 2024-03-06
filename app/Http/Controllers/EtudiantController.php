@@ -118,7 +118,7 @@ class EtudiantController extends Controller
         $request->validated();
         //update user
         $password = User::generatePassword("ETUDIANT");
-        $user =$etudiant->user->update([
+        $user = $etudiant->user->update([
             'name' => $request->first_name . ' ' . $request->last_name,
             'email' => $request->email,
             'phone' => $request->phone,

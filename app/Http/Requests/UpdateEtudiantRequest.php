@@ -130,7 +130,7 @@ class UpdateEtudiantRequest extends FormRequest
             'card_id' => $this->card_id,
             'birth_date' => $this->birth_date,
             'birth_place' => ucfirst($this->birth_place),
-            'status' => $this->status,
+            'status' => "disponbile",
             'urgent_phone' => $this->urgent_phone,
             'amount' => (float)$this->amount,
             'is_paid' => $this->amount >= $this->versement_amount ? true : false,

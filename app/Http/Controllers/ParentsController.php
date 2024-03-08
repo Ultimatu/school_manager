@@ -68,14 +68,12 @@ class ParentsController extends Controller
         $parent->is_legal_tutor = $request->is_legal_tutor;
         $parent->status = 'active';
         $parent->annee_scolaire = $etudiant->annee_scolaire;
-       
-
 
         $user = new User();
         $user->name = $request->first_name . ' ' . $request->last_name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->password = \bcrypt($request->phone);
+        $user->password = bcrypt('parent');
         $user->role_auth = 'parent';
         $user->save();
 
@@ -119,7 +117,7 @@ class ParentsController extends Controller
         $user->update([
             'name' => $request->first_name . ' ' . $request->last_name,
             'email' => $request->email,
-            'password' => \bcrypt($request->phone),
+            'password' => bcrypt('parent'),
             'role_auth' => 'parent',
             'phone' => $request->phone,
         ]);

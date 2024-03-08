@@ -11,7 +11,7 @@ class Notes extends Model
 
 
     protected $fillable = [
-        'evaluation_id', // add this line
+        'evaluation_id', 
         'etudiant_id',
         'note',
         'observation',
@@ -19,7 +19,7 @@ class Notes extends Model
     ];
 
 
-    public function evalutation()
+    public function evaluation()
     {
         return $this->belongsTo(Evaluation::class);
     }

@@ -22,6 +22,7 @@ class Parents extends Model
         'is_legal_tutor',
         'status',
         'annee_scolaire',
+        'avatar'
     ];
 
 

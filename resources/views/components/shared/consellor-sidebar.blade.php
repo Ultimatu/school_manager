@@ -15,7 +15,6 @@
         <div class="nav-group show">
             <a href="#" class="nav-label">Gestion de l'administration</a>
             <ul class="nav nav-sidebar">
-
                 <li class="nav-item">
                     <a href="{{ route('administration.index') }}" class="nav-link {{ request()->routeIs('administration.*') ? 'active' : '' }}"><i class="ri-admin-line fs-2"></i>
                         <span>Administration</span></a>
@@ -72,61 +71,6 @@
                 <li class="nav-item">
                     <a href="{{ route('years.index') }}" class="nav-link {{ request()->routeIs('years.*') ? 'active' : '' }}"><i class="ri-calendar-check-fill text-danger fs-2"></i>
                         <span>Annee Scolaire</span></a>
-                </li>
-                {{-- scolarite --}}
-                <li class="nav-item">
-                    <a href="{{ route('scolarite.index') }}" class="nav-link {{ request()->routeIs('scolarite.*') ? 'active' : '' }}"><i class="ri-money-dollar-circle-line text-warning fs-2"> </i>
-                        <span>Scolarité</span></a>
-                </li>
-                {{-- versements --}}
-                <li class="nav-item">
-                    <a href="{{ route('versement.index') }}" class="nav-link {{ request()->routeIs('versement.*') ? 'active' : '' }}"><i class="ri-money-dollar-circle-line text-success fs-2">
-
-                    </i>
-                        <span>Versements</span></a>
-                </li>
-            </ul>
-        </div><!-- nav-group -->
-        <div class="nav-group show">
-            <a href="#" class="nav-label">Gestion du cars</a>
-            <ul class="nav nav-sidebar">
-                <li class="nav-item">
-                    <a href="" class="nav-link {{ request()->routeIs(['chauffeurs.*', 'cars.*', 'car_inscriptions.*', 'trajets.*']) ? 'active' : '' }} has-sub"><i class="ri-car-line"></i>
-                         <span>Car & Transport</span></a>
-                    <nav class="nav nav-sub">
-                        <a href="{{route('cars.index')}}" class="nav-sub-link">
-                            <i class="ri-car-line"></i>
-                            Voitures</a>
-                        <a href="{{ route("chauffeurs.index") }}" class="nav-sub-link">
-                            <i class="ri-user-3-line"></i>
-                            Chauffeurs</a>
-                        <a href="{{ route('trajets.index') }}" class="nav-sub-link">
-                            <i class="ri-map-pin-line"></i>
-                            Trajets</a>
-                        <a href="{{route('car_inscriptions.index')}}" class="nav-sub-link">
-                            <i class="ri-checkbox-multiple-line"></i>
-                            Inscriptions</a>
-                    </nav>
-                </li>
-            </ul>
-        </div><!-- nav-group -->
-        <div class="nav-group show mb-3">
-            <a href="#" class="nav-label">Gestions de la cité</a>
-            <ul class="nav nav-sidebar">
-                <li class="nav-item">
-                    <a href="" class="nav-link {{ request()->routeIs(['cites.*', 'chambres.*', 'citeInscriptions.*']) ? 'active' : '' }} has-sub"><i class="ri-building-2-line"></i>
-                        <span>Cité & Logements</span></a>
-                    <nav class="nav nav-sub">
-                        <a href="{{route('cites.index')}}" class="nav-sub-link">
-                            <i class="ri-building-2-line"></i>
-                            Batiments</a>
-                        <a href="{{route('chambres.index')}}" class="nav-sub-link">
-                            <i class="ri-map-pin-line"></i>
-                            Chambres</a>
-                        <a href="{{route('citeInscriptions.index')}}" class="nav-sub-link">
-                            <i class="ri-checkbox-multiple-line"></i>
-                            Inscriptions</a>
-                    </nav>
                 </li>
             </ul>
         </div><!-- nav-group -->

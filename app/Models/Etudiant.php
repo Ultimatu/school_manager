@@ -76,6 +76,10 @@ class Etudiant extends Model
         return $this->hasMany(CiteInscription::class);
     }
 
+    public function cite(){
+        return $this->hasOne(CiteInscription::class);
+    }
+
     public function chambre(){
         return $this->hasOne(CiteInscription::class);
     }

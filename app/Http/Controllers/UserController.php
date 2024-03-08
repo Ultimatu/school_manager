@@ -10,6 +10,9 @@ class UserController extends Controller
 {
     public function index()
     {
+        if (auth()->user()->isParent()){
+            return view('parents.profile'); 
+        }
         return view('components.pages.profile.index');
     }
 
@@ -90,7 +93,7 @@ class UserController extends Controller
 
         // Si l'utilisateur est un étudiant
         if ($key === "etudiant") {
-            $rules['phone'] .= '|unique:etudiants,phone,' . $user->etudiant->id;
+            $rules['phone'] .= '|unique:etudiants,phone,' . $user->etudiant->id.'|unique:users,phone,' . $user->id;
             $rules['student_mat'] = 'required|string|unique:etudiants,student_mat,' . $user->etudiant->id;
             $rules['card_id'] = 'nullable|string|unique:etudiants,card_id,' . $user->etudiant->id;
             $rules['birth_date'] = 'required|date';
@@ -101,8 +104,12 @@ class UserController extends Controller
         }
         // Si l'utilisateur est un professeur
         elseif ($key === "professeur") {
-            $rules['phone'] .= '|unique:professeurs,phone,' . $user->professeur->id;
+            $rules['phone'] .= '|unique:professeurs,phone,' . $user->professeur->id.'|unique:users,phone,' . $user->id;
             $rules['specialities'] = 'required|string|max:255';
+        }
+        elseif($key === "parent"){
+            $rules['phone'] .= '|unique:parents,phone,' . $user->parent->id.'|unique:users,phone,' . $user->id;
+            $rules['profession'] = 'nullable|string|max:255';
         }
         // Si l'utilisateur est un membre de l'administration
         else {

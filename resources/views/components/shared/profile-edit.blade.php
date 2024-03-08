@@ -238,8 +238,107 @@
         </form>
     @break
 
+    @case('parent')
+        {{-- 
+        'first_name',
+        'last_name',
+        'phone',
+        'address',
+        'profession',
+        'type', --}}
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="form-group bmd-form-group">
+                    <label for="first_name" class="bmd-label-floating">Nom</label>
+                    <input type="text" name="first_name" id="first_name" class="form-control"
+                        value="{{ auth()->user()->parent->first_name }}">
+                    @error('first_name')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="form-group bmd-form-group">
+                    <label for="last_name" class="bmd-label-floating">Prénom</label>
+                    <input type="text" name="last_name" id="last_name" class="form-control"
+                        value="{{ auth()->user()->parent->last_name }}">
+                    @error('last_name')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="form-group bmd-form-group">
+                    <label for="address" class="bmd-label-floating">Adresse</label>
+                    <input type="text" name="address" id="address" class="form-control"
+                        value="{{ auth()->user()->parent->address }}">
+                    @error('address')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="form-group bmd-form-group">
+                    <label for="phone" class="bmd-label-floating">Numéro de téléphone</label>
+                    <input type="text" name="phone" id="phone" class="form-control"
+                        value="{{ auth()->user()->parent->phone }}">
+                    @error('phone')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="form-group bmd-form-group">
+                    <label for="profession" class="bmd-label-floating">Profession</label>
+                    <textarea name="profession" id="profession" class="form-control">{{ auth()->user()->parent->profession }}</textarea>
+                    @error('profession')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="form-group bmd-form-group">
+                    <label for="avatar" class="bmd-label-floating">Photo</label>
+                    <input type="file" name="avatar" id="avatar" class="form-control" accept="image/*">
+                    @error('avatar')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+                <div class="form-group bmd-form-group">
+                    <label for="type" class="form-label">type de parent</label>
+                    <select class="form-control" id="type" name="type" required>
+                        <option value="">Selectionnez le type de parent</option>
+                        <option value="pere" {{ auth()->user()->parent->type == 'pere' ? 'selected' : '' }}>
+                            Pere</option>
+                        <option value="mere" {{ auth()->user()->parent->type == 'mere' ? 'selected' : '' }}>
+                            Mere</option>
+                        <option value="tuteur" {{ auth()->user()->parent->type == 'tuteur' ? 'selected' : '' }}>
+                            Tuteur</option>
+                        <option value="autre" {{ auth()->user()->parent->type == 'autre' ? 'selected' : '' }}>
+                            Autre</option>
+                    </select>
+                    @error('type')
+                        <strong class="text-danger">{{ $message }}</strong>
+                    @enderror
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-outline-warning pull-right w-100">Modifier</button>
+        <div class="clearfix"></div>
+        </form>
+    @break
+
     @default
-        <form action="{{ route('profile.update', ['key' => 'administration']) }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('profile.update', ['key' => 'administration']) }}" method="post"
+            enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="row">

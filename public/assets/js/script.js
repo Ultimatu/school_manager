@@ -1,5 +1,7 @@
 'use script'
 
+
+
 // Add backdrop element
 $('body').append('<div class="main-backdrop"></div>');
 
@@ -125,6 +127,9 @@ $('#skinMode .nav-link').on('click', function(e){
     $('html').attr('data-skin', '');
   }
 });
+
+
+
 
 // Load sidebar skin
 var sidebarSkin = localStorage.getItem('sidebar-skin');

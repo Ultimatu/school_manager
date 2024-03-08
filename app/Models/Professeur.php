@@ -49,8 +49,9 @@ class Professeur extends Model
 
     public function courses()
     {
-        return $this->hasMany(ClasseCours::class);
+        return $this->hasMany(ClasseCours::class, 'professor_id');
     }
+
 
     public function emploiDuTemps()
     {

@@ -40,7 +40,7 @@
     @elseif (auth()->user()->isComptable())
         <x-shared.comptable-sidebar />
     @elseif (auth()->user()->isParent())
-        <x-shared.comptable-sidebar />
+        <x-shared.parent-sidebar />
     @else
         <x-shared.sidebar />
     @endif

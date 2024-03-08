@@ -189,7 +189,10 @@ Route::middleware(['auth'])->group(function () {
     //
 
     Route::get('parent-dashboard', [MainController::class, 'parentDashboard'])->name('parent-dashboard');
-
+    Route::get('parent-students', [MainController::class, 'parentEtudiants'])->name('parent-students');
+    Route::get('parent-etudiant-show/{etudiant}', [MainController::class, 'parentEtudiant'])->name('parent-etudiant-show');
+    Route::get('parent-etudiant-emploi/{etudiant}', [MainController::class, 'parentEtudiantEmploi'])->name('parent-etudiant-emploi');
+    
 
 
     /**

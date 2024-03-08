@@ -101,6 +101,15 @@ class User extends Authenticatable
         return $this->hasMany(Parents::class);
     }
 
+    /**
+     * Get the user's parent.
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function parent()
+    {
+        return $this->hasOne(Parents::class);
+    }
+
      /**
      * Check if the user is a super admin.
      * @return bool
@@ -115,7 +124,7 @@ class User extends Authenticatable
      */
     public function isAdmin()
     {
-        return $this->role_auth === 'admin' || $this->role_auth === 'directeur' || $this->role_auth === 'comptable' || $this->role_auth === 'secreteur' || $this->role_auth === 'conselleir' || $this->role_auth === 'conseillor';
+        return $this->role_auth === 'admin' || $this->role_auth === 'directeur' || $this->role_auth === 'secretaire';
     }
 
     /**

@@ -19,7 +19,7 @@
             </a>
             <ul class="nav nav-sidebar">
                 <li class="nav-item">
-                    <a href="{{ route('etudiant.index') }}" class="nav-link {{ request()->routeIs('etudiant.*') ? 'active' : '' }}"><i class="ri-file-user-line fs-2"></i>
+                    <a href="{{ route('parent-students') }}" class="nav-link {{ request()->routeIs('parent-students') ? 'active' : '' }}"><i class="ri-file-user-line fs-2"></i>
                         <span>Mes étudiants</span>
                     </a>
                 </li>
@@ -39,14 +39,14 @@
         </div><!-- sidebar-footer-top -->
         <div class="sidebar-footer-menu">
           <nav class="nav">
-            <a href="#"><i class="ri-edit-2-line"></i>Edit Profile</a>
-            <a href="#"><i class="ri-profile-line"></i> View Profile</a>
+            <a href="{{ route('my-profile') }}"><i class="ri-edit-2-line"></i>Edit Profile</a>
+            <a href="{{ route('my-profile') }}"><i class="ri-profile-line"></i> View Profile</a>
           </nav>
           <hr>
           <nav class="nav">
-            <a href="#"><i class="ri-question-line"></i> Help Center</a>
-            <a href="#"><i class="ri-lock-line"></i> Privacy Settings</a>
-            <a href="#"><i class="ri-user-settings-line"></i> Account Settings</a>
+            <a href=""><i class="ri-question-line"></i> Help Center</a>
+            <a href="/my-profile#secure"><i class="ri-lock-line"></i> Privacy Settings</a>
+            <a href="/my-profile#edits"><i class="ri-user-settings-line"></i> Account Settings</a>
             <a href="{{ route('logout') }}"><i class="ri-logout-box-r-line"></i> Se déconnecter</a>
           </nav>
         </div><!-- sidebar-footer-menu -->

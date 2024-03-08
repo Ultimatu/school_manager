@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="{{ asset('lib/sweealert2/sweetalert2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('lib/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('lib/simple-datatables/style.css') }}">
+    <script src="{{ asset('lib/simple-datatables/simple-datatables.js') }}"> </script>
     @stack('styles')
     @if (request()->routeIs('etudiant.*'))
         <link rel="stylesheet" href="{{ asset("lib/prismjs/themes/prism.min.css") }}">
@@ -59,7 +60,7 @@
     @elseif (auth()->user()->isComptable())
         <x-shared.comptable-sidebar />
     @elseif (auth()->user()->isParent())
-        <x-shared.comptable-sidebar />
+        <x-shared.parent-sidebar />
     @else
         <x-shared.sidebar />
     @endif
@@ -81,7 +82,6 @@
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset("lib/jquery-validation/jquery.validate.min.js") }}"></script>
     <script src="{{ asset("lib/jquery-validation/localization/messages_fr.min.js") }}"></script>
-    <script src="{{ asset('lib/simple-datatables/simple-datatables.js') }}"> </script>
     @if (request()->routeIs('etudiant.*'))
         <script src="{{ asset('lib/prismjs/prism.js') }}"></script>
         <script src="{{ asset('lib/parsleyjs/parsley.min.js') }}"></script>

@@ -15,7 +15,6 @@
         <div class="nav-group show">
             <a href="#" class="nav-label">Gestion de l'administration</a>
             <ul class="nav nav-sidebar">
-
                 <li class="nav-item">
                     <a href="{{ route('administration.index') }}" class="nav-link {{ request()->routeIs('administration.*') ? 'active' : '' }}"><i class="ri-admin-line fs-2"></i>
                         <span>Administration</span></a>

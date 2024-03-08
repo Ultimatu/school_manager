@@ -47,7 +47,7 @@
                 {{-- reclamantions --}}
                 <li class="nav-item">
                     <a href="{{ route('reclamations.index') }}" class="nav-link {{ request()->routeIs('reclamations.*') ? 'active' : '' }}"><i class="ri-file-list-3-line fs-2"></i>
-                        <span>Mes réclamations</span></a>
+                        <span>Réclamations</span></a>
                 </li>
                 {{-- emploi du temps --}}
                 <li class="nav-item">

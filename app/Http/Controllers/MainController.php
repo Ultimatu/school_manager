@@ -112,6 +112,8 @@ class MainController extends Controller
         $cite = false;
         $totalCar = 0;
         $totalCite = 0;
+        $totalCarPaid = 0;
+        $totalCitePaid = 0;
         foreach ($etudiants as $etudiant){
             $totalScolarite += $etudiant->etudiant->scolarite->amount;
             foreach($etudiant->etudiant->versements() as $verst)

@@ -98,7 +98,7 @@
                                     </span> <br>
                                     @if (!auth()->user()->isProfesseur())
                                         <p>
-                                            Statut: @if ($etudiant->scolarite->amount - $etudiant->versements()->sum('amount') == 0 || $etudiant->scolarite->is_paid == true)
+                                            Statut: @if ($etudiant->scolarite->amount - $etudiant->versements()->sum('amount') == 0 || $etudiant->scolarite->is_paid == 1)
                                                 <span class="badge bg-success">Soldé</span>
                                             @else
                                                 <span class="badge bg-danger">Non soldé</span>

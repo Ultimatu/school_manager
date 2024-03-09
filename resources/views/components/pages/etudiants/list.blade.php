@@ -105,11 +105,8 @@
                                                 {{ $etudiant->email . '  ' . $etudiant->phone }}
                                             </td>
                                             @if (!auth()->user()->isProfesseur())
-                                                @php
-                                                    dd($etudiant->scolarite->is_paid);
-                                                @endphp
                                                 <td>
-                                                    @if ($etudiant->scolarite->is_paid === 1)
+                                                    @if ($etudiant->scolarite->is_paid == 1)
                                                         <span class="badge bg-success">Soldé</span>
                                                     @else
                                                         <span class="badge bg-danger">Non soldé</span>

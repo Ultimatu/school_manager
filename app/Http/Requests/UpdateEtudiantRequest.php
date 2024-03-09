@@ -134,7 +134,7 @@ class UpdateEtudiantRequest extends FormRequest
             'status' => "disponbile",
             'urgent_phone' => $this->urgent_phone,
             'amount' => (float)$this->amount,
-            'is_paid' => $this->amount >= $this->versement_amount ? true : false,
+            'is_paid' => $this->amount <= $this->versement_amount ? true : false,
             'versement_amount' => (float)$this->versement_amount,
             'annee_scolaire' => AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire,
             'user_id' => (int)$this->user_id,

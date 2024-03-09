@@ -126,7 +126,7 @@ class StoreEtudiantRequest extends FormRequest
             'birth_place' => ucfirst($this->birth_place),
             'annee_scolaire' => AnneeScolaire::where('status', 'en cours')->first()->annee_scolaire,
             'status' => 'active',
-            'is_paid' => (float)$this->amount >= (float)$this->versement_amount ? true : false,
+            'is_paid' => (float)$this->amount <= (float)$this->versement_amount ? true : false,
         ]);
     }
 

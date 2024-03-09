@@ -106,7 +106,7 @@
                                             </td>
                                             @if (!auth()->user()->isProfesseur())
                                                 <td>
-                                                    @if ($etudiant->scolarite->is_paid)
+                                                    @if ($etudiant->scolarite->is_paid === 1)
                                                         <span class="badge bg-success">Soldé</span>
                                                     @else
                                                         <span class="badge bg-danger">Non soldé</span>

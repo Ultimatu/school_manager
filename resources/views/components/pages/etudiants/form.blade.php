@@ -168,7 +168,6 @@
                                                 @enderror
                                             </div>
                                         </div>
-
                                         <div class="col-md-6 mb-3">
                                             <div class="form-group bmd-form-group">
                                                 <label for="classe_id" class="bmd-label-floating">Classe</label>
@@ -251,7 +250,7 @@
                                 {{-- field for this are : amount, is_paid, versement_amount, urgent_phone --}}
                                 <section id="3-step">
                                     <div class="row">
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-md-12 mb-3">
                                             <div class="form-group bmd-form-group">
                                                 <label for="amount" class="bmd-label-floating">Montant de la
                                                     scolarité</label>
@@ -259,21 +258,6 @@
                                                     value="{{ old('amount', $etudiant->scolarite? $etudiant->scolarite->amount : '') }}"
                                                     placeholder="Montant de la scolarité de l'étudiant">
                                                 @error('amount')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <div class="form-group bmd-form-group">
-                                                <label for="is_paid" class="bmd-label-floating">Statut de
-                                                    paiement</label>
-                                                <select name="is_paid" id="is_paid" class="form-control">
-                                                    <option value="1">Soldé
-                                                    </option>
-                                                    <option value="0">Non soldé
-                                                    </option>
-                                                </select>
-                                                @error('is_paid')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>

@@ -25,7 +25,6 @@ class UpdateAppointmentRequest extends FormRequest
     {
         return [
             'day' => 'required|string',
-            'date' => 'required|date',
             'start_date' => 'required|date_format:H:i',
             'end_date' => 'required|date_format:H:i|after:start_date',
             'annee_scolaire' => 'required|string',

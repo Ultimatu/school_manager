@@ -29,8 +29,8 @@ class UpdateExamenRequest extends FormRequest
             'classe_cours_id' => 'required|integer|exists:classe_cours,id',
             'day' => 'required|string',
             'professeur_id' => 'required|integer|exists:professeurs,id', // 'professeur_id' => 'required|integer|exists:professeurs,id',
-            'start_date_time' => 'required|date|date_format:Y-m-d H:i|after:now',
-            'end_date_time' => 'required|date|date_format:Y-m-d H:i|after:start_date_time',
+            'start_date_time' => 'required|date|date_format:Y-m-d H:i:s|after:now',
+            'end_date_time' => 'required|date|date_format:Y-m-d H:i:s|after:start_date_time',
             'annee_scolaire' => 'required|string'
         ];
     }
@@ -88,7 +88,7 @@ class UpdateExamenRequest extends FormRequest
             'salle_id' => $this->salle_id,
             'classe_cours_id' => $this->classe_cours_id,
             'professeur_id' => $classeCours->professeur_id,
-            'day' => $this->day,
+            'day' => $this->getDay($this->start_date_time),
             'start_date_time' => $this->start_date_time,
             'end_date_time' => $this->end_date_time,
             'annee_scolaire' => $this->annee_scolaire,
@@ -113,6 +113,11 @@ class UpdateExamenRequest extends FormRequest
             'end_date_time' => 'date de fin',
             'annee_scolaire' => 'année scolaire'
         ];
+    }
+
+    private function getDay($date){
+        $days = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+        return $days[date('w', strtotime($date))];
     }
 
 }

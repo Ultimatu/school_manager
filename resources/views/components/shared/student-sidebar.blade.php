@@ -39,6 +39,10 @@
                     <a href="{{ route('evenements.index') }}" class="nav-link {{ request()->routeIs('evenements.*') ? 'active' : '' }}"><i class="ri-calendar-check-fill fs-2"></i>
                         <span>Evements</span></a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('appointment.index') }}" class="nav-link {{ request()->routeIs('appointment.*') ? 'active' : '' }}"><i class="ri-checkbox-multiple-line fs-2"></i>
+                        <span>Emmargements</span></a>
+                </li>
                 {{-- notes --}}
                 <li class="nav-item">
                     <a href="{{ route('evaluations.index') }}" class="nav-link {{ request()->routeIs('evaluations.*') ? 'active' : '' }}"><i class="fas fa-book fs-2 text-info"></i>

@@ -26,30 +26,18 @@
                     {{ $etudiant->first_name }} {{ $etudiant->last_name }}
                     {{-- buttons --}}
                     @if (!auth()->user()->isProfesseur())
-                        <div class="float-right d-flex justify-content-between gap-2">
+                        <div class="float-right d-flex align-items-center justify-content-start gap-2 w-50">
                             {{-- edit --}}
                             <a href="{{ route('etudiant.edit', $etudiant->id) }}" class="btn btn-warning mb-3">
-                                <i class="ri-pencil-line fs-3 text-white"></i>
+                                <i class="ri-pencil-line fs-3 text-white "></i>
                                 Modifier
-                            </a>
-                            {{-- add_parent button --}}
-                            <a href="{{ route('parents.create', ['etudiant' => $etudiant->id]) }}"
-                                class="btn btn-success mb-3">
-                                <i class="ri-user-add-line fs-3 text-white"></i>
-                                Ajouter un parent
-                            </a>
-                            {{-- ajouter un versement --}}
-                            <a href="{{ route('versement.etudiant.create', ['paymentScolarite' => $etudiant->scolarite->id]) }}"
-                                class="btn btn-info">
-                                <i class="ri-money-dollar-circle-line fs-3 text-white mb-3"></i>
-                                Ajouter un versement
                             </a>
                             {{-- delete --}}
                             <form action="{{ route('etudiant.destroy', $etudiant->id) }}" method="post" class="d-inline"
                                 id="deleteEtudiant">
                                 @csrf
                                 @method('DELETE')
-                                <button type="button" class="btn btn-danger" onclick="deleteEtudiant()"
+                                <button type="button" class="btn btn-danger mb-3" onclick="deleteEtudiant()"
                                     style="color: #fff;">
                                     <i class="ri-delete-bin-line fs-3 text-white"></i>
                                     Supprimer {{ $etudiant->first_name }}
@@ -110,11 +98,19 @@
                         <!-- Onglet Parents -->
                         <div id="parents" class="tab-pane fade">
                             <div class="card-body">
+                                <div class="d-grid mb-3">
+                                    {{-- add_parent button --}}
+                                    <a href="{{ route('parents.create', ['etudiant' => $etudiant->id]) }}"
+                                        class="btn btn-success mb-3">
+                                        <i class="ri-user-add-line fs-3 text-white"></i>
+                                        Ajouter un parent
+                                    </a>
+                                </div>
                                 {{-- parents --}}
                                 <hr>
                                 @if ($etudiant->parents->count() > 0)
                                     @foreach ($etudiant->parents as $parent)
-                                        <div class="datatable table">
+                                        <div class="datatable table-responsive">
                                             <table class="table table-bordered table-striped table-responsive">
                                                 <thead>
                                                     <tr>
@@ -180,6 +176,14 @@
                                 <!-- Contenu de l'onglet -->
                                 <div class="card-body">
                                     {{-- scolarite --}}
+                                    <div class="d-grid mb-3">
+                                        {{-- ajouter un versement --}}
+                                        <a href="{{ route('versement.etudiant.create', ['paymentScolarite' => $etudiant->scolarite->id]) }}"
+                                            class="btn btn-info">
+                                            <i class="ri-money-dollar-circle-line fs-3 text-white mb-3"></i>
+                                            Ajouter un versement
+                                        </a>
+                                    </div>
                                     <p>
                                         Montant de la scolarité: {{ $etudiant->scolarite->amount }} FCFA
                                     </p>
@@ -198,7 +202,7 @@
                                         @endif
                                     </p>
                                     {{-- details payments --}}
-                                    <div class="datatable">
+                                    <div class="datatable table-responsive">
                                         <table class="table table-bordered table-striped table-responsive">
                                             <thead>
                                                 <tr>

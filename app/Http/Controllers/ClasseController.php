@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreClasseRequest;
 use App\Http\Requests\StoreEmploiDuTempsRequest;
 use App\Http\Requests\UpdateClasseRequest;
+use App\Models\Appointment;
 use App\Models\Classe;
 use App\Models\ClasseCours;
 use App\Models\EmploiDuTemps;
@@ -52,7 +53,9 @@ class ClasseController extends Controller
      */
     public function show(Classe $classe)
     {
-        return view('components.pages.classe.show', compact('classe'));
+        $appointments = Appointment::where('classe_id', $classe->id)->get();
+
+        return view('components.pages.classe.show', compact('classe', 'appointments'));
     }
 
     /**
@@ -112,10 +115,12 @@ class ClasseController extends Controller
     public function emploie(Classe $classe)
     {
         $emplois = EmploiDuTemps::where('classe_id', $classe->id)->get();
+        $emplois->load('classe', 'professeur', 'salle', 'classeCours', 'classeCours.cours');
         $classeCours = ClasseCours::where('classe_id', $classe->id)->where('is_available', 1)->get();
         $professeurs = Professeur::where('is_available', 1)->get();
         $salles = Salle::where('is_available', 1)->get();
         $examens = Examen::where('classe_id', $classe->id)->get();
+        $examens->load('professeur', 'salle', 'classe', 'classeCours', 'classeCours.cours');
         return view('components.pages.classe.emploi.index', compact('emplois', 'classe', 'classeCours', 'professeurs', 'salles', 'examens'));
     }
 
@@ -153,6 +158,18 @@ class ClasseController extends Controller
 
         $emploiDuTemps = EmploiDuTemps::create($request->all());
         $emplois = EmploiDuTemps::where('classe_id', $request->classe_id)->get();
+
+        //create appointment for this
+        $appointment = new Appointment();
+        $appointment->classe_id = $request->classe_id;
+        $appointment->classe_cours_id = $request->classe_cours_id;
+        $appointment->professeur_id = $request->professeur_id;
+        $appointment->start_date = $request->start_date_time;
+        $appointment->end_date = $request->end_date_time;
+        $appointment->annee_scolaire = $request->annee_scolaire;
+        $appointment->day = $request->day;
+        $appointment->save();
+
 
         return response()->json(['success' => 'Emploi du temps ajouté avec succès', 'emplois' => $emplois], 200);
     }
@@ -195,6 +212,14 @@ class ClasseController extends Controller
     {
         $emploi = EmploiDuTemps::find($id);
         $classe_id = $emploi->classe_id;
+        //supprimer la liste  de classe 
+        $appointment = Appointment::where('classe_id', $classe_id)
+            ->where('classe_cours_id', $emploi->classe_cours_id)
+            ->where('professeur_id', $emploi->professeur_id)
+            ->where('start_date', $emploi->start_date_time)
+            ->where('end_date', $emploi->end_date_time)
+            ->where('day', $emploi->day)
+            ->delete();
         $emploi->delete();
         $emplois = EmploiDuTemps::where('classe_id', $classe_id)->get();
         return response()->json(['success' => 'Emploi du temps supprimé avec succès', 'emplois' => $emplois]);

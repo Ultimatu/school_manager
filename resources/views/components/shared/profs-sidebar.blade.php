@@ -54,6 +54,10 @@
                     <a href="{{ route('professeur.emploi', ['professeur'=>auth()->user()->professeur->id]) }}" class="nav-link"><i class="ri-file-list-3-line fs-2"></i>
                         <span>Mon emploi du temps</span></a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('appointment.index') }}" class="nav-link {{ request()->routeIs('appointment.*') ? 'active' : '' }}"><i class="ri-checkbox-multiple-line fs-2"></i>
+                        <span>Emmargements</span></a>
+                </li>
             </ul>
         </div><!-- nav-group -->
     </div><!-- sidebar-body -->

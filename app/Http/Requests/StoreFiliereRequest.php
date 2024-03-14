@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\AnneeScolaire;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreFiliereRequest extends FormRequest
@@ -61,5 +62,13 @@ class StoreFiliereRequest extends FormRequest
             'image' => 'image',
             'status' => 'disponibilité',
         ];
+    }
+
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'annee_scolaire' => AnneeScolaire::valideYear(),
+        ]);
     }
 }

@@ -222,7 +222,8 @@ class AuthController extends Controller
             $user->notify(new ResetPassword($token));
         }
 
-        return redirect()->route('login')->with('success', 'Un email de réinitialisation de mot de passe vous a été envoyé');
+        return redirect()->route('login')->with([
+            'success' => 'Un lien de réinitialisation de mot de passe a été envoyé à votre adresse email', 'displayAlert' => true]);
 
     }
 

@@ -157,17 +157,18 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/emploi.js') }}"></script>
-
     <script>
         'use strict';
         new PerfectScrollbar('#calSidebar', {
             suppressScrollX: true
         });
+        console.log('here');
         var classeId = {{ $classe->id }};
         var baseUrl = "{{ url('/') }}";
         var calendarEvents = [];
         var events = @json($emplois);
         var examens = @json($examens);
+        console.log('events', events);
         events.forEach(function(event) {
             var calendarEvent = {
                 id: event.id,

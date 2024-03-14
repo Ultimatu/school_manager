@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AdministrationController;
 use App\Http\Controllers\AnneeScolaireController;
+use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\AppointmentEtudiantController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\CarInscriptionController;
@@ -158,6 +160,11 @@ Route::middleware(['auth'])->group(function () {
     //Notes
     Route::resource('notes', NotesController::class)->except(['create']);
     Route::get('notes/create/{evaluation}', [NotesController::class, 'create'])->name('notes.create');
+
+    //Appointment Etudiant
+    Route::resource('appointment', AppointmentController::class)->except(['create', 'edit', 'store', 'update']);
+    Route::get('appointment/{appointment}/etudiants', [AppointmentEtudiantController::class, 'create'])->name('appointment.etudiants.create');
+    Route::post('appointment/etudiants', [AppointmentEtudiantController::class, 'store'])->name('appointment.etudiants.store');
 
     //Reclamations
     Route::get('reclamations', [ReclamantionController::class, 'index'])->name('reclamations.index');

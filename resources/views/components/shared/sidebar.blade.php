@@ -68,6 +68,11 @@
                     <a href="{{ route('examens.index') }}" class="nav-link {{ request()->routeIs('examens.*') ? 'active' : '' }}"><i class="ri-file-list-3-line fs-2"></i>
                         <span>Examens</span></a>
                 </li>
+                {{-- emmargement --}}
+                <li class="nav-item">
+                    <a href="{{ route('appointment.index') }}" class="nav-link {{ request()->routeIs('appointment.*') ? 'active' : '' }}"><i class="ri-checkbox-multiple-line fs-2"></i>
+                        <span>Emmargements</span></a>
+                </li>
                 {{-- annee scolaire --}}
                 <li class="nav-item">
                     <a href="{{ route('years.index') }}" class="nav-link {{ request()->routeIs('years.*') ? 'active' : '' }}"><i class="ri-calendar-check-fill text-danger fs-2"></i>

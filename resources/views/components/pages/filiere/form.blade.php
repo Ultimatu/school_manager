@@ -87,19 +87,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <div class="form-group bmd-form-group">
-                                        <label for="annee_scolaire" class="bmd-label-floating">Année Scolaire</label>
-                                        <input type="text" class="form-control" id="annee_scolaire" name="annee_scolaire"
-                                            value="{{ old('annee_scolaire', $filiere->annee_scolaire) }}"
-                                            placeholder="Entrez l'année scolaire Ex: 2023-2024" required minlength="9" maxlength="9" pattern="^\d{4}-\d{4}$">
-                                        @error('annee_scolaire')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
                             <button type="submit" class="btn btn-primary w-100 mb-3">
                                 {{ $filiere->id ? 'Modifier' : 'Ajouter' }}</button>
                             <a href="{{ route('filiere.index') }}" class="btn btn-danger mt-1">Annuler</a>

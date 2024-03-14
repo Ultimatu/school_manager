@@ -101,7 +101,8 @@ function randomColor(credit) {
 }
 
 // Fonction pour construire la description de l'événement
-function buildDescription(event, isExamen) {
+function buildDescription(event, isExamen=false) {
+    console.log(event);
     var description = "";
     if (isExamen) {
         description += "Examen: " + event.classe_cours.cours.name + "<br>" + "Salle: " + event.salle.name + "<br>";

@@ -17,7 +17,9 @@
   <body class="page-sign">
 
     @yield('content')
-    <script src="{{asset('lib/jquery/jquery.min.js')}}"></script>
+    <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset("lib/jquery-validation/jquery.validate.min.js") }}"></script>
+    <script src="{{ asset("lib/jquery-validation/localization/messages_fr.min.js") }}"></script>
     <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     @stack('scripts')
     <script>

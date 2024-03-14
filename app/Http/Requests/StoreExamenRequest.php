@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\AnneeScolaire;
 use App\Models\ClasseCours;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -29,8 +30,8 @@ class StoreExamenRequest extends FormRequest
             'classe_cours_id' => 'required|integer|exists:classe_cours,id',
             'day' => 'required|string',
             'professeur_id' => 'required|integer|exists:professeurs,id',
-            'start_date_time' => 'required|date|date_format:Y-m-d H:i|after:now',
-            'end_date_time' => 'required|date|date_format:Y-m-d H:i|after:start_date_time',
+            'start_date_time' => 'required|date|date_format:Y-m-d H:i:s|after:now',
+            'end_date_time' => 'required|date|date_format:Y-m-d H:i:s|after:start_date_time',
             'annee_scolaire' => 'required|string'
 
         ];
@@ -104,16 +105,22 @@ class StoreExamenRequest extends FormRequest
         }
         $year = date('Y');
         //si on est entre janvier et aout alors $annee_scolaire = year-1/year sinon $annee_scolaire = year/year+1
-        $annee_scolaire = date('m') < 9 ? ($year - 1) . '-' . $year : $year . '-' . ($year + 1);
         $this->merge([
             'classe_id' => $classeCours->classe_id,
             'professeur_id' => $classeCours->professor_id,
             'salle_id' => $this->salle_id,
             'classe_cours_id' => $this->classe_cours_id,
-            'day' => $this->day,
+            'day' => $this->getDay($this->start_date_time),
             'start_date_time' => $this->start_date_time,
             'end_date_time' => $this->end_date_time,
-            'annee_scolaire' => $annee_scolaire
+            'annee_scolaire' => AnneeScolaire::valideYear(),
         ]);
+    }
+
+
+
+    private function getDay($date){
+        $days = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+        return $days[date('w', strtotime($date))];
     }
 }

@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAppointmentRequest;
 use App\Http\Requests\UpdateAppointmentRequest;
+use App\Models\AnneeScolaire;
 use App\Models\Appointment;
+use App\Models\ClasseCours;
+use App\Models\EmploiDuTemps;
 
 class AppointmentController extends Controller
 {
@@ -17,8 +20,12 @@ class AppointmentController extends Controller
             $appointments = Appointment::where('annee_scolaire',auth()->user()->etudiant->annee_scolaire)->where('classe_id', auth()->user()->etudiant->classe_id)->get();
         }
         elseif(auth()->user()->isProfesseur()){
-            
+            $appointments = Appointment::where('professeur_id', auth()->user()->professeur->id)->get();
         }
+        else{
+            $appointments = Appointment::all();
+        }
+        return view('components.pages.emmargement.index', compact('appointments'));
         
     }
 
@@ -27,7 +34,11 @@ class AppointmentController extends Controller
      */
     public function create()
     {
-        //
+        $appointment = new Appointment();
+        $ClasseCours = ClasseCours::all();
+        //pour valide year et ordonnees par last in last out 
+        $emplois = EmploiDuTemps::where('professeur_id', auth()->user()->professeur->id)->orderBy('id', 'desc')->get();
+        return view('components.pages.emmargement.form', compact('appointment', 'ClasseCours'));
     }
 
     /**
@@ -35,7 +46,10 @@ class AppointmentController extends Controller
      */
     public function store(StoreAppointmentRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+        $appointment = Appointment::create($validatedData);
+        return redirect()->route('appointment.index');
+    
     }
 
     /**
@@ -43,7 +57,7 @@ class AppointmentController extends Controller
      */
     public function show(Appointment $appointment)
     {
-        //
+        return view('components.pages.emmargement.show', compact('appointment'));
     }
 
     /**
@@ -51,7 +65,8 @@ class AppointmentController extends Controller
      */
     public function edit(Appointment $appointment)
     {
-        //
+        $ClasseCours = ClasseCours::all();
+        return view('components.pages.emmargement.form', compact('appointment', 'ClasseCours'));
     }
 
     /**
@@ -59,7 +74,9 @@ class AppointmentController extends Controller
      */
     public function update(UpdateAppointmentRequest $request, Appointment $appointment)
     {
-        //
+        $validatedData = $request->validated();
+        $appointment->update($validatedData);
+        return redirect()->route('appointment.index');
     }
 
     /**
@@ -67,6 +84,7 @@ class AppointmentController extends Controller
      */
     public function destroy(Appointment $appointment)
     {
-        //
+        $appointment->delete();
+        return redirect()->route('appointment.index');
     }
 }

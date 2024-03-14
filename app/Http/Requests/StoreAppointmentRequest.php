@@ -18,16 +18,15 @@ class StoreAppointmentRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
+     *S
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
             'day' => 'required|string',
-            'date' => 'required|date',
-            'start_date' => 'required|date_format:H:i',
-            'end_date' => 'required|date_format:H:i|after:start_date',
+            'start_date' => 'required|date_format:H:i:s',
+            'end_date' => 'required|date_format:H:i:s|after:start_date',
             'annee_scolaire' => 'required|string',
             'classe_id' => 'required|exists:classes,id',
             'professeur_id' => 'required|exists:professeurs,id',

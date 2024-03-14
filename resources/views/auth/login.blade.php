@@ -5,7 +5,9 @@
 @section('content')
 
     <div class="card card-sign">
-        @include('components.shared.alert')
+        @if (isset($displayAlert))
+            @include('components.shared.alert')
+        @endif
         <div class="card-header">
             <a href="../" class="header-logo mb-4">UTA</a>
             {{-- ask if user is parent and lead to parent_login.blade.php --}}
@@ -21,10 +23,9 @@
                 @csrf
                 <div class="mb-4">
                     <label class="form-label">Addresse email</label>
-                    <input type="text" class="form-control" placeholder="Entrez votre adresse email" name="email"
-                        value="{{ old('email') }}">
+                    <input type="text" class="form-control  @error('email') is-invalid @enderror" placeholder="Entrez votre adresse email" name="email" value="{{ old('email') }}">
                     @error('email')
-                        <strong class="text-danger">{{ $message }}</strong>
+                        <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
@@ -44,5 +45,4 @@
 
         </div><!-- card-body -->
     </div><!-- card -->
-
 @endsection

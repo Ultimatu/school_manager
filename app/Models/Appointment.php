@@ -17,7 +17,6 @@ class Appointment extends Model
         'classe_id',
         'professeur_id',
         'classe_cours_id',
-        'date'
     ];
 
     public function etudiantAppointments(){
@@ -26,5 +25,17 @@ class Appointment extends Model
 
     public function profAppointments(){
         return $this->hasMany(AppointmentProf::class);
+    }
+
+    public function classeCours(){
+        return $this->belongsTo(ClasseCours::class);
+    }
+
+    public function professeur(){
+        return $this->belongsTo(Professeur::class);
+    }
+
+    public function classe(){
+        return $this->belongsTo(Classe::class);
     }
 }

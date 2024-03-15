@@ -23,7 +23,7 @@ use Illuminate\Http\Request;
 class MainController extends Controller
 {
     public function dashboard(){
-        $validYear = AnneeScolaire::valideYear();
+        $validYear = AnneeScolaire::where('status', 'en cours')->get();
         if ($validYear->isEmpty()){
             return redirect()->route('years.create');
         }

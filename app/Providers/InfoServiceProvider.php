@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Notification;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 
 class InfoServiceProvider extends ServiceProvider
 {
@@ -22,9 +23,9 @@ class InfoServiceProvider extends ServiceProvider
     {
         //return notifications to header 
         if (auth()->check()) {
-            view()->composer(['layouts.*'], function ($view) {
+            View::composer(['layouts.*'], function ($view) {
                 $notifications = Notification::where('receiver_id', auth()->user()->id)->unread()->get();
-                $view->with('notifications', $notifications);
+                $view->with(compact('notifications'));
             });
         }
     }

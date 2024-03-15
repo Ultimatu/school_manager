@@ -42,14 +42,12 @@
             <ul class="list-group">
                 @forelse ($notifications as $notification)
                     <li class="list-group-item">
-                        <a href="{{ $notifcation->link }}" class="text-dark">
-                            <div class="avatar online">
+                        <a href="{{ $notification->link }}" class="text-dark">
                                 <i class="{{ $notification->icon }}"></i>
-                                <div class="list-group-body">
-                                    <p><strong>{{ $notification->message }}</strong></p>
-                                    <small>{{ $notification->created_at->diffForHumans() }}</small>
-                                </div><!-- list-group-body -->
-                            </div>
+                            <div class="list-group-body">
+                                <p><strong>{{ $notification->message }}</strong></p>
+                                <small>{{ $notification->created_at->diffForHumans() }}</small>
+                            </div><!-- list-group-body -->
                         </a>
                     </li>
                 @empty

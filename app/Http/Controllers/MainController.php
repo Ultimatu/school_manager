@@ -23,6 +23,10 @@ use Illuminate\Http\Request;
 class MainController extends Controller
 {
     public function dashboard(){
+        $validYear = AnneeScolaire::valideYear();
+        if ($validYear->isEmpty()){
+            return redirect()->route('years.create');
+        }
         $filieres = Filiere::where('annee_scolaire', AnneeScolaire::valideYear())->get();
         $etudiants = Etudiant::where('annee_scolaire', AnneeScolaire::valideYear())->get();
         $classes = Classe::where('year', AnneeScolaire::valideYear())->get();

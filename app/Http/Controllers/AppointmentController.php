@@ -18,13 +18,13 @@ class AppointmentController extends Controller
     public function index()
     {
         if (auth()->user()->isEtudiant()){
-            $appointments = Appointment::where('annee_scolaire',auth()->user()->etudiant->annee_scolaire)->where('classe_id', auth()->user()->etudiant->classe_id)->get();
+            $appointments = Appointment::where('classe_id', auth()->user()->etudiant->classe_id)->get();
         }
         elseif(auth()->user()->isProfesseur()){
             $appointments = Appointment::where('professeur_id', auth()->user()->professeur->id)->orderBy('id', 'desc')->get();
         }
         else{
-            $appointments = Appointment::where('annee_scolaire', AnneeScolaire::valideYear())->orderBy('id', 'desc')->get();
+            $appointments = Appointment::orderBy('id', 'desc')->get();
         }
         return view('components.pages.emmargement.index', compact('appointments'));
         

@@ -35,7 +35,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($appointments as $appointment)
+                                dd()
+                                @foreach($appointments as $appointment)
                                     <tr>
                                         <td>{{ $appointment->id }}</td>
                                         <td>

@@ -6,6 +6,7 @@ use App\Http\Requests\StoreDetailsPayementRequest;
 use App\Http\Requests\UpdateDetailsPayementRequest;
 use App\Models\AnneeScolaire;
 use App\Models\DetailsPayement;
+use App\Models\Notification;
 use App\Models\PaymentScolarite;
 
 class DetailsPayementController extends Controller

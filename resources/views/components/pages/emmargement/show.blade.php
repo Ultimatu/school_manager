@@ -4,7 +4,7 @@
 
 
 @section('content')
-    {{--breadcrumb--}}
+    {{-- breadcrumb --}}
     <div class="row">
         <div class="col-md-12">
             <nav aria-label="breadcrumb">
@@ -16,7 +16,7 @@
             </nav>
         </div>
     </div>
-    {{--end breadcrumb--}}
+    {{-- end breadcrumb --}}
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -32,10 +32,13 @@
                                         <th>Nom</th>
                                         <th>Prénom</th>
                                         <th>Statut</th>
+                                        @if (auth()->user()->isProfesseur())
+                                            <th>Actions</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($appointment->etudiantAppointments as $etudiantAppointment)
+                                    @foreach ($appointment->etudiantAppointments as $etudiantAppointment)
                                         <tr>
                                             <td>{{ $etudiantAppointment->id }}</td>
                                             <td>
@@ -49,10 +52,22 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="{{ $etudiantAppointment->is_present ? 'text-success' : 'text-danger' }}">
-                                                    {{ $etudiantAppointment->is_present ? 'Présent' : 'Absent'}}
+                                                <span data-id="{{ $etudiantAppointment->id }}"
+                                                    class="badge bg-{{ $etudiantAppointment->is_present ? 'success' : 'danger' }} rounded-pill">
+                                                    {{ $etudiantAppointment->is_present ? 'Présent' : 'Absent' }}
                                                 </span>
                                             </td>
+                                            @if (auth()->user()->isProfesseur())
+                                                <td>
+                                                    <div class="form-check form-switch">
+                                                        <input type="checkbox" data-id="{{ $etudiantAppointment->id }}"
+                                                            role="switch" class="js-switch form-check-input"
+                                                            {{ $etudiantAppointment->is_present == 1 ? 'checked' : '' }}
+                                                            style="color: #26c6da;"
+                                                            onclick="toggleStatus({{ $etudiantAppointment->id }})" />
+                                                    </div>
+                                                </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -62,9 +77,12 @@
                         <div class="alert alert-warning" role="alert">
                             l'emmargement n'a pas encore été fait
                         </div>
-                        <div class="d-grid">
-                            <a href="{{ route('appointment.etudiants.create', ['appointment'=>$appointment->id]) }}" class="btn btn-primary">Faire l'emmargement</a>
-                        </div>
+                        @if (auth()->user()->isProfesseur())
+                            <div class="d-grid">
+                                <a href="{{ route('appointment.etudiants.create', ['appointment' => $appointment->id]) }}"
+                                    class="btn btn-primary">Faire l'emmargement</a>
+                            </div>
+                        @endif
                     @endif
                 </div>
             </div>
@@ -72,3 +90,29 @@
     </div>
 @endsection
 
+@push('scripts')
+    <script>
+        function toggleStatus(id) {
+            $.ajax({
+                url: "{{ route('api.appointmentEtudiant.change-state') }}",
+                type: "PUT",
+                data: {
+                    appointment_id: id,
+                },
+                success: function(response) {
+                    //change the text of the span
+                    console.log(response);
+                    //change the color of the span and the text
+                    if (response.is_present) {
+                        $(`span[data-id=${id}]`).removeClass('text-danger').addClass('text-success').text(
+                            'Présent');
+                    } else {
+                        $(`span[data-id=${id}]`).removeClass('text-success').addClass('text-danger').text(
+                            'Absent');
+                    }
+
+                }
+            });
+        }
+    </script>
+@endpush

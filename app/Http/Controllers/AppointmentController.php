@@ -8,6 +8,7 @@ use App\Models\AnneeScolaire;
 use App\Models\Appointment;
 use App\Models\ClasseCours;
 use App\Models\EmploiDuTemps;
+use App\Models\Notification;
 
 class AppointmentController extends Controller
 {
@@ -20,10 +21,10 @@ class AppointmentController extends Controller
             $appointments = Appointment::where('annee_scolaire',auth()->user()->etudiant->annee_scolaire)->where('classe_id', auth()->user()->etudiant->classe_id)->get();
         }
         elseif(auth()->user()->isProfesseur()){
-            $appointments = Appointment::where('professeur_id', auth()->user()->professeur->id)->get();
+            $appointments = Appointment::where('professeur_id', auth()->user()->professeur->id)->orderBy('id', 'desc')->get();
         }
         else{
-            $appointments = Appointment::all();
+            $appointments = Appointment::where('annee_scolaire', AnneeScolaire::valideYear())->orderBy('id', 'desc')->get();
         }
         return view('components.pages.emmargement.index', compact('appointments'));
         
@@ -57,6 +58,12 @@ class AppointmentController extends Controller
      */
     public function show(Appointment $appointment)
     {
+        if (auth()->user()->isEtudiant()){
+            $notification = Notification::where('receiver_id', auth()->user()->id)->where('link', route('appointment.show', $appointment->id))->first();
+            if ($notification){
+                $notification->update(['is_read'=>true, 'status'=>'read']);
+            }
+        }
         return view('components.pages.emmargement.show', compact('appointment'));
     }
 

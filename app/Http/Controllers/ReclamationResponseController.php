@@ -51,6 +51,15 @@ class ReclamationResponseController extends Controller
         }
         $reclamationResponse = ReclamationResponse::create($request->all());
         $reclamationResponse->reclamantion->update(['status' => 'resolved']);
+        Notification::create([
+            'sender_id' => auth()->user()->id,
+            'receiver_id' => $reclamationResponse->reclamantion->etudiant->user_id,
+            'message' => 'Votre réclamation a été résolue',
+            'status' => 'unread',
+            'icon' => 'ri-checkbox-circle-fill',
+            'link' => route('reclamations.show', $reclamationResponse->reclamantion->id),
+            'is_read' => false
+        ]);
         return redirect()->route('reclamations.index')->with('success', 'Réponse créée avec succès');
     }
 

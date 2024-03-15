@@ -165,6 +165,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('appointment', AppointmentController::class)->except(['create', 'edit', 'store', 'update']);
     Route::get('appointment/{appointment}/etudiants', [AppointmentEtudiantController::class, 'create'])->name('appointment.etudiants.create');
     Route::post('appointment/etudiants', [AppointmentEtudiantController::class, 'store'])->name('appointment.etudiants.store');
+    Route::post('appointment/{appointment}/all_are_present', [AppointmentEtudiantController::class, 'storeAllPresent'])->name('appointment.etudiants.all_present');
 
     //Reclamations
     Route::get('reclamations', [ReclamantionController::class, 'index'])->name('reclamations.index');

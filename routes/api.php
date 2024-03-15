@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdministrationController;
 use App\Http\Controllers\AnneeScolaireController;
+use App\Http\Controllers\AppointmentEtudiantController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\CoursController;
 use App\Http\Controllers\EvenementController;
@@ -31,7 +32,7 @@ Route::put('changeClasse-state/{id}', [ClasseController::class,  'changeStatus']
 Route::put('changeFiliere-state/{id}', [FiliereController::class,  'changeStatus'])->name('api.filiere.change-state');
 Route::put('changeCours-state/{id}', [CoursController::class, 'changeStatus'])->name('api.cours.changestate');
 Route::put('changeSalle-state/{id}', [SalleController::class, 'changeStatus'])->name('api.salle.changestate');
-
+Route::put('changeAppointment-state/', [AppointmentEtudiantController::class, 'changeStatus'])->name('api.appointmentEtudiant.change-state');
 
 //classe emploi du temps
 Route::get('get-emplois/{id}', [ClasseController::class, 'getAll'])->name('api.classe.get-emplois');

@@ -4,7 +4,7 @@
 @section('title', 'Liste des émargements')
 
 @section('content')
-    {{--breadcrumb--}}
+    {{-- breadcrumb --}}
     <div class="row">
         <div class="col-md-12">
             <nav aria-label="breadcrumb">
@@ -15,7 +15,7 @@
             </nav>
         </div>
     </div>
-    {{--end breadcrumb--}}
+    {{-- end breadcrumb --}}
 
     <div class="row">
         <div class="col-12">
@@ -35,7 +35,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($appointments as $appointment)
+                                @foreach ($appointments as $appointment)
                                     <tr>
                                         <td>{{ $appointment->id }}</td>
                                         <td>
@@ -54,16 +54,21 @@
                                             </span>
                                         </td>
                                         <td class="text-right d-flex gap-2 my-2">
-                                            <a href="{{ route('appointment.show', $appointment->id) }}" class="btn btn-sm btn-primary">
+                                            <a href="{{ route('appointment.show', $appointment->id) }}"
+                                                class="btn btn-sm btn-primary">
                                                 <i class="ri-eye-line"></i> Voir</a>
                                             </a>
-                                            <form action="{{ route('appointment.destroy', $appointment->id) }}" method="post" id="delete-appointment-{{ $appointment->id }}">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-sm btn-danger" onclick="deleteData({{ $appointment->id }})">
-                                                    <i class="ri-delete-bin-line"></i>
-                                                    Supprimer</button>
-                                            </form>
+                                            @if (auth()->user()->isProfesseur())
+                                                <form action="{{ route('appointment.destroy', $appointment->id) }}"
+                                                    method="post" id="delete-appointment-{{ $appointment->id }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" class="btn btn-sm btn-danger"
+                                                        onclick="deleteData({{ $appointment->id }})">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                        Supprimer</button>
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

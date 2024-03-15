@@ -308,83 +308,108 @@
                             </div>
                         </div>
                         <div id="presence" class="tab-pane fade">
-                            <div class="alert alert-info">
-                                Liste de presence en cours de construction
+                            <div class="card-body">
+                                <div class="datatable table-responsive">
+                                    <table class="table table-bordered table-striped table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Date</th>
+                                                <th scope="col">Cours</th>
+                                                <th scope="col">Professeur</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($etudiant->absences() as $appointment)
+                                                <tr>
+                                                    <td>{{ $appointment->id }}</td>
+                                                    <td>{{ $appointment->start_date }} - {{ $appointment->end_date }}</td>
+                                                    <td>{{ $appointment->classeCours->cours->name }}</td>
+                                                    <td>{{ $appointment->professeur->first_name }}
+                                                        {{ $appointment->professeur->last_name }}</td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="5">Aucune absence enregistrée</td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    {{-- /card --}}
-@endsection
+        {{-- /card --}}
+    @endsection
 
-@push('scripts')
-    <script>
-        function deleteItem(itemId) {
-            Swal.fire({
-                title: 'Êtes-vous sûr?',
-                text: "Vous ne pourrez pas revenir en arrière!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Oui, supprimez-le!',
-                cancelButtonText: 'Annuler'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('deleteForm-' + itemId).submit();
-                }
-            })
-        }
-
-        function deleteParent(parentId) {
-            Swal.fire({
-                title: 'Êtes-vous sûr?',
-                text: "Vous ne pourrez pas revenir en arrière!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Oui, supprimez-le!',
-                cancelButtonText: 'Annuler'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('deleteParent-' + parentId).submit();
-                }
-            })
-        }
-
-        function deleteEtudiant() {
-            Swal.fire({
-                title: 'Êtes-vous sûr?',
-                text: "Vous ne pourrez pas revenir en arrière!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Oui, supprimez-le!',
-                cancelButtonText: 'Annuler'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('deleteEtudiant').submit();
-                }
-            })
-        }
-
-        $(document).ready(function() {
-            $('.nav-tabs a').click(function() {
-                $(this).tab('show');
-                $("#infos .tab-pane").tabs({
-                    collapsible: true,
-                    active: false,
+    @push('scripts')
+        <script>
+            function deleteItem(itemId) {
+                Swal.fire({
+                    title: 'Êtes-vous sûr?',
+                    text: "Vous ne pourrez pas revenir en arrière!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Oui, supprimez-le!',
+                    cancelButtonText: 'Annuler'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('deleteForm-' + itemId).submit();
+                    }
                 })
-            });
-            let hash = window.location.hash;
-            if (hash) {
-                $('.nav-tabs a[href="' + hash + '"]').tab('show');
             }
-        });
-    </script>
-@endpush
+
+            function deleteParent(parentId) {
+                Swal.fire({
+                    title: 'Êtes-vous sûr?',
+                    text: "Vous ne pourrez pas revenir en arrière!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Oui, supprimez-le!',
+                    cancelButtonText: 'Annuler'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('deleteParent-' + parentId).submit();
+                    }
+                })
+            }
+
+            function deleteEtudiant() {
+                Swal.fire({
+                    title: 'Êtes-vous sûr?',
+                    text: "Vous ne pourrez pas revenir en arrière!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Oui, supprimez-le!',
+                    cancelButtonText: 'Annuler'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('deleteEtudiant').submit();
+                    }
+                })
+            }
+
+            $(document).ready(function() {
+                $('.nav-tabs a').click(function() {
+                    $(this).tab('show');
+                    $("#infos .tab-pane").tabs({
+                        collapsible: true,
+                        active: false,
+                    })
+                });
+                let hash = window.location.hash;
+                if (hash) {
+                    $('.nav-tabs a[href="' + hash + '"]').tab('show');
+                }
+            });
+        </script>
+    @endpush

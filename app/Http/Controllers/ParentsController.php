@@ -132,7 +132,9 @@ class ParentsController extends Controller
     public function destroy(Parents $parents)
     {
         $user = User::find($parents->user_id);
-        $user->delete();
+        if ($user){
+            $user->delete();
+        }
         $parents->delete();
         return redirect()->route('etudiant.show', $parents->etudiant_id)->with('success', 'Parent supprimé avec succès');
     }

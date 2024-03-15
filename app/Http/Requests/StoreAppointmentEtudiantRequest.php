@@ -24,7 +24,7 @@ class StoreAppointmentEtudiantRequest extends FormRequest
         return [
             'etudiant_ids' => 'required|array',
             'appointment_id' => 'required|exists:appointments,id',
-            'selected_are_present' => 'required|boolean',   
+            'selected_are_present' => 'required|boolean',
         ];
     }
 

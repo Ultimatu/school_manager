@@ -13,7 +13,6 @@
         </div>
     </div>
     {{-- /bread --}}
-
     {{-- card --}}
     <div class="row">
         <div class="col-md-12">
@@ -48,14 +47,22 @@
                     <!-- Header du tab -->
                     <!-- Ajoutez les liens pour chaque onglet -->
                     <ul class="nav nav-tabs mt-1">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#infos">Informations</a>
+                        <li class="nav-item mb-3">
+                            <a class="nav-link active" data-toggle="tab" href="#infos">
+                                <i class="ri-information-line"></i>
+                                Informations</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#parents">Parents</a>
+                        <li class="nav-item mb-3">
+                            <a class="nav-link" data-toggle="tab" href="#parents">
+                                <i class="ri-user-add-line"></i>
+                                Parents</a>
+                        </li>
+                        <li class="nav-item mb-3">
+                            <a class="nav-link" data-toggle="tab" href="#presence"> <i class="ri-user-add-line"></i>
+                                Absences</a>
                         </li>
                         @if (!auth()->user()->isProfesseur())
-                            <li class="nav-item">
+                            <li class="nav-item mb-3">
                                 <a class="nav-link" data-toggle="tab" href="#scolarite">Scolarité</a>
                             </li>
                         @endif
@@ -170,161 +177,193 @@
                                 @endif
                             </div>
                         </div>
-                        <!-- Onglet Scolarité -->
-                        @if (!auth()->user()->isProfesseur())
-                            <div id="scolarite" class="tab-pane fade">
-                                <!-- Contenu de l'onglet -->
-                                <div class="card-body">
-                                    {{-- scolarite --}}
-                                    <div class="d-grid mb-3">
-                                        {{-- ajouter un versement --}}
-                                        <a href="{{ route('versement.etudiant.create', ['paymentScolarite' => $etudiant->scolarite->id]) }}"
-                                            class="btn btn-info">
-                                            <i class="ri-money-dollar-circle-line fs-3 text-white mb-3"></i>
-                                            Ajouter un versement
-                                        </a>
-                                    </div>
-                                    <p>
-                                        Montant de la scolarité: {{ $etudiant->scolarite->amount }} FCFA
-                                    </p>
-                                    <p>
-                                        Montant payé: {{ $etudiant->versements()->sum('amount') }} FCFA
-                                    </p>
-                                    <p>
-                                        Montant restant:
-                                        {{ $etudiant->scolarite->amount - $etudiant->versements()->sum('amount') }} FCFA
-                                    </p>
-                                    <p>
-                                        Statut: @if ($etudiant->scolarite->amount - $etudiant->versements()->sum('amount') == 0 || $etudiant->scolarite->is_paid == true)
-                                            <span class="badge bg-success">Soldé</span>
-                                        @else
-                                            <span class="badge bg-danger">Non soldé</span>
-                                        @endif
-                                    </p>
-                                    {{-- details payments --}}
-                                    <div class="datatable table-responsive">
-                                        <table class="table table-bordered table-striped table-responsive">
-                                            <thead>
+                        <!-- Onglet Absences -->
+                        <div id="presence" class="tab-pane fade">
+                            <div class="card-body">
+                                <div class="datatable table-responsive">
+                                    <table class="table table-bordered table-striped table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Date</th>
+                                                <th scope="col">Cours</th>
+                                                <th scope="col">Professeur</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($etudiant->absences() as $appointment)
                                                 <tr>
-                                                    <th scope="col">Montant</th>
-                                                    <th scope="col">Date</th>
-                                                    <th scope="col">Mode de paiement</th>
-                                                    <th>Actions</th>
+                                                    <td>{{ $appointment->id }}</td>
+                                                    <td>{{ $appointment->start_date }} - {{ $appointment->end_date }}</td>
+                                                    <td>{{ $appointment->classeCours->cours->name }}</td>
+                                                    <td>{{ $appointment->professeur->first_name }}  {{ $appointment->professeur->last_name }}</td>
                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                @forelse ($etudiant->versements() as $versement)
-                                                    <tr>
-                                                        <td>{{ $versement->amount }} FCFA</td>
-                                                        <td>{{ $versement->date }}</td>
-                                                        <td>
-                                                            <span class="badge bg-warning">
-                                                                {{ $versement->mode_payement ?? 'Espèce' }}
-                                                            </span>
-                                                        </td>
-                                                        <td>
-                                                            <a href="{{ route('versement.edit', $versement->id) }}"
-                                                                class="btn btn-warning">
-                                                                <i class="ri-pencil-line"></i>
-                                                                Modifier
-                                                            </a>
-                                                            <form action="{{ route('versement.destroy', $versement->id) }}"
-                                                                method="post" class="d-inline"
-                                                                id="deleteForm-{{ $versement->id }}">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="button" class="btn btn-danger"
-                                                                    onclick="deleteItem({{ $versement->id }})"
-                                                                    style="color: #fff;">
-                                                                    <i class="ri-delete-bin-line"></i>
-                                                                    Supprimer
-                                                                </button>
-                                                        </td>
-                                                    </tr>
-                                                @empty
-                                                    <tr>
-                                                        <td colspan="3">Aucun versement enregistré</td>
-                                                    </tr>
-                                                @endforelse
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="5">Aucune absence enregistrée</td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                        @endif
+                            <!-- Onglet Scolarité -->
+                            @if (!auth()->user()->isProfesseur())
+                                <div id="scolarite" class="tab-pane fade">
+                                    <!-- Contenu de l'onglet -->
+                                    <div class="card-body">
+                                        {{-- scolarite --}}
+                                        <div class="d-grid mb-3">
+                                            {{-- ajouter un versement --}}
+                                            <a href="{{ route('versement.etudiant.create', ['paymentScolarite' => $etudiant->scolarite->id]) }}"
+                                                class="btn btn-info">
+                                                <i class="ri-money-dollar-circle-line fs-3 text-white mb-3"></i>
+                                                Ajouter un versement
+                                            </a>
+                                        </div>
+                                        <p>
+                                            Montant de la scolarité: {{ $etudiant->scolarite->amount }} FCFA
+                                        </p>
+                                        <p>
+                                            Montant payé: {{ $etudiant->versements()->sum('amount') }} FCFA
+                                        </p>
+                                        <p>
+                                            Montant restant:
+                                            {{ $etudiant->scolarite->amount - $etudiant->versements()->sum('amount') }}
+                                            FCFA
+                                        </p>
+                                        <p>
+                                            Statut: @if ($etudiant->scolarite->amount - $etudiant->versements()->sum('amount') == 0 || $etudiant->scolarite->is_paid == true)
+                                                <span class="badge bg-success">Soldé</span>
+                                            @else
+                                                <span class="badge bg-danger">Non soldé</span>
+                                            @endif
+                                        </p>
+                                        {{-- details payments --}}
+                                        <div class="datatable table-responsive">
+                                            <table class="table table-bordered table-striped table-responsive">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Montant</th>
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Mode de paiement</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @forelse ($etudiant->versements() as $versement)
+                                                        <tr>
+                                                            <td>{{ $versement->amount }} FCFA</td>
+                                                            <td>{{ $versement->date }}</td>
+                                                            <td>
+                                                                <span class="badge bg-warning">
+                                                                    {{ $versement->mode_payement ?? 'Espèce' }}
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <a href="{{ route('versement.edit', $versement->id) }}"
+                                                                    class="btn btn-warning">
+                                                                    <i class="ri-pencil-line"></i>
+                                                                    Modifier
+                                                                </a>
+                                                                <form
+                                                                    action="{{ route('versement.destroy', $versement->id) }}"
+                                                                    method="post" class="d-inline"
+                                                                    id="deleteForm-{{ $versement->id }}">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="button" class="btn btn-danger"
+                                                                        onclick="deleteItem({{ $versement->id }})"
+                                                                        style="color: #fff;">
+                                                                        <i class="ri-delete-bin-line"></i>
+                                                                        Supprimer
+                                                                    </button>
+                                                            </td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr>
+                                                            <td colspan="3">Aucun versement enregistré</td>
+                                                        </tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    {{-- /card --}}
-@endsection
+        {{-- /card --}}
+    @endsection
 
-@push('scripts')
-    <script>
-        function deleteItem(itemId) {
-            Swal.fire({
-                title: 'Êtes-vous sûr?',
-                text: "Vous ne pourrez pas revenir en arrière!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Oui, supprimez-le!',
-                cancelButtonText: 'Annuler'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('deleteForm-' + itemId).submit();
-                }
-            })
-        }
-
-        function deleteParent(parentId) {
-            Swal.fire({
-                title: 'Êtes-vous sûr?',
-                text: "Vous ne pourrez pas revenir en arrière!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Oui, supprimez-le!',
-                cancelButtonText: 'Annuler'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('deleteParent-' + parentId).submit();
-                }
-            })
-        }
-
-        function deleteEtudiant() {
-            Swal.fire({
-                title: 'Êtes-vous sûr?',
-                text: "Vous ne pourrez pas revenir en arrière!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Oui, supprimez-le!',
-                cancelButtonText: 'Annuler'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('deleteEtudiant').submit();
-                }
-            })
-        }
-
-        $(document).ready(function() {
-            $('.nav-tabs a').click(function() {
-                $(this).tab('show');
-                $("#infos .tab-pane").tabs({
-                    collapsible: true,
-                    active: false,
+    @push('scripts')
+        <script>
+            function deleteItem(itemId) {
+                Swal.fire({
+                    title: 'Êtes-vous sûr?',
+                    text: "Vous ne pourrez pas revenir en arrière!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Oui, supprimez-le!',
+                    cancelButtonText: 'Annuler'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('deleteForm-' + itemId).submit();
+                    }
                 })
-            });
-            let hash = window.location.hash;
-            if (hash) {
-                $('.nav-tabs a[href="' + hash + '"]').tab('show');
             }
-        });
-    </script>
-@endpush
+
+            function deleteParent(parentId) {
+                Swal.fire({
+                    title: 'Êtes-vous sûr?',
+                    text: "Vous ne pourrez pas revenir en arrière!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Oui, supprimez-le!',
+                    cancelButtonText: 'Annuler'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('deleteParent-' + parentId).submit();
+                    }
+                })
+            }
+
+            function deleteEtudiant() {
+                Swal.fire({
+                    title: 'Êtes-vous sûr?',
+                    text: "Vous ne pourrez pas revenir en arrière!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Oui, supprimez-le!',
+                    cancelButtonText: 'Annuler'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('deleteEtudiant').submit();
+                    }
+                })
+            }
+
+            $(document).ready(function() {
+                $('.nav-tabs a').click(function() {
+                    $(this).tab('show');
+                    $("#infos .tab-pane").tabs({
+                        collapsible: true,
+                        active: false,
+                    })
+                });
+                let hash = window.location.hash;
+                if (hash) {
+                    $('.nav-tabs a[href="' + hash + '"]').tab('show');
+                }
+            });
+        </script>
+    @endpush

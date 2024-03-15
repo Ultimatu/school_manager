@@ -23,13 +23,22 @@
         <div class="col-md-12">
             <div class="card">
                 @include('components.shared.alert')
-                <div class="card-header">{{ $appointmentEtudiant->id ? 'Modifier emmargement' : 'Nouvelle emmargement' }}
+                <div class="card-header">
+                    {{ $appointmentEtudiant->id ? 'Modifier emmargement' : 'Nouvelle emmargement' }}
                 </div>
                 <div class="card-body">
+                    <div class="mb-1">
+                        <form action="{{ route('appointment.etudiants.all_present', ['appointment'=>$appointmentEtudiant->appointment_id]) }}" method="post" id="confirmForm">
+                            @csrf
+                            <button type="button" class="btn btn-outline-primary w-100" onclick="confirmAllPresent()">
+                                Marquer tous les etudiants comme présent</button>
+                        </form>
+                    </div>
+                    <div class="divider"></div>
+                    <hr>
                     <form action="{{ route('appointment.etudiants.store') }}" method="post">
                         @csrf
                         <input type="hidden" name="appointment_id" value="{{ $appointmentEtudiant->appointment_id }}">
-
                         <div class="row">
                             <div class="col-md-12  mb-3">
                                 <div class="form-group bmd-form-group">
@@ -94,5 +103,22 @@
                 multiple: false,
             });
         });
+
+        function confirmAllPresent() {
+            Swal.fire({
+                title: 'Êtes-vous sûr?',
+                text: "Vous ne pourrez pas revenir en arrière!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Oui, marquez-les comme présent!',
+                cancelButtonText: 'Annuler'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('confirmForm').submit();
+                }
+            })
+        }
     </script>
 @endpush

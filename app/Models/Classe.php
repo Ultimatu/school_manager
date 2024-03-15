@@ -78,6 +78,11 @@ class Classe extends Model
     {
         return $this->hasMany(Evaluation::class);
     }
+    
 
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
 
 }

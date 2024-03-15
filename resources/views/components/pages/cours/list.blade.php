@@ -88,10 +88,6 @@
                                                 {{ $cours->updated_at->format('d/m/Y H:i') }}
                                             </td>
                                             <td class="td-actions text-right d-flex justify-content-end gap-2">
-                                                <a href="{{ route('cours.show', $cours->id) }}"
-                                                    class="btn btn-info btn-sm">
-                                                    <i class="ri-eye-line"></i>
-                                                </a>
                                                 <a href="{{ route('cours.edit', $cours->id) }}"
                                                     class="btn btn-primary btn-sm">
                                                     <i class="ri-pencil-line"></i>

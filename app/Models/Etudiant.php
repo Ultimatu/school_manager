@@ -101,10 +101,11 @@ class Etudiant extends Model
     {
         return $this->hasMany(AppointmentEtudiant::class);
     }
-
+    
     public function absences(){
         return  AppointmentEtudiant::where('etudiant_id', $this->id)->where('is_present', 0)->get();
     }
+
 
     public function notes()
     {

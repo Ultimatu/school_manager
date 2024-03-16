@@ -129,7 +129,6 @@ Route::middleware(['auth'])->group(function () {
             'cars'=> CarController::class,
             'car_inscriptions'=> CarInscriptionController::class,
             'classe'=> ClasseController::class,
-            'cours'=> CoursController::class,
             'filiere'=> FiliereController::class,
             'salle'=> SalleController::class,
             'trajets'=> TrajetController::class,
@@ -140,6 +139,17 @@ Route::middleware(['auth'])->group(function () {
             'evaluations'=>EvaluationController::class,
         ],
     );
+    /**
+     * Cours
+     */
+    Route::get('cours', [CoursController::class, 'index'])->name('cours.index');
+    Route::get('cours/create', [CoursController::class, 'create'])->name('cours.create');
+    Route::post('cours/store', [CoursController::class, 'store'])->name('cours.store');
+    Route::get('cours/{cours}/show', [CoursController::class, 'show'])->name('cours.show');
+    Route::get('cours/{cours}/edit', [CoursController::class, 'edit'])->name('cours.edit');
+    Route::put('cours/{cours}/update', [CoursController::class, 'update'])->name('cours.update');
+    Route::delete('cours/{cours}/delete', [CoursController::class, 'destroy'])->name('cours.destroy');
+
     Route::get('cite-incriptions_by/{etudiant}', [CiteInscriptionController::class, 'createBy'])->name('citeInscriptions.by_etudiant');
     Route::get('car-incriptions_by/{etudiant}', [CarInscriptionController::class, 'createBy'])->name('car_inscriptions.by_etudiant');
 

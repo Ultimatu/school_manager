@@ -18,7 +18,7 @@ class LoadNotifications
     public function handle(Request $request, Closure $next): Response
     {
             if (Auth::check()) {
-                $notifications = Notification::where('receiver_id', Auth::user()->id)->unread();
+                $notifications = Notification::unread();
                 view()->share('notifications', $notifications);
             }
     

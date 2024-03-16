@@ -47,7 +47,7 @@ class Notification extends Model
      * @return mixed
      */
     public function scopeUnread($query){
-        return $query->where('status', 0)->orWhere('is_read', 0)->get();
+        return $query->where('status', 0)->where('receiver_id', auth()->user()->id)->orWhere('is_read', 0)->where('receiver_id', auth()->user()->id)->get();
     }
 
     /**

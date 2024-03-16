@@ -92,18 +92,6 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12">
-                                    <label for="annee_scolaire" class="bmd-label-floating">Année Scolaire</label>
-                                    <input type="texte" name="annee_scolaire" id="annee_scolaire"
-                                        class="form-control" value="{{ old('annee_scolaire', $cours->annee_scolaire) }}" placeholder="Entrez l'année scolaire Ex: 2023-2024" minlength="9"
-                                        maxlength="9" pattern="^\d{4}-\d{4}$">
-                                    @error('annee_scolaire')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-md-12 mb-3 d-flex justify-content-around">
                                     <button type="submit" class="btn btn-primary">
                                         <i class="ri-save-line"></i>

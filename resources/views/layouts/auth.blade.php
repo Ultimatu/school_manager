@@ -15,7 +15,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.min.css') }}">
   </head>
   <body class="page-sign">
-
+      <!-- notification -->
+      <div id="notification"></div>
+      <!-- end notification -->
     @yield('content')
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset("lib/jquery-validation/jquery.validate.min.js") }}"></script>
@@ -30,5 +32,10 @@
         $('html').attr('data-skin', 'dark');
       }
     </script>
+     {{-- <script>
+      window.laravel_echo_port = '{{ env('LARAVEL_ECHO_SERVER_PORT') }}';
+  </script>
+  <script src="//{{ Request::getHost() }}:{{ env('LARAVEL_ECHO_PORT') }}/socket.io/socket.io.js"></script>
+  <script src="{{ asset('assets/js/app.js') }}"></script> --}}
   </body>
 </html>

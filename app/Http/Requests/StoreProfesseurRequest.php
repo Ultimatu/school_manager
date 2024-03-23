@@ -83,7 +83,7 @@ class StoreProfesseurRequest extends FormRequest
 
         $annneScolaire = AnneeScolaire::where('status', 'en cours')->first();
         $this->merge([
-            'annee_scolaire' => $this->annee_scolaire = $annneScolaire->annee_scolaire,
+            'annee_scolaire' => $annneScolaire->annee_scolaire,
         ]);
     }
 }

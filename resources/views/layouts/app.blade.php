@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Meta -->
     <meta name="robots" content="noindex, nofollow">
-    <meta name="description" content="Logicielle de gestion des écoles, UTA (Université des Technologies d'Abidjan - Côte d'Ivoire) - SCHOOL - GENIUS est une solution de gestion des écoles, universités, centres de formation professionnelle, etc.">
+    <meta name="description"
+        content="Logicielle de gestion des écoles, UTA (Université des Technologies d'Abidjan - Côte d'Ivoire) - SCHOOL - GENIUS est une solution de gestion des écoles, universités, centres de formation professionnelle, etc.">
     <meta name="author" content="UTA - SCHOOL - GENIUS">
 
     <meta property="og:title" content="UTA - SCHOOL - GENIUS">
@@ -17,7 +18,7 @@
     <meta property="og:site_name" content="UTA - SCHOOL - GENIUS">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <meta property="og:locale:alternate" content="{{ str_replace('_', '-', app()->getLocale()) }}">    <!-- Favicon -->
+    <meta property="og:locale:alternate" content="{{ str_replace('_', '-', app()->getLocale()) }}"> <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/favicon.png') }}">
 
     <title>@yield('title', 'UTA SCHOOL')</title>
@@ -30,10 +31,10 @@
     <link rel="stylesheet" href="{{ asset('lib/sweealert2/sweetalert2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('lib/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('lib/simple-datatables/style.css') }}">
-    <script src="{{ asset('lib/simple-datatables/simple-datatables.js') }}"> </script>
+    <script src="{{ asset('lib/simple-datatables/simple-datatables.js') }}"></script>
     @stack('styles')
     @if (request()->routeIs('etudiant.*'))
-        <link rel="stylesheet" href="{{ asset("lib/prismjs/themes/prism.min.css") }}">
+        <link rel="stylesheet" href="{{ asset('lib/prismjs/themes/prism.min.css') }}">
     @endif
 
     <!-- Template CSS -->
@@ -44,7 +45,6 @@
             cursor: pointer;
 
         }
-
     </style>
 </head>
 
@@ -72,6 +72,10 @@
 
     {{-- content --}}
     <div class="main  main-app p-3 p-lg-4">
+        <!-- notification -->
+        <div id="notification"></div>
+        <!-- end notification -->
+
         @yield('content')
         {{-- footer --}}
         <x-shared.footer />
@@ -80,13 +84,13 @@
     {{-- end content --}}
 
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset("lib/jquery-validation/jquery.validate.min.js") }}"></script>
-    <script src="{{ asset("lib/jquery-validation/localization/messages_fr.min.js") }}"></script>
+    <script src="{{ asset('lib/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('lib/jquery-validation/localization/messages_fr.min.js') }}"></script>
     @if (request()->routeIs('etudiant.*'))
         <script src="{{ asset('lib/prismjs/prism.js') }}"></script>
         <script src="{{ asset('lib/parsleyjs/parsley.min.js') }}"></script>
         <script src="{{ asset('lib/jquery-steps/build/jquery.steps.min.js') }}"></script>
-        <script src="{{ asset('lib/jqueryui/jquery-ui.min.js')}}"></script>
+        <script src="{{ asset('lib/jqueryui/jquery-ui.min.js') }}"></script>
     @endif
 
     <script src="{{ asset('lib/sweealert2/sweetalert2.min.js') }}"></script>
@@ -111,9 +115,23 @@
             $('#viewDemo').attr('href', loc);
 
         });
-
     </script>
+   
+    {{-- <script src="//{{ Request::getHost() }}:{{ env('LARAVEL_ECHO_PORT') }}/socket.io/socket.io.js"></script>
+    <script src="{{ asset('assets/js/laravel-echo-setup.js') }}" type="text/javascript"></script>
+    <script type="text/javascript">
+        var i = 0;
+        window.Echo.channel('user-channel')
+            .listen('.UserEvent', (data) => {
+                i++;
+                $("#notification").append('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                    '<strong>' + data.title + '</strong>' + '<p>' + data.message + '</p>' +
+                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                    '</div>');
+            });
+    </script> --}}
 
 </body>
 
 </html>
+

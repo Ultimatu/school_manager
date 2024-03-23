@@ -24,7 +24,7 @@
                         class="img-thumbnail" width="100">
                     {{ $etudiant->first_name }} {{ $etudiant->last_name }}
                     {{-- buttons --}}
-                    @if (!auth()->user()->isProfesseur())
+                    @if (!auth()->user()->isProfesseur() && !auth()->user()->isEtudiant() && !auth()->user()->isParent())
                         <div class="float-right d-flex align-items-center justify-content-start gap-2 w-50">
                             {{-- edit --}}
                             <a href="{{ route('etudiant.edit', $etudiant->id) }}" class="btn btn-warning mb-3">
@@ -105,14 +105,17 @@
                         <!-- Onglet Parents -->
                         <div id="parents" class="tab-pane fade">
                             <div class="card-body">
-                                <div class="d-grid mb-3">
-                                    {{-- add_parent button --}}
-                                    <a href="{{ route('parents.create', ['etudiant' => $etudiant->id]) }}"
-                                        class="btn btn-success mb-3">
-                                        <i class="ri-user-add-line fs-3 text-white"></i>
-                                        Ajouter un parent
-                                    </a>
-                                </div>
+                                @if (!auth()->user()->isProfesseur() && !auth()->user()->isEtudiant() && !auth()->user()->isParent())
+                                    <div class="d-grid mb-3">
+                                        {{-- add_parent button --}}
+                                        <a href="{{ route('parents.create', ['etudiant' => $etudiant->id]) }}"
+                                            class="btn btn-success mb-3">
+                                            <i class="ri-user-add-line fs-3 text-white"></i>
+                                            Ajouter un parent
+                                        </a>
+                                    </div>
+                                @endif
+
                                 {{-- parents --}}
                                 <hr>
                                 @if ($etudiant->parents->count() > 0)
@@ -145,7 +148,7 @@
                                                                 {{ $parent->parent->type }}
                                                             </span>
                                                         </td>
-                                                        @if (!auth()->user()->isProfesseur())
+                                                        @if (!auth()->user()->isProfesseur() && !auth()->user()->isEtudiant() && !auth()->user()->isParent())
                                                             <td>
                                                                 <a href="{{ route('parents.edit', $parent->parent_id) }}"
                                                                     class="btn btn-warning">
@@ -196,7 +199,8 @@
                                                     <td>{{ $appointment->id }}</td>
                                                     <td>{{ $appointment->start_date }} - {{ $appointment->end_date }}</td>
                                                     <td>{{ $appointment->classeCours->cours->name }}</td>
-                                                    <td>{{ $appointment->professeur->first_name }}  {{ $appointment->professeur->last_name }}</td>
+                                                    <td>{{ $appointment->professeur->first_name }}
+                                                        {{ $appointment->professeur->last_name }}</td>
                                                 </tr>
                                             @empty
                                                 <tr>
@@ -208,19 +212,21 @@
                                 </div>
                             </div>
                             <!-- Onglet Scolarité -->
-                            @if (!auth()->user()->isProfesseur())
+                            @if (!auth()->user()->isProfesseur() && !auth()->user()->isEtudiant() && !auth()->user()->isParent())
                                 <div id="scolarite" class="tab-pane fade">
                                     <!-- Contenu de l'onglet -->
                                     <div class="card-body">
                                         {{-- scolarite --}}
-                                        <div class="d-grid mb-3">
-                                            {{-- ajouter un versement --}}
-                                            <a href="{{ route('versement.etudiant.create', ['paymentScolarite' => $etudiant->scolarite->id]) }}"
-                                                class="btn btn-info">
-                                                <i class="ri-money-dollar-circle-line fs-3 text-white mb-3"></i>
-                                                Ajouter un versement
-                                            </a>
-                                        </div>
+                                        @if (auth()->user()->isAdmin() || auth()->user()->isComptable())
+                                            <div class="d-grid mb-3">
+                                                {{-- ajouter un versement --}}
+                                                <a href="{{ route('versement.etudiant.create', ['paymentScolarite' => $etudiant->scolarite->id]) }}"
+                                                    class="btn btn-info">
+                                                    <i class="ri-money-dollar-circle-line fs-3 text-white mb-3"></i>
+                                                    Ajouter un versement
+                                                </a>
+                                            </div>
+                                        @endif
                                         <p>
                                             Montant de la scolarité: {{ $etudiant->scolarite->amount }} FCFA
                                         </p>

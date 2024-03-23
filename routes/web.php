@@ -33,7 +33,6 @@ use App\Http\Controllers\SalleController;
 use App\Http\Controllers\TrajetController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -220,13 +219,14 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
-Route::fallback(function () {
-    return view('components.errors.404');
+Route::get('t', function(){
+    event(new \App\Events\SendMessage());
 });
 
 
-
-
+Route::fallback(function () {
+    return view('components.errors.404');
+});
 
 
 

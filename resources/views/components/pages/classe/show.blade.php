@@ -70,7 +70,8 @@
             </li>
             {{-- end list de presence --}}
             <li class="nav-item mb-3">
-                <a class="nav-link" data-toggle="tab" href="{{ route('classe.createEmploi', ['classe' => $classe->id]) }}">Emploi du temps</a>
+                <a class="nav-link" data-toggle="tab"
+                    href="{{ route('classe.createEmploi', ['classe' => $classe->id]) }}">Emploi du temps</a>
             </li>
         </ul>
         <div id="myTabContent" class="tab-content">
@@ -82,16 +83,18 @@
                             <div class="card-header card-header-primary">
                                 <h4 class="card-title mt-0"> Liste des cours </h4>
                                 <p class="card-category"> Cours de la classe </p>
-                                <div class="row">
-                                    {{-- add cours --}}
-                                    <div class="col-md-4 mb-3">
-                                        <a href="{{ route('classe.createClasseCours', ['classe' => $classe->id]) }}"
-                                            class="btn btn-success float-right">
-                                            <i class="ri-add-line"></i>
-                                            Ajouter un cours à la classe</a>
+                                @if (auth()->user()->isAdmin() || auth()->user()->isConsellor())
+                                    <div class="row">
+                                        {{-- add cours --}}
+                                        <div class="col-md-4 mb-3">
+                                            <a href="{{ route('classe.createClasseCours', ['classe' => $classe->id]) }}"
+                                                class="btn btn-success float-right">
+                                                <i class="ri-add-line"></i>
+                                                Ajouter un cours à la classe</a>
+                                        </div>
+                                        {{-- end add cours --}}
                                     </div>
-                                {{-- end add cours --}}
-                                </div>
+                                @endif
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -112,7 +115,7 @@
                                             <th>
                                                 Date de fin
                                             </th>
-                                            @if (auth()->user()->isCreator())
+                                            @if (auth()->user()->isAdmin() || auth()->user()->isConsellor())
                                                 <th>
                                                     Actions
                                                 </th>
@@ -177,14 +180,15 @@
                             <div class="card-header card-header-primary">
                                 <h4 class="card-title mt-0"> Liste des étudiants </h4>
                                 <p class="card-category"> Etudiants de la classe </p>
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <a href="{{ route('etudiant.create') }}"
-                                            class="btn btn-success float-right">
-                                            <i class="ri-add-line"></i>
-                                            Ajouter un étudiant</a>
+                                @if (auth()->user()->isAdmin() || auth()->user()->isConsellor())
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <a href="{{ route('etudiant.create') }}" class="btn btn-success float-right">
+                                                <i class="ri-add-line"></i>
+                                                Ajouter un étudiant</a>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -205,9 +209,11 @@
                                             <th>
                                                 Date de naissance
                                             </th>
-                                            <th>
-                                                Actions
-                                            </th>
+                                            @if (!auth()->user()->isEtudiant())
+                                                <th>
+                                                    Actions
+                                                </th>
+                                            @endif
                                         </thead>
                                         <tbody>
                                             @foreach ($classe->etudiants as $etudiant)
@@ -227,12 +233,14 @@
                                                     <td>
                                                         {{ $etudiant->birth_date }}
                                                     </td>
-                                                    <td>
-                                                        <a href="{{ route('etudiant.show', $etudiant->id) }}"
-                                                            class="btn btn-primary mb-3">
-                                                            <i class="ri-eye-line"></i>
-                                                            Voir</a>
-                                                    </td>
+                                                    @if (!auth()->user()->isEtudiant())
+                                                        <td>
+                                                            <a href="{{ route('etudiant.show', $etudiant->id) }}"
+                                                                class="btn btn-primary mb-3">
+                                                                <i class="ri-eye-line"></i>
+                                                                Voir</a>
+                                                        </td>
+                                                    @endif
                                                 </tr>
                                             @endforeach
                                         </tbody>

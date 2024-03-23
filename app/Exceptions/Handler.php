@@ -28,32 +28,48 @@ class Handler extends ExceptionHandler
         });
     }
 
-  
-    // if ($e->getCode() == 404) {
-    //     return response()->view('components.errors.404', [], 404);
-    // }
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Throwable  $e
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Throwable
+     */
+    public function render($request, Throwable $e)
+    {
 
-    // if ($e->getCode() == 403) {
-    //     return response()->view('components.errors.403', [], 403);
-    // }
+        if ($e->getCode() == 404) {
+            return response()->view('components.errors.404', [], 404);
+        }
 
-    // if ($e->getCode() == 500) {
-    //     return response()->view('components.errors.500', [], 500);
-    // }
+        if ($e->getCode() == 403) {
+            return response()->view('components.errors.403', [], 403);
+        }
 
-    // if ($e->getCode() == 503) {
-    //     return response()->view('components.errors.503', [], 503);
-    // }
+        if ($e->getCode() == 500) {
+            return response()->view('components.errors.500', [], 500);
+        }
 
-    // if ($e->getCode() == 401) {
-    //     return response()->view('components.errors.401', [], 401);
-    // }
+        if ($e->getCode() == 503) {
+            return response()->view('components.errors.503', [], 503);
+        }
 
-    // if ($e->getCode() == 419) {
-    //     return response()->view('components.errors.419', [], 419);
-    // }
+        if ($e->getCode() == 401) {
+            return response()->view('components.errors.401', [], 401);
+        }
 
-    // if ($e->getCode() == 505) {
-    //     return response()->view('components.errors.505', [], 505);
-    // }
+        if ($e->getCode() == 419) {
+            return response()->view('components.errors.419', [], 419);
+        }
+
+        if ($e->getCode() == 505) {
+            return response()->view('components.errors.505', [], 505);
+        }
+
+        return parent::render($request, $e);
+    }
+
+
 }

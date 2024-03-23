@@ -52,6 +52,9 @@
 
     {{-- content --}}
     <div class="main  main-calendar">
+        <!-- notification -->
+        <div id="notification"></div>
+        <!-- end notification -->
         @yield('content')
         {{-- footer --}}
         {{-- end footer --}}

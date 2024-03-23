@@ -17,6 +17,7 @@
     {{-- end bread --}}
     <div class="container-fluid">
         <div class="row">
+            @include('components.shared.alert')
             <div class="col-md-12">
                 <div class="card card-plain">
                     <div class="card-header card-header-primary">

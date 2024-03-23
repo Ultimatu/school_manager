@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\SendMessage;
 use App\Http\Controllers\Controller;
 use App\Mail\AccountActivatedMail;
 use App\Mail\PasswordRsetSuccessfull;
@@ -20,6 +21,7 @@ class AuthController extends Controller
 
     public function login()
     {
+        //try events
         return view('auth.login');
     }
     public function authenticate(Request $request)

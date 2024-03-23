@@ -19,42 +19,42 @@
                 <li class="nav-item">
                     <a href="{{ route('professeur.index') }}"
                         class="nav-link {{ request()->routeIs('professeur.*') ? 'active' : '' }}"><i
-                            class="ri-file-user-line fs-2"></i>
+                            class="ri-file-user-line text-warning fs-2"></i>
                         <span>Mes professeurs</span></a>
                 </li>
                 {{-- parents --}}
                 <li class="nav-item">
                     <a href="{{ route('parents.index') }}"
                         class="nav-link {{ request()->routeIs('parents.*') ? 'active' : '' }}"><i
-                            class="ri-user-3-line fs-2"></i>
+                            class="ri-user-3-line text-info fs-2"></i>
                         <span>Mes parents</span></a>
                 </li>
                 {{-- Classe --}}
                 <li class="nav-item">
                     <a href="{{ route('classe.show', auth()->user()->etudiant->classe_id) }}"
                         class="nav-link {{ request()->routeIs('classe.show') ? 'active' : '' }}"><i
-                            class="ri-group-fill fs-2"></i>
+                            class="ri-group-fill text-success fs-2"></i>
                         <span>Ma Classe</span></a>
                 </li>
                 {{-- Cours --}}
                 <li class="nav-item">
                     <a href="{{ route('classe.classeCours', ['classe' => auth()->user()->etudiant->classe_id]) }}"
                         class="nav-link {{ request()->routeIs('classe.classeCours') ? 'active' : '' }}"><i
-                            class="ri-book-2-fill fs-2"></i>
+                            class="ri-book-2-fill text-danger fs-2"></i>
                         <span>Cours</span></a>
                 </li>
                 {{-- Emplois du temps --}}
                 <li class="nav-item">
                     <a href="{{ route('evenements.index') }}"
                         class="nav-link {{ request()->routeIs('evenements.*') ? 'active' : '' }}"><i
-                            class="ri-calendar-check-fill fs-2"></i>
+                            class="ri-calendar-check-fill text-warning fs-2"></i>
                         <span>Evements</span></a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('appointment.index') }}"
                         class="nav-link {{ request()->routeIs('appointment.*') ? 'active' : '' }}"><i
-                            class="ri-checkbox-multiple-line fs-2"></i>
-                        <span>Emmargements</span></a>
+                            class="ri-checkbox-multiple-line text-info fs-2"></i>
+                        <span>Liste de présence</span></a>
                 </li>
                 {{-- notes --}}
                 <li class="nav-item">
@@ -67,21 +67,21 @@
                 <li class="nav-item">
                     <a href="{{ route('examens.index') }}"
                         class="nav-link {{ request()->routeIs('examens.index') ? 'active' : '' }}"><i
-                            class="ri-file-list-3-line fs-2"></i>
+                            class="ri-file-list-3-line  text-danger fs-2"></i>
                         <span>Mes examens</span></a>
                 </li>
                 {{-- reclamantions --}}
                 <li class="nav-item">
                     <a href="{{ route('reclamations.index') }}"
                         class="nav-link {{ request()->routeIs('reclamations.*') ? 'active' : '' }}"><i
-                            class="ri-file-list-3-line fs-2"></i>
+                            class="ri-file-list-3-line text-primary fs-2"></i>
                         <span>Mes réclamations</span></a>
                 </li>
                 {{-- emploi du temps --}}
                 <li class="nav-item">
                     <a href="{{ route('classe.createEmploi', ['classe' => auth()->user()->etudiant->classe_id]) }}"
                         class="nav-link {{ request()->routeIs('classe.createEmploi') ? 'active' : '' }}"><i
-                            class="ri-file-list-3-line fs-2"></i>
+                            class="ri-file-list-3-line text-success fs-2"></i>
                         <span>Mon emploi du temps</span></a>
                 </li>
             </ul>

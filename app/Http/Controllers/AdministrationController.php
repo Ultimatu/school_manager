@@ -49,7 +49,7 @@ class AdministrationController extends Controller
             'phone'=>$request->phone,
             'role_auth'=>$request->role,
             'password'=>bcrypt($password),
-            'permissions'=>Role::getAbilities($request->role),
+            'permissions'=>$request->role,
         ]);
 
         $request->merge([
@@ -110,7 +110,7 @@ class AdministrationController extends Controller
             'email'=>$request->email,
             'phone'=>$request->phone,
             'role_auth'=>$request->role,
-            'permissions'=>Role::getAbilities($request->role),
+            'permissions'=>$request->role,
             'password'=>bcrypt($password)
         ]);
 

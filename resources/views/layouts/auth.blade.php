@@ -18,7 +18,6 @@
       <!-- notification -->
       <div id="notification"></div>
       <!-- end notification -->
-      {{ $slot }}
     @yield('content')
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset("lib/jquery-validation/jquery.validate.min.js") }}"></script>

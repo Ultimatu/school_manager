@@ -145,7 +145,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col-md-12">
                     <div class="form-group bmd-form-group">
                         <label for="avatar" class="bmd-label-floating">Photo</label>
@@ -156,7 +156,7 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-outline-warning pull-right w-100">Modifier</button>
+            <button type="submit" class="btn btn-outline-warning pull-right w-100 mt-1">Modifier</button>
             <div class="clearfix"></div>
         </form>
     @break

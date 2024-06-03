@@ -107,10 +107,12 @@
                     </div>
                 </div>
                 <div class="col-md-6 mb-3">
+                   {{-- student_mat --}}
                     <div class="form-group bmd-form-group">
-                        <label for="avatar" class="bmd-label-floating">Photo</label>
-                        <input type="file" name="avatar" id="avatar" class="form-control" accept="image/*">
-                        @error('avatar')
+                        <label for="student_mat" class="bmd-label-floating">Matricule MENET</label>
+                        <input type="text" name="student_mat" id="student_mat" class="form-control"
+                            value="{{ auth()->user()->etudiant->student_mat }}">
+                        @error('student_mat')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
@@ -138,6 +140,17 @@
                         <input type="text" name="nationality" id="nationality" class="form-control"
                             value="{{ auth()->user()->etudiant->nationality }}">
                         @error('nationality')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group bmd-form-group">
+                        <label for="avatar" class="bmd-label-floating">Photo</label>
+                        <input type="file" name="avatar" id="avatar" class="form-control" accept="image/*">
+                        @error('avatar')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>

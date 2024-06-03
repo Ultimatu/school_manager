@@ -10,15 +10,45 @@ namespace App\Enum;
 class Role
 {
 
+    /**
+     * Le role de l'administrateur
+     */
     const ADMIN = 'admin';
+
+    /**
+     * Le role de l'etudiant
+     */
     const ETUDIANT = 'etudiant';
+
+    /**
+     * Le role du chauffeur
+     */
     const CHAUFFEUR = 'chauffeur';
+
+    /**
+     * Le role du responsable
+     */
     const RESPONSABLE = 'responsable';
+
+    /**
+     * Le role du secretaire
+     */
     const SECRETAIRE = 'secretaire';
+
+    /**
+     * Le role du professeur
+     */
     const PROFESSEUR = 'professeur';
 
+    /**
+     * Le role du conseiller
+     */
     const CONSEILLER = 'conseiller';
 
+
+    /**
+     * @return array
+     */
     public static function getRoles()
     {
         return [
@@ -33,56 +63,62 @@ class Role
     }
 
 
+    /**
+     * @return array
+     */
     public static function rolesAbilities()
     {
         return [
             self::ADMIN => [
-                'full_access' => true,
-
+                'full_access'
             ],
             self::ETUDIANT => [
-                'read' => true,
-                'full_access' => false,
+                'read',
+                'update',
             ],
             self::CHAUFFEUR => [
-                'read' => true,
-                'update' => true,
-                'full_access' => false,
+                'read',
             ],
             self::RESPONSABLE => [
-                'create' => true,
-                'read' => true,
-                'update' => true,
-                'delete' => true,
-
+                'create',
+                'read',
+                'update',
+                'delete',
             ],
             self::SECRETAIRE => [
-                'create' => true,
-                'read' => true,
-                'update' => true,
-                'delete' => true,
+                'create',
+                'read',
+                'update',
+                'delete',
             ],
             self::PROFESSEUR => [
-                'create' => true,
-                'read' => true,
-                'update' => true,
-                'delete' => true,
+                'create',
+                'read',
+                'update',
+                'delete',
             ],
             self::CONSEILLER => [
-                'create' => true,
-                'read' => true,
-                'update' => true,
-                'delete' => true,
+                'create',
+                'read',
+                'update',
+                'delete',
             ],
         ];
     }
 
 
+    /**
+     * @param $role
+     * @return array
+     */
     public static function getAbilities($role): array
     {
         return self::rolesAbilities()[$role];
     }
 
+    /**
+     * @return array
+     */
     public static function roleDescription(){
         return [
             self::ADMIN => 'Administrateur de l\'application',
@@ -96,7 +132,12 @@ class Role
     }
 
 
-
-
+    /**
+     * @param $role
+     * @return string
+     */
+    public static function getRoleDescription($role){
+        return self::roleDescription()[$role];
+    }
 
 }
